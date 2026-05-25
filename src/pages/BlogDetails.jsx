@@ -34,7 +34,7 @@ function BlogDetails() {
         let data;
 
         if (!viewIncrementPromises.has(id)) {
-          const putPromise = API.put(`/blogs/${id}/view`, null)
+          const putPromise = API.put(`/api/blogs/${id}/view`, null)
             .then(res => res.data)
             .catch(err => {
               viewIncrementPromises.delete(id);
@@ -120,7 +120,7 @@ function BlogDetails() {
           {/* Hero image – responsive aspect ratio */}
           <div className="relative w-full bg-stone-200 aspect-video md:aspect-[16/9]">
             <img
-              src={blog.image ? `http://localhost:3005${blog.image}` : "https://via.placeholder.com/800x400"}
+              src={blog.image ? `${import.meta.env.VITE_API_URL}${blog.image}` : "https://via.placeholder.com/800x400"}
               alt={blog.title}
               className="w-full h-full object-cover"
               onError={(e) => (e.target.src = placeholderImage)}
