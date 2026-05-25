@@ -19,14 +19,14 @@ function EditBlog() {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const { data } = await API.get(`/blogs/${id}`);
+        const { data } = await API.get(`/api/blogs/${id}`);
         setFormData({
           title: data.title || "",
           description: data.description || "",
           category: data.category || "",
           image: null,
         });
-        if (data.image) setPreview(`http://localhost:3005${data.image}`);
+        if (data.image) setPreview(`${import.meta.env.VITE_API_URL}${data.image}`);
       } catch (error) {
         console.log(error);
         toast.error("Failed to fetch blog");
@@ -59,7 +59,7 @@ function EditBlog() {
       blogData.append("category", formData.category);
       if (formData.image) blogData.append("image", formData.image);
 
-      const { data } = await API.put(`/blogs/${id}`, blogData, {
+      const { data } = await API.put(`/api/blogs/${id}`, blogData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

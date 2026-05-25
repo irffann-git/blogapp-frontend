@@ -35,7 +35,7 @@ function CreateBlog() {
       blogData.append("category", formData.category);
       blogData.append("image", formData.image);
 
-      const { data } = await API.post("/blogs", blogData, {
+      const { data } = await API.post("/api/blogs", blogData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
