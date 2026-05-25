@@ -11,7 +11,7 @@ function Dashboard() {
   const fetchMyBlogs = async () => {
     try {
       const token = localStorage.getItem("token");
-      const { data } = await API.get("/blogs/myblogs", {
+      const { data } = await API.get("/api/blogs/myblogs", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBlogs(data);
@@ -36,7 +36,7 @@ function Dashboard() {
     setDeletingId(id);
     try {
       const token = localStorage.getItem("token");
-      const { data } = await API.delete(`/blogs/${id}`, {
+      const { data } = await API.delete(`/api/blogs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success(data.message || "Blog deleted successfully");
