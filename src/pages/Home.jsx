@@ -79,9 +79,9 @@ function BlogCard({ blog }) {
 
         <img
           src={
-            blog.image
-              ? `http://localhost:3005${blog.image}`
-              : placeholderImage
+           blog.image
+  ? `${import.meta.env.VITE_API_URL}${blog.image}`
+  : placeholderImage
           }
           alt={blog.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -192,16 +192,13 @@ function Home() {
         setLoading(true);
 
         const { data } = await API.get(
-
-          `/blogs?search=${encodeURIComponent(
-            debouncedSearch
-          )}`,
-
-          {
-            signal,
-          }
-
-        );
+  `/api/blogs?search=${encodeURIComponent(
+    debouncedSearch
+  )}`,
+  {
+    signal,
+  }
+);
 
         setBlogs(data);
 
