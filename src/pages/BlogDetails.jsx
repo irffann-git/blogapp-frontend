@@ -16,7 +16,6 @@ const categoryColors = {
   default: "bg-stone-100 text-stone-700",
 };
 
-// Global map to guarantee only one view increment per blog id
 const viewIncrementPromises = new Map();
 
 function BlogDetails() {
@@ -27,7 +26,6 @@ function BlogDetails() {
   const [commentText, setCommentText] = useState("");
   const isMountedRef = useRef(true);
 
-  // ---------- FETCH BLOG (with view increment) ----------
   useEffect(() => {
     isMountedRef.current = true;
 
@@ -58,12 +56,12 @@ function BlogDetails() {
 
     const fetchComments = async () => {
       try {
-        // ✅ correct endpoint – matches backend route: /api/comments/:blogId
+        console.log(`Fetching comments for blog ${id} from ${API.defaults.baseURL}/api/comments/${id}`);
         const { data } = await API.get(`/api/comments/${id}`);
         if (isMountedRef.current) setComments(data);
+        console.log("Comments loaded:", data.length);
       } catch (error) {
-        console.error("Comments fetch error:", error);
-        // Do not show toast on comment fetch failure – it's non‑critical
+        console.error("Comments fetch error:", error.response?.status, error.response?.data);
       }
     };
 
@@ -75,7 +73,6 @@ function BlogDetails() {
     };
   }, [id]);
 
-  // ---------- ADD COMMENT ----------
   const handleComment = async () => {
     if (!commentText.trim()) {
       toast.error("Comment cannot be empty");
@@ -89,6 +86,7 @@ function BlogDetails() {
     }
 
     try {
+      console.log("Posting comment:", commentText);
       const { data } = await API.post(
         `/api/comments/${id}`,
         { text: commentText },
@@ -96,18 +94,25 @@ function BlogDetails() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
-      // Prepend new comment to the list
+      console.log("Comment posted:", data);
       setComments([data, ...comments]);
       setCommentText("");
       toast.success("Comment added");
     } catch (error) {
-      console.error("Add comment error:", error.response?.data || error);
-      toast.error(error.response?.data?.message || "Failed to add comment");
+      console.error("Add comment error:", error);
+      if (error.response) {
+        console.error("Response status:", error.response.status);
+        console.error("Response data:", error.response.data);
+        toast.error(error.response.data?.message || `Error ${error.response.status}: Failed to add comment`);
+      } else if (error.request) {
+        console.error("No response received");
+        toast.error("Cannot connect to server. Check if backend is running.");
+      } else {
+        toast.error(error.message || "Failed to add comment");
+      }
     }
   };
 
-  // ---------- LOADING ----------
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8]">
@@ -119,7 +124,6 @@ function BlogDetails() {
     );
   }
 
-  // ---------- BLOG NOT FOUND ----------
   if (!blog) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8] px-4">
@@ -141,12 +145,13 @@ function BlogDetails() {
 
   const placeholderImage = "https://via.placeholder.com/1200x600?text=Blog+Image";
   const categoryClass = categoryColors[blog.category] || categoryColors.default;
+  const imageUrl = blog.image 
+    ? (blog.image.startsWith('http') ? blog.image : `${import.meta.env.VITE_API_URL || 'http://localhost:3005'}${blog.image}`)
+    : placeholderImage;
 
-  // ---------- RENDER ----------
   return (
     <div className="min-h-screen bg-[#F5F0E8] py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        {/* Back link */}
         <Link
           to="/"
           className="inline-flex items-center gap-1.5 text-stone-500 hover:text-amber-700 text-sm font-medium mb-5 sm:mb-7 transition-colors"
@@ -157,12 +162,10 @@ function BlogDetails() {
           Back to home
         </Link>
 
-        {/* Blog article */}
         <article className="bg-[#FFFCF7] rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-          {/* Cover image */}
           <div className="relative w-full bg-stone-200 aspect-video md:aspect-[16/9]">
             <img
-              src={blog.image ? `${import.meta.env.VITE_API_URL || ''}${blog.image}` : placeholderImage}
+              src={imageUrl}
               alt={blog.title}
               className="w-full h-full object-cover"
               onError={(e) => (e.target.src = placeholderImage)}
@@ -170,9 +173,7 @@ function BlogDetails() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
           </div>
 
-          {/* Content */}
           <div className="p-5 sm:p-6 md:p-8 lg:p-10">
-            {/* Category & views */}
             <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5">
               <span className={`text-xs font-semibold px-3 py-1 rounded-full ${categoryClass}`}>
                 {blog.category || "Uncategorized"}
@@ -182,12 +183,10 @@ function BlogDetails() {
               </span>
             </div>
 
-            {/* Title */}
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-stone-800 leading-tight sm:leading-snug mb-5 sm:mb-6">
               {blog.title}
             </h1>
 
-            {/* Author */}
             <div className="flex items-center gap-3 mb-6 sm:mb-8 pb-5 sm:pb-6 border-b border-stone-100">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 font-semibold text-xs sm:text-sm flex-shrink-0">
                 {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
@@ -202,18 +201,16 @@ function BlogDetails() {
               </div>
             </div>
 
-            {/* Description */}
             <div className="text-stone-600 leading-relaxed text-sm sm:text-base whitespace-pre-wrap">
               {blog.description}
             </div>
 
-            {/* ========== COMMENTS SECTION ========== */}
+            {/* Comments section */}
             <div className="mt-10 border-t border-stone-100 pt-8">
               <h2 className="text-xl sm:text-2xl font-bold text-stone-800 mb-5">
                 Comments ({comments.length})
               </h2>
 
-              {/* Add comment form */}
               <div className="mb-8">
                 <textarea
                   value={commentText}
@@ -230,7 +227,6 @@ function BlogDetails() {
                 </button>
               </div>
 
-              {/* Comments list */}
               <div className="space-y-4">
                 {comments.length === 0 ? (
                   <p className="text-stone-400 text-sm text-center py-6">
@@ -258,7 +254,6 @@ function BlogDetails() {
                 )}
               </div>
             </div>
-            {/* ========== END COMMENTS ========== */}
           </div>
         </article>
       </div>
