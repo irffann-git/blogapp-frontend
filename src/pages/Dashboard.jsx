@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
+import noImage from "./noImage.png";
 
 function Dashboard() {
   const [blogs, setBlogs] = useState([]);
@@ -151,15 +152,20 @@ function Dashboard() {
                 key={blog._id}
                 className="bg-[#FFFCF7] rounded-2xl overflow-hidden border border-stone-200 hover:border-amber-300 transition-all duration-300 flex flex-col"
               >
-                {blog.image && (
-                  <img
-                    src={`${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`}
-                    alt={blog.title}
-                    className="w-full h-40 sm:h-44 object-cover"
-                    onError={(e) => (e.target.style.display = "none")}
-                  />
-                )}
-
+<img
+  src={
+    blog.image
+      ? `${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`
+      : noImage
+  }
+  alt={blog.title}
+  loading="lazy"
+  className="w-full h-40 sm:h-44 object-cover"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  }}
+/>
                 <div className="p-4 sm:p-5 flex flex-col flex-grow">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-900">

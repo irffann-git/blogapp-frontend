@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
+import noImage from "./noImage.png"
 
 const categoryColors = {
   Technology: "bg-amber-50 text-amber-900",
@@ -341,8 +342,7 @@ function BlogDetails() {
 
   }
 
-  const placeholderImage =
-    "https://via.placeholder.com/1200x600?text=Blog+Image";
+  const placeholderImage = noImage;
 
   const categoryClass =
     categoryColors[blog.category] ||
@@ -375,13 +375,15 @@ function BlogDetails() {
           <div className="relative w-full aspect-video bg-stone-200">
 
             <img
-              src={imageUrl}
-              alt={blog.title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = placeholderImage;
-              }}
-            />
+  src={imageUrl}
+  alt={blog.title}
+  loading="lazy"
+  className="w-full h-full object-cover"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  }}
+/>
 
           </div>
 

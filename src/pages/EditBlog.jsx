@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
+import noImage from "./noImage.png";
+
 
 function EditBlog() {
   const { id } = useParams();
@@ -177,7 +179,10 @@ function EditBlog() {
 
               {preview && (
                 <img
-                  src={preview}
+                  src={preview || noImage} onError={(e) => {
+  e.target.onerror = null;
+  e.target.src = noImage;
+}}
                   alt="Preview"
                   className="mt-4 w-full h-48 sm:h-56 object-cover rounded-xl border border-stone-200"
                 />
