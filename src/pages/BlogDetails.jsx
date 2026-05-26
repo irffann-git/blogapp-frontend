@@ -380,7 +380,7 @@ function BlogDetails() {
             {/* COMMENTS */}
             <div className="mt-14">
 
-              {/* top */}
+              {/* header */}
               <div className="flex items-center justify-between mb-8">
 
                 <div>
@@ -414,7 +414,7 @@ function BlogDetails() {
 
               </div>
 
-              {/* comment box */}
+              {/* COMMENT INPUT */}
               <div className="
                 relative
                 overflow-hidden
@@ -497,7 +497,7 @@ function BlogDetails() {
 
               </div>
 
-              {/* comments */}
+              {/* COMMENTS LIST */}
               <div className="space-y-5">
 
                 {comments.length === 0 ? (
@@ -553,6 +553,7 @@ function BlogDetails() {
                       "
                     >
 
+                      {/* hover glow */}
                       <div className="
                         absolute top-0 left-0
                         w-full h-[2px]
@@ -590,6 +591,7 @@ function BlogDetails() {
                         {/* content */}
                         <div className="flex-1 min-w-0">
 
+                          {/* top */}
                           <div className="
                             flex items-center gap-2
                             flex-wrap
@@ -616,6 +618,7 @@ function BlogDetails() {
 
                           </div>
 
+                          {/* text */}
                           <p className="
                             mt-2
                             text-sm sm:text-[15px]
@@ -628,44 +631,11 @@ function BlogDetails() {
 
                           {/* actions */}
                           <div className="
-                            flex items-center gap-3
+                            flex items-center justify-between
                             mt-4
                           ">
 
-                            <button
-                              onClick={() =>
-                                handleLike(comment._id)
-                              }
-                              className="
-                                group/like
-                                flex items-center gap-2
-                                px-4 py-2
-                                rounded-2xl
-                                bg-rose-50
-                                hover:bg-rose-100
-                                border border-rose-100
-                                hover:border-rose-200
-                                transition-all duration-300
-                              "
-                            >
-
-                              <span className="
-                                text-sm
-                                group-hover/like:scale-125
-                                transition-transform duration-300
-                              ">
-                                ❤️
-                              </span>
-
-                              <span className="
-                                text-xs font-semibold
-                                text-rose-600
-                              ">
-                                {comment.likes?.length || 0}
-                              </span>
-
-                            </button>
-
+                            {/* date */}
                             <span className="
                               text-xs
                               text-stone-400
@@ -674,6 +644,62 @@ function BlogDetails() {
                                 comment.createdAt
                               ).toLocaleDateString()}
                             </span>
+
+                            {/* like */}
+                            <button
+                              onClick={() =>
+                                handleLike(comment._id)
+                              }
+                              className="
+                                group/like
+                                relative
+                                overflow-hidden
+                                flex items-center gap-2
+                                px-4 py-2
+                                rounded-2xl
+                                bg-gradient-to-r
+                                from-rose-50
+                                to-pink-50
+                                hover:from-rose-100
+                                hover:to-pink-100
+                                border border-rose-100
+                                hover:border-rose-200
+                                transition-all duration-300
+                                hover:shadow-[0_0_20px_rgba(244,63,94,0.15)]
+                              "
+                            >
+
+                              {/* glow */}
+                              <div className="
+                                absolute inset-0
+                                opacity-0
+                                group-hover/like:opacity-100
+                                bg-gradient-to-r
+                                from-rose-400/10
+                                to-pink-400/10
+                                transition duration-300
+                              " />
+
+                              {/* heart */}
+                              <span className="
+                                relative
+                                text-sm
+                                group-hover/like:scale-125
+                                transition-transform duration-300
+                              ">
+                                ❤️
+                              </span>
+
+                              {/* count */}
+                              <span className="
+                                relative
+                                text-xs font-semibold
+                                text-rose-600
+                              ">
+                                {comment.likes?.length || 0}
+                              </span>
+
+                            </button>
 
                           </div>
 
