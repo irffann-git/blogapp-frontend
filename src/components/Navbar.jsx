@@ -84,9 +84,23 @@ function Navbar() {
                   </Link>
                   <div className="h-5 w-px bg-stone-600" />
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 text-sm font-semibold">
-                      {user?.name?.charAt(0).toUpperCase() || "U"}
-                    </div>
+                    <div className="w-8 h-8 rounded-full overflow-hidden bg-amber-600 flex items-center justify-center text-amber-50 text-sm font-semibold">
+
+  {user?.profileImage ? (
+
+    <img
+      src={user.profileImage}
+      alt="Profile"
+      className="w-full h-full object-cover"
+    />
+
+  ) : (
+
+    user?.name?.charAt(0).toUpperCase() || "U"
+
+  )}
+
+</div>
                     <span className="hidden lg:inline text-sm text-stone-300">
                       {user?.name?.split(" ")[0] || "User"}
                     </span>
@@ -166,7 +180,11 @@ function Navbar() {
           {token ? (
             <>
               {/* User info card */}
-              <div className="flex items-center gap-3 pb-4 border-b border-stone-700">
+              <Link
+  to="/profile"
+  onClick={closeMenu}
+  className="flex items-center gap-3 pb-4 border-b border-stone-700 hover:bg-stone-800/40 rounded-xl transition p-2"
+>
                 <div className="w-12 h-12 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 text-lg font-bold">
                   {user?.name?.charAt(0).toUpperCase() || "U"}
                 </div>
@@ -174,7 +192,7 @@ function Navbar() {
                   <p className="font-semibold text-stone-100">{user?.name || "User"}</p>
                   <p className="text-xs text-stone-400">{user?.email || "user@example.com"}</p>
                 </div>
-              </div>
+              </Link>
 
               {/* Navigation links */}
               <Link
