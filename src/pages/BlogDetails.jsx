@@ -355,12 +355,59 @@ function BlogDetails() {
                       </p>
                       <div className="ml-8 mt-2">
 
-  <button
-    onClick={() => handleLike(comment._id)}
-    className="text-xs text-amber-700 hover:text-amber-500 font-medium"
-  >
-    ❤️ {comment.likes?.length || 0} Likes
-  </button>
+<button
+  onClick={() => handleLike(comment._id)}
+  className="
+    group
+    relative
+    overflow-hidden
+    flex items-center gap-2
+    px-4 py-2
+    rounded-full
+    bg-gradient-to-r
+    from-rose-500/10
+    to-pink-500/10
+    border border-rose-200/40
+    backdrop-blur-md
+    hover:scale-105
+    hover:border-rose-300
+    hover:shadow-[0_0_20px_rgba(244,63,94,0.25)]
+    transition-all duration-300
+  "
+>
+
+  {/* glow */}
+  <div className="
+    absolute inset-0
+    opacity-0 group-hover:opacity-100
+    bg-gradient-to-r
+    from-rose-400/10
+    to-pink-400/10
+    transition duration-300
+  " />
+
+  {/* heart */}
+  <span className="
+    relative
+    text-sm
+    group-hover:scale-125
+    transition-transform duration-300
+  ">
+    ❤️
+  </span>
+
+  {/* count */}
+  <span className="
+    relative
+    text-xs font-semibold
+    text-stone-700
+    group-hover:text-rose-600
+    transition-colors duration-300
+  ">
+    {comment.likes?.length || 0}
+  </span>
+
+</button>
 
 </div>
 
