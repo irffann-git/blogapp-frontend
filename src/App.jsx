@@ -9,7 +9,6 @@ import ProtectedRoute from "./Routes/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import EditBlog from "./pages/EditBlog";
 import BlogDetails from "./pages/BlogDetails";
-import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -27,7 +26,6 @@ function App() {
         <Route path="/create-blog" element={<ProtectedRoute><CreateBlog /></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/edit-blog/:id" element={<ProtectedRoute><EditBlog/></ProtectedRoute>} />
-        <Route path="/profile" element={<Profile/>}/>
 
 
       </Routes>
