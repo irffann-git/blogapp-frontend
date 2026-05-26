@@ -26,7 +26,9 @@ function EditBlog() {
           category: data.category || "",
           image: null,
         });
-        if (data.image) setPreview(`${import.meta.env.VITE_API_URL}${data.image}`);
+        if (data.image) setPreview(
+  `${import.meta.env.VITE_API_URL}/${data.image.replace(/^\/+/, "")}`
+);
       } catch (error) {
         console.log(error);
         toast.error("Failed to fetch blog");

@@ -153,7 +153,7 @@ function Dashboard() {
               >
                 {blog.image && (
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${blog.image}`}
+                    src={`${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`}
                     alt={blog.title}
                     className="w-full h-40 sm:h-44 object-cover"
                     onError={(e) => (e.target.style.display = "none")}

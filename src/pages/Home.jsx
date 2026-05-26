@@ -78,11 +78,11 @@ function BlogCard({ blog }) {
       <div className="relative overflow-hidden h-48 sm:h-52">
 
         <img
-          src={
-           blog.image
-  ? `${import.meta.env.VITE_API_URL}${blog.image}`
-  : placeholderImage
-          }
+         src={
+ blog.image
+   ? `${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`
+   : placeholderImage
+}
           alt={blog.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
