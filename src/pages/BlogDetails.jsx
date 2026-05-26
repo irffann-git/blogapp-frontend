@@ -356,20 +356,20 @@ function BlogDetails() {
 
   return (
 
-    <div className="min-h-screen bg-[#F5F0E8] py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F5F0E8] py-4 sm:py-8 px-3 sm:px-6 lg:px-8">
 
       <div className="max-w-4xl mx-auto">
 
         {/* back */}
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-stone-500 hover:text-amber-700 text-sm font-medium mb-6 transition-colors"
+          className="inline-flex items-center gap-1.5 text-stone-500 hover:text-amber-700 text-sm font-medium mb-5 transition-colors"
         >
           ← Back to home
         </Link>
 
         {/* blog card */}
-        <article className="bg-[#FFFCF7] rounded-3xl border border-stone-200 overflow-hidden shadow-sm">
+        <article className="bg-[#FFFCF7] rounded-2xl sm:rounded-3xl border border-stone-200 overflow-hidden shadow-sm">
 
           {/* image */}
           <div className="relative w-full aspect-video bg-stone-200">
@@ -386,32 +386,32 @@ function BlogDetails() {
           </div>
 
           {/* content */}
-          <div className="p-5 sm:p-8 md:p-10">
+          <div className="p-4 sm:p-8 md:p-10">
 
             {/* category + views */}
-            <div className="flex flex-wrap items-center gap-3 mb-5">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
 
               <span
-                className={`text-xs font-semibold px-3 py-1 rounded-full ${categoryClass}`}
+                className={`text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full ${categoryClass}`}
               >
                 {blog.category || "Uncategorized"}
               </span>
 
-              <span className="text-xs text-stone-400">
+              <span className="text-[11px] sm:text-xs text-stone-400">
                 👁 {blog.views || 0} views
               </span>
 
             </div>
 
             {/* title */}
-            <h1 className="text-3xl sm:text-4xl font-bold text-stone-800 leading-tight mb-6">
+            <h1 className="text-2xl sm:text-4xl font-bold text-stone-800 leading-tight mb-5">
               {blog.title}
             </h1>
 
             {/* author */}
-            <div className="flex items-center gap-3 pb-6 border-b border-stone-100 mb-8">
+            <div className="flex items-center gap-3 pb-5 border-b border-stone-100 mb-6">
 
-              <div className="w-11 h-11 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-sm">
 
                 {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
 
@@ -419,11 +419,11 @@ function BlogDetails() {
 
               <div>
 
-                <p className="font-semibold text-stone-700">
+                <p className="font-semibold text-sm sm:text-base text-stone-700">
                   {blog.user?.name || "Anonymous"}
                 </p>
 
-                <p className="text-xs text-stone-400">
+                <p className="text-[11px] sm:text-xs text-stone-400">
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </p>
 
@@ -432,36 +432,37 @@ function BlogDetails() {
             </div>
 
             {/* description */}
-            <div className="text-stone-600 leading-relaxed text-[15px] whitespace-pre-wrap">
+            <div className="text-sm sm:text-[15px] text-stone-600 leading-7 whitespace-pre-wrap">
               {blog.description}
             </div>
 
             {/* COMMENTS */}
-            <div className="mt-12 border-t border-stone-200 pt-8">
+            <div className="mt-10 sm:mt-12 border-t border-stone-200 pt-6 sm:pt-8">
 
               {/* header */}
-              <div className="mb-6">
+              <div className="mb-5">
 
-                <h2 className="text-xl sm:text-2xl font-semibold text-stone-800">
+                <h2 className="text-lg sm:text-2xl font-semibold text-stone-800">
                   Comments
                 </h2>
 
-                <p className="text-sm text-stone-400 mt-1">
+                <p className="text-xs sm:text-sm text-stone-400 mt-1">
                   {comments.length} responses
                 </p>
 
               </div>
 
               {/* comment input */}
-              <div className="flex gap-3 mb-8">
+              <div className="flex gap-2 sm:gap-3 mb-8">
 
                 {/* avatar */}
                 <div className="
-                  w-10 h-10
+                  w-9 h-9 sm:w-10 sm:h-10
                   rounded-full
                   bg-amber-500
                   flex items-center justify-center
                   text-white
+                  text-sm
                   font-semibold
                   flex-shrink-0
                 ">
@@ -518,7 +519,7 @@ function BlogDetails() {
               </div>
 
               {/* comments list */}
-              <div className="space-y-6">
+              <div className="space-y-7">
 
                 {comments.length === 0 ? (
 
@@ -537,17 +538,17 @@ function BlogDetails() {
 
                     <div
                       key={comment._id}
-                      className="flex gap-3"
+                      className="flex gap-2 sm:gap-3"
                     >
 
                       {/* avatar */}
                       <div className="
-                        w-10 h-10
+                        w-9 h-9 sm:w-10 sm:h-10
                         rounded-full
                         bg-amber-500
                         flex items-center justify-center
                         text-white
-                        text-sm
+                        text-xs sm:text-sm
                         font-semibold
                         flex-shrink-0
                       ">
@@ -557,11 +558,11 @@ function BlogDetails() {
                       </div>
 
                       {/* content */}
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
 
                         {/* top */}
                         <div className="
-                          flex items-center gap-2
+                          flex items-center gap-2 flex-wrap
                           mb-1
                         ">
 
@@ -569,12 +570,13 @@ function BlogDetails() {
                             text-sm
                             font-semibold
                             text-stone-800
+                            truncate
                           ">
                             {comment.user?.name || "Anonymous"}
                           </h3>
 
                           <span className="
-                            text-xs
+                            text-[11px]
                             text-stone-400
                           ">
                             {new Date(
@@ -588,8 +590,9 @@ function BlogDetails() {
                         <p className="
                           text-sm
                           text-stone-700
-                          leading-relaxed
+                          leading-6
                           whitespace-pre-wrap
+                          break-words
                         ">
                           {comment.text}
                         </p>
@@ -607,6 +610,7 @@ function BlogDetails() {
                             className={`
                               flex items-center gap-1
                               text-xs transition-colors
+                              active:scale-95
                               ${
                                 comment.isLiked
                                   ? "text-rose-500"
@@ -615,7 +619,7 @@ function BlogDetails() {
                             `}
                           >
 
-                            <span>
+                            <span className="text-sm">
                               {comment.isLiked
                                 ? "❤️"
                                 : "🤍"}
