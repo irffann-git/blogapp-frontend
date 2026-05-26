@@ -341,8 +341,7 @@ function BlogDetails() {
 
   }
 
-  const placeholderImage =
-    "https://via.placeholder.com/1200x600?text=Blog+Image";
+  const placeholderImage = "https://placehold.co/1200x600?text=No+Image";
 
   const categoryClass =
     categoryColors[blog.category] ||
@@ -375,13 +374,14 @@ function BlogDetails() {
           <div className="relative w-full aspect-video bg-stone-200">
 
             <img
-              src={imageUrl}
-              alt={blog.title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = placeholderImage;
-              }}
-            />
+  src={imageUrl}
+  alt={blog.title}
+  className="w-full h-full object-cover"
+  onError={(e) => {
+    e.target.onerror = null; 
+    e.target.src = placeholderImage;
+  }}
+/>
 
           </div>
 

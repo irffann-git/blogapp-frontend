@@ -60,8 +60,8 @@ const categoryColors = {
 // blog card
 function BlogCard({ blog }) {
 
-  const placeholderImage =
-    "https://via.placeholder.com/600x400";
+ 
+    const placeholderImage = "https://placehold.co/600x400?text=No+Image";
 
   const categoryClass =
     categoryColors[blog.category] ||
@@ -77,15 +77,19 @@ function BlogCard({ blog }) {
       {/* image */}
       <div className="relative overflow-hidden h-48 sm:h-52">
 
-        <img
-          src={
-           blog.image
-  ? `${import.meta.env.VITE_API_URL}${blog.image}`
-  : placeholderImage
-          }
-          alt={blog.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+       <img
+  src={
+    blog.image
+      ? `${import.meta.env.VITE_API_URL}${blog.image}`
+      : placeholderImage
+  }
+  alt={blog.title}
+  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+  onError={(e) => {
+    e.target.onerror = null;  // ← stops infinite loop
+    e.target.src = placeholderImage;
+  }}
+/>
 
         <div className="absolute inset-0 bg-stone-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 

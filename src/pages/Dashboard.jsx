@@ -156,7 +156,10 @@ function Dashboard() {
                     src={`${import.meta.env.VITE_API_URL}${blog.image}`}
                     alt={blog.title}
                     className="w-full h-40 sm:h-44 object-cover"
-                    onError={(e) => (e.target.style.display = "none")}
+                    onError={(e) => {
+  e.target.onerror = null;
+  e.target.style.display = "none";
+}}
                   />
                 )}
 
