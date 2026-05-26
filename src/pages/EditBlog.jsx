@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
-import noImage from "./noImage.png";
-
 
 function EditBlog() {
   const { id } = useParams();
@@ -28,9 +26,7 @@ function EditBlog() {
           category: data.category || "",
           image: null,
         });
-        if (data.image) setPreview(
-  `${import.meta.env.VITE_API_URL}/${data.image.replace(/^\/+/, "")}`
-);
+        if (data.image) setPreview(`${import.meta.env.VITE_API_URL}${data.image}`);
       } catch (error) {
         console.log(error);
         toast.error("Failed to fetch blog");
@@ -179,10 +175,7 @@ function EditBlog() {
 
               {preview && (
                 <img
-                  src={preview || noImage} onError={(e) => {
-  e.target.onerror = null;
-  e.target.src = noImage;
-}}
+                  src={preview}
                   alt="Preview"
                   className="mt-4 w-full h-48 sm:h-56 object-cover rounded-xl border border-stone-200"
                 />

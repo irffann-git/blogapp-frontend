@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
-import noImage from "./noImage.png";
 
 // debounce hook
 function useDebounce(value, delay) {
@@ -61,7 +60,8 @@ const categoryColors = {
 // blog card
 function BlogCard({ blog }) {
 
-
+  const placeholderImage =
+    "https://via.placeholder.com/600x400";
 
   const categoryClass =
     categoryColors[blog.category] ||
@@ -77,20 +77,15 @@ function BlogCard({ blog }) {
       {/* image */}
       <div className="relative overflow-hidden h-48 sm:h-52">
 
-       <img
- src={
-  blog.image
-    ? `${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`
-    : noImage
-}
-  alt={blog.title}
-  loading="lazy"
-  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-  onError={(e) => {
-    e.target.onerror = null;
-    e.target.src = noImage;
-  }}
-/>
+        <img
+          src={
+           blog.image
+  ? `${import.meta.env.VITE_API_URL}${blog.image}`
+  : placeholderImage
+          }
+          alt={blog.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
 
         <div className="absolute inset-0 bg-stone-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
