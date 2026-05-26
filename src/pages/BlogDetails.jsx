@@ -17,94 +17,135 @@ const categoryColors = {
 };
 
 function BlogDetails() {
+
   const { id } = useParams();
 
   const [blog, setBlog] = useState(null);
+
   const [loading, setLoading] = useState(true);
 
   const [comments, setComments] = useState([]);
+
   const [commentText, setCommentText] = useState("");
 
   const isMountedRef = useRef(true);
 
   useEffect(() => {
+
     isMountedRef.current = true;
 
     // FETCH BLOG
     const fetchBlog = async () => {
+
       setLoading(true);
 
       try {
-        const { data } = await API.get(`/api/blogs/${id}`);
+
+        const { data } = await API.get(
+          `/api/blogs/${id}`
+        );
 
         if (isMountedRef.current) {
           setBlog(data);
         }
 
-        // increment views separately
-        API.put(`/api/blogs/${id}/view`).catch((err) => {
-          console.log("View increment failed:", err);
+        // increment views
+        API.put(
+          `/api/blogs/${id}/view`
+        ).catch((err) => {
+          console.log(
+            "View increment failed:",
+            err
+          );
         });
 
       } catch (error) {
-        console.error("Blog fetch error:", error);
 
-        toast.error("Failed to fetch blog");
+        console.error(
+          "Blog fetch error:",
+          error
+        );
+
+        toast.error(
+          "Failed to fetch blog"
+        );
 
         setBlog(null);
 
       } finally {
+
         if (isMountedRef.current) {
           setLoading(false);
         }
+
       }
+
     };
 
     // FETCH COMMENTS
     const fetchComments = async () => {
-      try {
-        console.log(
-          `Fetching comments from ${API.defaults.baseURL}/api/comments/${id}`
-        );
 
-        const { data } = await API.get(`/api/comments/${id}`);
+      try {
+
+        const { data } = await API.get(
+          `/api/comments/${id}`
+        );
 
         if (isMountedRef.current) {
           setComments(data);
         }
 
       } catch (error) {
+
         console.error(
           "Comments fetch error:",
-          error.response?.status,
-          error.response?.data
+          error
         );
+
       }
+
     };
 
     fetchBlog();
+
     fetchComments();
 
     return () => {
+
       isMountedRef.current = false;
+
     };
+
   }, [id]);
 
   // ADD COMMENT
   const handleComment = async () => {
+
     if (!commentText.trim()) {
-      toast.error("Comment cannot be empty");
+
+      toast.error(
+        "Comment cannot be empty"
+      );
+
       return;
+
     }
 
-    const token = localStorage.getItem("token");
+    const token =
+      localStorage.getItem("token");
 
     if (!token) {
-      toast.error("Please login first");
+
+      toast.error(
+        "Please login first"
+      );
+
       return;
+
     }
 
     try {
+
       const { data } = await API.post(
         `/api/comments/${id}`,
         { text: commentText },
@@ -122,34 +163,106 @@ function BlogDetails() {
       toast.success("Comment added");
 
     } catch (error) {
-      console.error("Add comment error:", error);
+
+      console.error(
+        "Add comment error:",
+        error
+      );
 
       toast.error(
         error.response?.data?.message ||
         "Failed to add comment"
       );
+
     }
+
+  };
+
+  // LIKE COMMENT
+  const handleLike = async (commentId) => {
+
+    const token =
+      localStorage.getItem("token");
+
+    if (!token) {
+
+      toast.error(
+        "Please login first"
+      );
+
+      return;
+
+    }
+
+    try {
+
+      const { data } = await API.put(
+        `/api/comments/${commentId}/like`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment._id === commentId
+            ? {
+                ...comment,
+                likes: Array(data.likes).fill(
+                  "liked"
+                ),
+              }
+            : comment
+        )
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+      toast.error(
+        "Failed to like comment"
+      );
+
+    }
+
   };
 
   // LOADING
   if (loading) {
+
     return (
+
       <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8]">
+
         <div className="text-center">
+
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-200 border-t-amber-600 mx-auto" />
+
           <p className="mt-4 text-stone-500 text-sm">
             Loading blog post...
           </p>
+
         </div>
+
       </div>
+
     );
+
   }
 
   // BLOG NOT FOUND
   if (!blog) {
+
     return (
+
       <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8] px-4">
+
         <div className="text-center">
+
           <h2 className="text-2xl font-semibold text-stone-700 mb-2">
             Blog not found
           </h2>
@@ -160,9 +273,13 @@ function BlogDetails() {
           >
             Back to home
           </Link>
+
         </div>
+
       </div>
+
     );
+
   }
 
   const placeholderImage =
@@ -177,62 +294,26 @@ function BlogDetails() {
       ? blog.image
       : `${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`
     : placeholderImage;
-    const handleLike = async (commentId) => {
-
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    toast.error("Please login first");
-    return;
-  }
-
-  try {
-
-    const { data } = await API.put(
-      `/api/comments/${commentId}/like`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment._id === commentId
-          ? {
-              ...comment,
-              likes: Array(data.likes).fill("liked"),
-            }
-          : comment
-      )
-    );
-
-  } catch (error) {
-
-    console.log(error);
-
-    toast.error("Failed to like comment");
-
-  }
-};
 
   return (
+
     <div className="min-h-screen bg-[#F5F0E8] py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
 
+        {/* back */}
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-stone-500 hover:text-amber-700 text-sm font-medium mb-5 sm:mb-7 transition-colors"
+          className="inline-flex items-center gap-1.5 text-stone-500 hover:text-amber-700 text-sm font-medium mb-6 transition-colors"
         >
           ← Back to home
         </Link>
 
-        <article className="bg-[#FFFCF7] rounded-2xl border border-stone-200 overflow-hidden shadow-sm">
+        {/* blog card */}
+        <article className="bg-[#FFFCF7] rounded-3xl border border-stone-200 overflow-hidden shadow-sm">
 
-          <div className="relative w-full bg-stone-200 aspect-video">
+          {/* image */}
+          <div className="relative w-full aspect-video bg-stone-200">
 
             <img
               src={imageUrl}
@@ -245,9 +326,11 @@ function BlogDetails() {
 
           </div>
 
-          <div className="p-5 sm:p-6 md:p-8 lg:p-10">
+          {/* content */}
+          <div className="p-5 sm:p-8 md:p-10">
 
-            <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5">
+            {/* category + views */}
+            <div className="flex flex-wrap items-center gap-3 mb-5">
 
               <span
                 className={`text-xs font-semibold px-3 py-1 rounded-full ${categoryClass}`}
@@ -261,13 +344,15 @@ function BlogDetails() {
 
             </div>
 
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-stone-800 leading-tight sm:leading-snug mb-5 sm:mb-6">
+            {/* title */}
+            <h1 className="text-3xl sm:text-4xl font-bold text-stone-800 leading-tight mb-6">
               {blog.title}
             </h1>
 
-            <div className="flex items-center gap-3 mb-6 sm:mb-8 pb-5 sm:pb-6 border-b border-stone-100">
+            {/* author */}
+            <div className="flex items-center gap-3 pb-6 border-b border-stone-100 mb-8">
 
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 font-semibold text-xs sm:text-sm">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold shadow-lg shadow-orange-500/20">
 
                 {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
 
@@ -275,7 +360,7 @@ function BlogDetails() {
 
               <div>
 
-                <p className="font-medium text-stone-700 text-sm sm:text-base">
+                <p className="font-semibold text-stone-700">
                   {blog.user?.name || "Anonymous"}
                 </p>
 
@@ -287,45 +372,165 @@ function BlogDetails() {
 
             </div>
 
-            <div className="text-stone-600 leading-relaxed text-sm sm:text-base whitespace-pre-wrap">
+            {/* description */}
+            <div className="text-stone-600 leading-relaxed text-[15px] whitespace-pre-wrap">
               {blog.description}
             </div>
 
             {/* COMMENTS */}
-            <div className="mt-10 border-t border-stone-100 pt-8">
+            <div className="mt-14">
 
-              <h2 className="text-xl sm:text-2xl font-bold text-stone-800 mb-5">
-                Comments ({comments.length})
-              </h2>
+              {/* top */}
+              <div className="flex items-center justify-between mb-8">
 
-              <div className="mb-8">
+                <div>
 
-                <textarea
-                  value={commentText}
-                  onChange={(e) =>
-                    setCommentText(e.target.value)
-                  }
-                  placeholder="Write your comment..."
-                  rows="3"
-                  className="w-full bg-[#F5F0E8] border border-stone-200 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
-                />
+                  <h2 className="text-2xl sm:text-3xl font-bold text-stone-800">
+                    Discussion
+                  </h2>
 
-                <button
-                  onClick={handleComment}
-                  className="mt-3 bg-amber-500 hover:bg-amber-400 text-stone-900 font-semibold px-6 py-2.5 rounded-xl text-sm transition-colors"
-                >
-                  Add Comment
-                </button>
+                  <p className="text-sm text-stone-400 mt-1">
+                    Join the community conversation
+                  </p>
+
+                </div>
+
+                <div className="
+                  hidden sm:flex
+                  items-center gap-2
+                  px-4 py-2
+                  rounded-full
+                  bg-gradient-to-r
+                  from-orange-100
+                  to-amber-100
+                  text-orange-700
+                  text-xs font-semibold
+                  shadow-sm
+                ">
+
+                  🔥 {comments.length} Comments
+
+                </div>
 
               </div>
 
-              <div className="space-y-4">
+              {/* comment box */}
+              <div className="
+                relative
+                overflow-hidden
+                rounded-3xl
+                border border-white/30
+                bg-white/70
+                backdrop-blur-xl
+                shadow-[0_8px_40px_rgba(0,0,0,0.06)]
+                p-5 sm:p-6
+                mb-10
+              ">
+
+                <div className="
+                  absolute inset-0
+                  bg-gradient-to-r
+                  from-amber-100/20
+                  to-orange-100/20
+                  pointer-events-none
+                " />
+
+                <div className="relative">
+
+                  <textarea
+                    value={commentText}
+                    onChange={(e) =>
+                      setCommentText(e.target.value)
+                    }
+                    placeholder="Share your thoughts..."
+                    rows="4"
+                    className="
+                      w-full
+                      bg-transparent
+                      resize-none
+                      border-none
+                      focus:outline-none
+                      text-stone-700
+                      placeholder-stone-400
+                      text-sm sm:text-base
+                    "
+                  />
+
+                  <div className="
+                    flex items-center justify-between
+                    mt-5
+                  ">
+
+                    <p className="
+                      text-xs
+                      text-stone-400
+                    ">
+                      Be respectful and constructive
+                    </p>
+
+                    <button
+                      onClick={handleComment}
+                      className="
+                        group
+                        relative
+                        overflow-hidden
+                        px-6 py-3
+                        rounded-2xl
+                        bg-gradient-to-r
+                        from-amber-500
+                        to-orange-500
+                        text-white
+                        text-sm font-semibold
+                        shadow-lg shadow-orange-500/20
+                        hover:scale-105
+                        transition-all duration-300
+                      "
+                    >
+
+                      Post Comment
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* comments */}
+              <div className="space-y-5">
 
                 {comments.length === 0 ? (
 
-                  <p className="text-stone-400 text-sm text-center py-6">
-                    No comments yet. Be the first!
-                  </p>
+                  <div className="
+                    text-center
+                    py-14
+                    rounded-3xl
+                    bg-white/60
+                    border border-stone-100
+                  ">
+
+                    <div className="text-5xl mb-3">
+                      💭
+                    </div>
+
+                    <h3 className="
+                      text-lg
+                      font-semibold
+                      text-stone-700
+                    ">
+                      No comments yet
+                    </h3>
+
+                    <p className="
+                      text-sm
+                      text-stone-400
+                      mt-1
+                    ">
+                      Start the conversation
+                    </p>
+
+                  </div>
 
                 ) : (
 
@@ -333,83 +538,148 @@ function BlogDetails() {
 
                     <div
                       key={comment._id}
-                      className="bg-[#F5F0E8] border border-stone-200 rounded-xl p-4"
+                      className="
+                        group
+                        relative
+                        overflow-hidden
+                        rounded-3xl
+                        border border-white/40
+                        bg-white/70
+                        backdrop-blur-xl
+                        shadow-[0_8px_30px_rgba(0,0,0,0.05)]
+                        hover:shadow-[0_10px_40px_rgba(0,0,0,0.08)]
+                        transition-all duration-300
+                        p-5
+                      "
                     >
 
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="
+                        absolute top-0 left-0
+                        w-full h-[2px]
+                        bg-gradient-to-r
+                        from-amber-400
+                        via-orange-400
+                        to-rose-400
+                        opacity-0
+                        group-hover:opacity-100
+                        transition-opacity duration-500
+                      " />
 
-                        <div className="w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 text-xs font-semibold">
+                      <div className="
+                        flex items-start gap-4
+                      ">
+
+                        {/* avatar */}
+                        <div className="
+                          w-11 h-11
+                          rounded-2xl
+                          bg-gradient-to-br
+                          from-amber-500
+                          to-orange-500
+                          flex items-center justify-center
+                          text-white
+                          font-bold
+                          shadow-lg shadow-orange-500/20
+                          flex-shrink-0
+                        ">
 
                           {(comment.user?.name?.charAt(0) || "U").toUpperCase()}
 
                         </div>
 
-                        <span className="font-semibold text-stone-700 text-sm">
-                          {comment.user?.name || "Anonymous"}
-                        </span>
+                        {/* content */}
+                        <div className="flex-1 min-w-0">
+
+                          <div className="
+                            flex items-center gap-2
+                            flex-wrap
+                          ">
+
+                            <h3 className="
+                              font-semibold
+                              text-stone-800
+                              text-sm sm:text-base
+                            ">
+                              {comment.user?.name || "Anonymous"}
+                            </h3>
+
+                            <span className="
+                              text-[10px]
+                              px-2 py-0.5
+                              rounded-full
+                              bg-stone-100
+                              text-stone-500
+                              font-medium
+                            ">
+                              Community Member
+                            </span>
+
+                          </div>
+
+                          <p className="
+                            mt-2
+                            text-sm sm:text-[15px]
+                            text-stone-600
+                            leading-relaxed
+                            whitespace-pre-wrap
+                          ">
+                            {comment.text}
+                          </p>
+
+                          {/* actions */}
+                          <div className="
+                            flex items-center gap-3
+                            mt-4
+                          ">
+
+                            <button
+                              onClick={() =>
+                                handleLike(comment._id)
+                              }
+                              className="
+                                group/like
+                                flex items-center gap-2
+                                px-4 py-2
+                                rounded-2xl
+                                bg-rose-50
+                                hover:bg-rose-100
+                                border border-rose-100
+                                hover:border-rose-200
+                                transition-all duration-300
+                              "
+                            >
+
+                              <span className="
+                                text-sm
+                                group-hover/like:scale-125
+                                transition-transform duration-300
+                              ">
+                                ❤️
+                              </span>
+
+                              <span className="
+                                text-xs font-semibold
+                                text-rose-600
+                              ">
+                                {comment.likes?.length || 0}
+                              </span>
+
+                            </button>
+
+                            <span className="
+                              text-xs
+                              text-stone-400
+                            ">
+                              {new Date(
+                                comment.createdAt
+                              ).toLocaleDateString()}
+                            </span>
+
+                          </div>
+
+                        </div>
 
                       </div>
-
-                      <p className="text-sm text-stone-600 leading-relaxed ml-8">
-                        {comment.text}
-                      </p>
-                      <div className="ml-8 mt-2">
-
-<button
-  onClick={() => handleLike(comment._id)}
-  className="
-    group
-    relative
-    overflow-hidden
-    flex items-center gap-2
-    px-4 py-2
-    rounded-full
-    bg-gradient-to-r
-    from-rose-500/10
-    to-pink-500/10
-    border border-rose-200/40
-    backdrop-blur-md
-    hover:scale-105
-    hover:border-rose-300
-    hover:shadow-[0_0_20px_rgba(244,63,94,0.25)]
-    transition-all duration-300
-  "
->
-
-  {/* glow */}
-  <div className="
-    absolute inset-0
-    opacity-0 group-hover:opacity-100
-    bg-gradient-to-r
-    from-rose-400/10
-    to-pink-400/10
-    transition duration-300
-  " />
-
-  {/* heart */}
-  <span className="
-    relative
-    text-sm
-    group-hover:scale-125
-    transition-transform duration-300
-  ">
-    ❤️
-  </span>
-
-  {/* count */}
-  <span className="
-    relative
-    text-xs font-semibold
-    text-stone-700
-    group-hover:text-rose-600
-    transition-colors duration-300
-  ">
-    {comment.likes?.length || 0}
-  </span>
-
-</button>
-
-</div>
 
                     </div>
 
@@ -427,7 +697,9 @@ function BlogDetails() {
       </div>
 
     </div>
+
   );
+
 }
 
 export default BlogDetails;
