@@ -147,7 +147,7 @@ function Home() {
   const [currentPage, setCurrentPage] =
     useState(1);
 
-  const blogsPerPage = 12;
+  const blogsPerPage = 6;
 
   const debouncedSearch =
     useDebounce(search, 500);
