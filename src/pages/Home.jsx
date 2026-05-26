@@ -167,6 +167,10 @@ function Home() {
   const [selectedCategory,
     setSelectedCategory] =
     useState("All");
+    const [currentPage, setCurrentPage] =
+  useState(1);
+
+const blogsPerPage = 12;
 
   const debouncedSearch =
     useDebounce(search, 500);
@@ -307,6 +311,24 @@ function Home() {
 
     .slice(0, 3);
 
+    // pagination
+const indexOfLastBlog =
+  currentPage * blogsPerPage;
+
+const indexOfFirstBlog =
+  indexOfLastBlog - blogsPerPage;
+
+const currentBlogs =
+  filteredBlogs.slice(
+    indexOfFirstBlog,
+    indexOfLastBlog
+  );
+
+const totalPages = Math.ceil(
+  filteredBlogs.length /
+    blogsPerPage
+);
+
   return (
 
     <div className="min-h-screen bg-[#F5F0E8]">
@@ -350,9 +372,13 @@ function Home() {
               type="text"
               placeholder="Search by title, category, or content..."
               value={search}
-              onChange={(e) =>
-                setSearch(e.target.value)
-              }
+              onChange={(e) => {
+
+  setSearch(e.target.value);
+
+  setCurrentPage(1);
+
+}}
               maxLength={50}
               className="w-full pl-11 pr-4 py-3 sm:py-4 rounded-full bg-[#F5F0E8] text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm sm:text-base"
             />
@@ -367,9 +393,13 @@ function Home() {
 
                 <button
                   key={cat}
-                  onClick={() =>
-                    setSelectedCategory(cat)
-                  }
+                  onClick={() => {
+
+  setSelectedCategory(cat);
+
+  setCurrentPage(1);
+
+}}
                   className={`px-3 sm:px-5 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all ${
                     selectedCategory === cat
                       ? "bg-amber-500 text-stone-900 shadow-md"
@@ -510,7 +540,7 @@ function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
 
                 {
-                  filteredBlogs.map((blog) => (
+                  currentBlogs.map((blog) => (
 
                     <BlogCard
                       key={blog._id}
@@ -526,6 +556,79 @@ function Home() {
           }
 
         </section>
+        {/* pagination */}
+{
+  totalPages > 1 && (
+
+    <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
+
+      {/* prev */}
+      <button
+        onClick={() =>
+          setCurrentPage((prev) =>
+            Math.max(prev - 1, 1)
+          )
+        }
+        disabled={currentPage === 1}
+        className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+          currentPage === 1
+            ? "bg-stone-200 text-stone-400 cursor-not-allowed"
+            : "bg-amber-500 text-stone-900 hover:bg-amber-400"
+        }`}
+      >
+        Prev
+      </button>
+
+      {/* pages */}
+      {
+        [...Array(totalPages)].map(
+          (_, index) => (
+
+            <button
+              key={index}
+              onClick={() =>
+                setCurrentPage(index + 1)
+              }
+              className={`w-10 h-10 rounded-lg text-sm font-semibold transition ${
+                currentPage ===
+                index + 1
+                  ? "bg-stone-900 text-white"
+                  : "bg-white border border-stone-200 text-stone-700 hover:bg-stone-100"
+              }`}
+            >
+              {index + 1}
+            </button>
+
+          )
+        )
+      }
+
+      {/* next */}
+      <button
+        onClick={() =>
+          setCurrentPage((prev) =>
+            Math.min(
+              prev + 1,
+              totalPages
+            )
+          )
+        }
+        disabled={
+          currentPage === totalPages
+        }
+        className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+          currentPage === totalPages
+            ? "bg-stone-200 text-stone-400 cursor-not-allowed"
+            : "bg-amber-500 text-stone-900 hover:bg-amber-400"
+        }`}
+      >
+        Next
+      </button>
+
+    </div>
+
+  )
+}
 
       </div>
 
