@@ -54,6 +54,9 @@ function Profile() {
       "user",
       JSON.stringify(updatedUser)
     );
+    window.dispatchEvent(
+  new Event("userUpdated")
+);
 
     toast.success(
       "Profile updated successfully"
