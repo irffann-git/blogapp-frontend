@@ -181,18 +181,39 @@ function BlogDetails() {
   // LIKE COMMENT
   const handleLike = async (commentId) => {
 
-    const token =
-      localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     if (!token) {
 
-      toast.error(
-        "Please login first"
-      );
+      toast.error("Please login first");
 
       return;
 
     }
+
+    // save old comments for rollback
+    const oldComments = [...comments];
+
+    // optimistic UI update
+    setComments((prevComments) =>
+      prevComments.map((comment) => {
+
+        if (comment._id === commentId) {
+
+          const currentLikes =
+            comment.likes?.length || 0;
+
+          return {
+            ...comment,
+            likes: Array(currentLikes + 1).fill("liked"),
+          };
+
+        }
+
+        return comment;
+
+      })
+    );
 
     try {
 
@@ -206,17 +227,22 @@ function BlogDetails() {
         }
       );
 
+      // sync real backend likes count
       setComments((prevComments) =>
-        prevComments.map((comment) =>
-          comment._id === commentId
-            ? {
-                ...comment,
-                likes: Array(data.likes).fill(
-                  "liked"
-                ),
-              }
-            : comment
-        )
+        prevComments.map((comment) => {
+
+          if (comment._id === commentId) {
+
+            return {
+              ...comment,
+              likes: Array(data.likes).fill("liked"),
+            };
+
+          }
+
+          return comment;
+
+        })
       );
 
     } catch (error) {
@@ -226,6 +252,9 @@ function BlogDetails() {
       toast.error(
         "Failed to like comment"
       );
+
+      // rollback
+      setComments(oldComments);
 
     }
 
