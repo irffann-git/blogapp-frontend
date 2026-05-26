@@ -92,7 +92,16 @@ function BlogDetails() {
         );
 
         if (isMountedRef.current) {
-          setComments(data);
+
+          const formattedComments = data.map(
+            (comment) => ({
+              ...comment,
+              isLiked: false,
+            })
+          );
+
+          setComments(formattedComments);
+
         }
 
       } catch (error) {
@@ -156,7 +165,13 @@ function BlogDetails() {
         }
       );
 
-      setComments([data, ...comments]);
+      setComments([
+        {
+          ...data,
+          isLiked: false,
+        },
+        ...comments,
+      ]);
 
       setCommentText("");
 
@@ -191,10 +206,19 @@ function BlogDetails() {
 
     }
 
-    // save old comments for rollback
+    // backup
     const oldComments = [...comments];
 
-    // optimistic UI update
+    // find target
+    const targetComment = comments.find(
+      (comment) => comment._id === commentId
+    );
+
+    if (!targetComment) return;
+
+    const isLiked = targetComment.isLiked;
+
+    // optimistic update
     setComments((prevComments) =>
       prevComments.map((comment) => {
 
@@ -205,7 +229,14 @@ function BlogDetails() {
 
           return {
             ...comment,
-            likes: Array(currentLikes + 1).fill("liked"),
+
+            likes: Array(
+              isLiked
+                ? Math.max(currentLikes - 1, 0)
+                : currentLikes + 1
+            ).fill("liked"),
+
+            isLiked: !isLiked,
           };
 
         }
@@ -227,7 +258,7 @@ function BlogDetails() {
         }
       );
 
-      // sync real backend likes count
+      // sync backend state
       setComments((prevComments) =>
         prevComments.map((comment) => {
 
@@ -236,6 +267,7 @@ function BlogDetails() {
             return {
               ...comment,
               likes: Array(data.likes).fill("liked"),
+              isLiked: data.liked,
             };
 
           }
@@ -249,9 +281,7 @@ function BlogDetails() {
 
       console.log(error);
 
-      toast.error(
-        "Failed to like comment"
-      );
+      toast.error("Failed to like comment");
 
       // rollback
       setComments(oldComments);
@@ -574,16 +604,22 @@ function BlogDetails() {
                             onClick={() =>
                               handleLike(comment._id)
                             }
-                            className="
+                            className={`
                               flex items-center gap-1
-                              text-xs
-                              text-stone-500
-                              hover:text-rose-500
-                              transition-colors
-                            "
+                              text-xs transition-colors
+                              ${
+                                comment.isLiked
+                                  ? "text-rose-500"
+                                  : "text-stone-500 hover:text-rose-500"
+                              }
+                            `}
                           >
 
-                            <span>❤️</span>
+                            <span>
+                              {comment.isLiked
+                                ? "❤️"
+                                : "🤍"}
+                            </span>
 
                             <span>
                               {comment.likes?.length || 0}
