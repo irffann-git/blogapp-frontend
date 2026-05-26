@@ -84,7 +84,7 @@ function Navbar() {
                   </Link>
                   <div className="h-5 w-px bg-stone-600" />
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full overflow-hidden bg-amber-600 flex items-center justify-center text-amber-50 text-sm font-semibold">
+                    <Link className="w-8 h-8 rounded-full overflow-hidden bg-amber-600 flex items-center justify-center text-amber-50 text-sm font-semibold">
 
   {user?.profileImage ? (
 
@@ -100,7 +100,7 @@ function Navbar() {
 
   )}
 
-</div>
+</Link>
                     <span className="hidden lg:inline text-sm text-stone-300">
                       {user?.name?.split(" ")[0] || "User"}
                     </span>
