@@ -177,6 +177,46 @@ function BlogDetails() {
       ? blog.image
       : `${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`
     : placeholderImage;
+    const handleLike = async (commentId) => {
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    toast.error("Please login first");
+    return;
+  }
+
+  try {
+
+    const { data } = await API.put(
+      `/api/comments/${commentId}/like`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment._id === commentId
+          ? {
+              ...comment,
+              likes: Array(data.likes).fill("liked"),
+            }
+          : comment
+      )
+    );
+
+  } catch (error) {
+
+    console.log(error);
+
+    toast.error("Failed to like comment");
+
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#F5F0E8] py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
@@ -313,6 +353,16 @@ function BlogDetails() {
                       <p className="text-sm text-stone-600 leading-relaxed ml-8">
                         {comment.text}
                       </p>
+                      <div className="ml-8 mt-2">
+
+  <button
+    onClick={() => handleLike(comment._id)}
+    className="text-xs text-amber-700 hover:text-amber-500 font-medium"
+  >
+    ❤️ {comment.likes?.length || 0} Likes
+  </button>
+
+</div>
 
                     </div>
 
