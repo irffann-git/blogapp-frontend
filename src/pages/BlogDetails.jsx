@@ -352,7 +352,7 @@ function BlogDetails() {
             {/* author */}
             <div className="flex items-center gap-3 pb-6 border-b border-stone-100 mb-8">
 
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold shadow-lg shadow-orange-500/20">
+              <div className="w-11 h-11 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold">
 
                 {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
 
@@ -378,117 +378,78 @@ function BlogDetails() {
             </div>
 
             {/* COMMENTS */}
-            <div className="mt-14">
+            <div className="mt-12 border-t border-stone-200 pt-8">
 
               {/* header */}
-              <div className="flex items-center justify-between mb-8">
+              <div className="mb-6">
 
-                <div>
+                <h2 className="text-xl sm:text-2xl font-semibold text-stone-800">
+                  Comments
+                </h2>
 
-                  <h2 className="text-2xl sm:text-3xl font-bold text-stone-800">
-                    Discussion
-                  </h2>
-
-                  <p className="text-sm text-stone-400 mt-1">
-                    Join the community conversation
-                  </p>
-
-                </div>
-
-                <div className="
-                  hidden sm:flex
-                  items-center gap-2
-                  px-4 py-2
-                  rounded-full
-                  bg-gradient-to-r
-                  from-orange-100
-                  to-amber-100
-                  text-orange-700
-                  text-xs font-semibold
-                  shadow-sm
-                ">
-
-                  🔥 {comments.length} Comments
-
-                </div>
+                <p className="text-sm text-stone-400 mt-1">
+                  {comments.length} responses
+                </p>
 
               </div>
 
-              {/* COMMENT INPUT */}
-              <div className="
-                relative
-                overflow-hidden
-                rounded-3xl
-                border border-white/30
-                bg-white/70
-                backdrop-blur-xl
-                shadow-[0_8px_40px_rgba(0,0,0,0.06)]
-                p-5 sm:p-6
-                mb-10
-              ">
+              {/* comment input */}
+              <div className="flex gap-3 mb-8">
 
+                {/* avatar */}
                 <div className="
-                  absolute inset-0
-                  bg-gradient-to-r
-                  from-amber-100/20
-                  to-orange-100/20
-                  pointer-events-none
-                " />
+                  w-10 h-10
+                  rounded-full
+                  bg-amber-500
+                  flex items-center justify-center
+                  text-white
+                  font-semibold
+                  flex-shrink-0
+                ">
+                  U
+                </div>
 
-                <div className="relative">
+                <div className="flex-1">
 
                   <textarea
                     value={commentText}
                     onChange={(e) =>
                       setCommentText(e.target.value)
                     }
-                    placeholder="Share your thoughts..."
-                    rows="4"
+                    placeholder="Add a comment..."
+                    rows="3"
                     className="
                       w-full
-                      bg-transparent
-                      resize-none
-                      border-none
+                      border border-stone-200
+                      rounded-2xl
+                      px-4 py-3
+                      text-sm
+                      bg-white
                       focus:outline-none
-                      text-stone-700
-                      placeholder-stone-400
-                      text-sm sm:text-base
+                      focus:ring-2
+                      focus:ring-amber-400
+                      resize-none
                     "
                   />
 
                   <div className="
-                    flex items-center justify-between
-                    mt-5
+                    flex justify-end mt-3
                   ">
-
-                    <p className="
-                      text-xs
-                      text-stone-400
-                    ">
-                      Be respectful and constructive
-                    </p>
 
                     <button
                       onClick={handleComment}
                       className="
-                        group
-                        relative
-                        overflow-hidden
-                        px-6 py-3
-                        rounded-2xl
-                        bg-gradient-to-r
-                        from-amber-500
-                        to-orange-500
+                        px-5 py-2
+                        rounded-full
+                        bg-stone-900
+                        hover:bg-stone-800
                         text-white
-                        text-sm font-semibold
-                        shadow-lg shadow-orange-500/20
-                        hover:scale-105
-                        transition-all duration-300
+                        text-sm
+                        font-medium
+                        transition-colors
                       "
                     >
-
-                      Post Comment
-
+                      Post
                     </button>
 
                   </div>
@@ -497,40 +458,19 @@ function BlogDetails() {
 
               </div>
 
-              {/* COMMENTS LIST */}
-              <div className="space-y-5">
+              {/* comments list */}
+              <div className="space-y-6">
 
                 {comments.length === 0 ? (
 
-                  <div className="
+                  <p className="
+                    text-sm
+                    text-stone-400
                     text-center
-                    py-14
-                    rounded-3xl
-                    bg-white/60
-                    border border-stone-100
+                    py-6
                   ">
-
-                    <div className="text-5xl mb-3">
-                      💭
-                    </div>
-
-                    <h3 className="
-                      text-lg
-                      font-semibold
-                      text-stone-700
-                    ">
-                      No comments yet
-                    </h3>
-
-                    <p className="
-                      text-sm
-                      text-stone-400
-                      mt-1
-                    ">
-                      Start the conversation
-                    </p>
-
-                  </div>
+                    No comments yet.
+                  </p>
 
                 ) : (
 
@@ -538,170 +478,89 @@ function BlogDetails() {
 
                     <div
                       key={comment._id}
-                      className="
-                        group
-                        relative
-                        overflow-hidden
-                        rounded-3xl
-                        border border-white/40
-                        bg-white/70
-                        backdrop-blur-xl
-                        shadow-[0_8px_30px_rgba(0,0,0,0.05)]
-                        hover:shadow-[0_10px_40px_rgba(0,0,0,0.08)]
-                        transition-all duration-300
-                        p-5
-                      "
+                      className="flex gap-3"
                     >
 
-                      {/* hover glow */}
+                      {/* avatar */}
                       <div className="
-                        absolute top-0 left-0
-                        w-full h-[2px]
-                        bg-gradient-to-r
-                        from-amber-400
-                        via-orange-400
-                        to-rose-400
-                        opacity-0
-                        group-hover:opacity-100
-                        transition-opacity duration-500
-                      " />
-
-                      <div className="
-                        flex items-start gap-4
+                        w-10 h-10
+                        rounded-full
+                        bg-amber-500
+                        flex items-center justify-center
+                        text-white
+                        text-sm
+                        font-semibold
+                        flex-shrink-0
                       ">
 
-                        {/* avatar */}
+                        {(comment.user?.name?.charAt(0) || "U").toUpperCase()}
+
+                      </div>
+
+                      {/* content */}
+                      <div className="flex-1">
+
+                        {/* top */}
                         <div className="
-                          w-11 h-11
-                          rounded-2xl
-                          bg-gradient-to-br
-                          from-amber-500
-                          to-orange-500
-                          flex items-center justify-center
-                          text-white
-                          font-bold
-                          shadow-lg shadow-orange-500/20
-                          flex-shrink-0
+                          flex items-center gap-2
+                          mb-1
                         ">
 
-                          {(comment.user?.name?.charAt(0) || "U").toUpperCase()}
+                          <h3 className="
+                            text-sm
+                            font-semibold
+                            text-stone-800
+                          ">
+                            {comment.user?.name || "Anonymous"}
+                          </h3>
+
+                          <span className="
+                            text-xs
+                            text-stone-400
+                          ">
+                            {new Date(
+                              comment.createdAt
+                            ).toLocaleDateString()}
+                          </span>
 
                         </div>
 
-                        {/* content */}
-                        <div className="flex-1 min-w-0">
+                        {/* comment */}
+                        <p className="
+                          text-sm
+                          text-stone-700
+                          leading-relaxed
+                          whitespace-pre-wrap
+                        ">
+                          {comment.text}
+                        </p>
 
-                          {/* top */}
-                          <div className="
-                            flex items-center gap-2
-                            flex-wrap
-                          ">
+                        {/* actions */}
+                        <div className="
+                          flex items-center gap-4
+                          mt-2
+                        ">
 
-                            <h3 className="
-                              font-semibold
-                              text-stone-800
-                              text-sm sm:text-base
-                            ">
-                              {comment.user?.name || "Anonymous"}
-                            </h3>
-
-                            <span className="
-                              text-[10px]
-                              px-2 py-0.5
-                              rounded-full
-                              bg-stone-100
-                              text-stone-500
-                              font-medium
-                            ">
-                              Community Member
-                            </span>
-
-                          </div>
-
-                          {/* text */}
-                          <p className="
-                            mt-2
-                            text-sm sm:text-[15px]
-                            text-stone-600
-                            leading-relaxed
-                            whitespace-pre-wrap
-                          ">
-                            {comment.text}
-                          </p>
-
-                          {/* actions */}
-                          <div className="
-                            flex items-center justify-between
-                            mt-4
-                          ">
-
-                            {/* date */}
-                            <span className="
+                          <button
+                            onClick={() =>
+                              handleLike(comment._id)
+                            }
+                            className="
+                              flex items-center gap-1
                               text-xs
-                              text-stone-400
-                            ">
-                              {new Date(
-                                comment.createdAt
-                              ).toLocaleDateString()}
+                              text-stone-500
+                              hover:text-rose-500
+                              transition-colors
+                            "
+                          >
+
+                            <span>❤️</span>
+
+                            <span>
+                              {comment.likes?.length || 0}
                             </span>
 
-                            {/* like */}
-                            <button
-                              onClick={() =>
-                                handleLike(comment._id)
-                              }
-                              className="
-                                group/like
-                                relative
-                                overflow-hidden
-                                flex items-center gap-2
-                                px-4 py-2
-                                rounded-2xl
-                                bg-gradient-to-r
-                                from-rose-50
-                                to-pink-50
-                                hover:from-rose-100
-                                hover:to-pink-100
-                                border border-rose-100
-                                hover:border-rose-200
-                                transition-all duration-300
-                                hover:shadow-[0_0_20px_rgba(244,63,94,0.15)]
-                              "
-                            >
-
-                              {/* glow */}
-                              <div className="
-                                absolute inset-0
-                                opacity-0
-                                group-hover/like:opacity-100
-                                bg-gradient-to-r
-                                from-rose-400/10
-                                to-pink-400/10
-                                transition duration-300
-                              " />
-
-                              {/* heart */}
-                              <span className="
-                                relative
-                                text-sm
-                                group-hover/like:scale-125
-                                transition-transform duration-300
-                              ">
-                                ❤️
-                              </span>
-
-                              {/* count */}
-                              <span className="
-                                relative
-                                text-xs font-semibold
-                                text-rose-600
-                              ">
-                                {comment.likes?.length || 0}
-                              </span>
-
-                            </button>
-
-                          </div>
+                          </button>
 
                         </div>
 
