@@ -347,11 +347,9 @@ function BlogDetails() {
     categoryColors[blog.category] ||
     categoryColors.default;
 
-  const imageUrl = blog.image
-    ? blog.image.startsWith("http")
-      ? blog.image
-      : `${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`
-    : placeholderImage;
+ const imageUrl =
+  blog.image ||
+  placeholderImage;
 
   return (
 

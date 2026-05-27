@@ -79,14 +79,8 @@ function BlogCard({ blog }) {
 
 <img
   src={
-    blog.image
-      ? blog.image.startsWith("http")
-        ? blog.image
-        : `${window.location.origin
-            .replace("5173", "")
-            .replace("3000", "")
-            .replace(/\/$/, "")}${blog.image}`
-      : placeholderImage
+    blog.image ||
+    placeholderImage
   }
   alt={blog.title}
   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
