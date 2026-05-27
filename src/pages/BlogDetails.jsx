@@ -16,347 +16,189 @@ const categoryColors = {
   default: "bg-stone-100 text-stone-700",
 };
 
+// ✅ helper — works for both Cloudinary (full URL) and old local uploads (relative path)
+function getImageUrl(image, fallback) {
+  if (!image) return fallback;
+  if (image.startsWith("http")) return image; // Cloudinary or any absolute URL
+  return `${import.meta.env.VITE_API_URL}/${image.replace(/^\/+/, "")}`; // legacy local path
+}
+
 function BlogDetails() {
-
   const { id } = useParams();
-
   const [blog, setBlog] = useState(null);
-
   const [loading, setLoading] = useState(true);
-
   const [comments, setComments] = useState([]);
-
   const [commentText, setCommentText] = useState("");
-
   const isMountedRef = useRef(true);
 
   useEffect(() => {
-
     isMountedRef.current = true;
 
     // FETCH BLOG
     const fetchBlog = async () => {
-
       setLoading(true);
-
       try {
-
-        const { data } = await API.get(
-          `/api/blogs/${id}`
-        );
-
-        if (isMountedRef.current) {
-          setBlog(data);
-        }
+        const { data } = await API.get(`/api/blogs/${id}`);
+        if (isMountedRef.current) setBlog(data);
 
         // increment views
-        API.put(
-          `/api/blogs/${id}/view`
-        ).catch((err) => {
-          console.log(
-            "View increment failed:",
-            err
-          );
+        API.put(`/api/blogs/${id}/view`).catch((err) => {
+          console.log("View increment failed:", err);
         });
-
       } catch (error) {
-
-        console.error(
-          "Blog fetch error:",
-          error
-        );
-
-        toast.error(
-          "Failed to fetch blog"
-        );
-
+        console.error("Blog fetch error:", error);
+        toast.error("Failed to fetch blog");
         setBlog(null);
-
       } finally {
-
-        if (isMountedRef.current) {
-          setLoading(false);
-        }
-
+        if (isMountedRef.current) setLoading(false);
       }
-
     };
 
     // FETCH COMMENTS
     const fetchComments = async () => {
-
       try {
-
-        const { data } = await API.get(
-          `/api/comments/${id}`
-        );
-
+        const { data } = await API.get(`/api/comments/${id}`);
         if (isMountedRef.current) {
-
-          const formattedComments = data.map(
-            (comment) => ({
-              ...comment,
-              isLiked: false,
-            })
-          );
-
+          const formattedComments = data.map((comment) => ({
+            ...comment,
+            isLiked: false,
+          }));
           setComments(formattedComments);
-
         }
-
       } catch (error) {
-
-        console.error(
-          "Comments fetch error:",
-          error
-        );
-
+        console.error("Comments fetch error:", error);
       }
-
     };
 
     fetchBlog();
-
     fetchComments();
 
     return () => {
-
       isMountedRef.current = false;
-
     };
-
   }, [id]);
 
   // ADD COMMENT
   const handleComment = async () => {
-
     if (!commentText.trim()) {
-
-      toast.error(
-        "Comment cannot be empty"
-      );
-
+      toast.error("Comment cannot be empty");
       return;
-
     }
 
-    const token =
-      localStorage.getItem("token");
-
+    const token = localStorage.getItem("token");
     if (!token) {
-
-      toast.error(
-        "Please login first"
-      );
-
+      toast.error("Please login first");
       return;
-
     }
 
     try {
-
       const { data } = await API.post(
         `/api/comments/${id}`,
         { text: commentText },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      setComments([
-        {
-          ...data,
-          isLiked: false,
-        },
-        ...comments,
-      ]);
-
+      setComments([{ ...data, isLiked: false }, ...comments]);
       setCommentText("");
-
       toast.success("Comment added");
-
     } catch (error) {
-
-      console.error(
-        "Add comment error:",
-        error
-      );
-
-      toast.error(
-        error.response?.data?.message ||
-        "Failed to add comment"
-      );
-
+      console.error("Add comment error:", error);
+      toast.error(error.response?.data?.message || "Failed to add comment");
     }
-
   };
 
   // LIKE COMMENT
   const handleLike = async (commentId) => {
-
     const token = localStorage.getItem("token");
-
     if (!token) {
-
       toast.error("Please login first");
-
       return;
-
     }
 
-    // backup
     const oldComments = [...comments];
-
-    // find target
-    const targetComment = comments.find(
-      (comment) => comment._id === commentId
-    );
-
+    const targetComment = comments.find((c) => c._id === commentId);
     if (!targetComment) return;
 
     const isLiked = targetComment.isLiked;
 
     // optimistic update
-    setComments((prevComments) =>
-      prevComments.map((comment) => {
-
+    setComments((prev) =>
+      prev.map((comment) => {
         if (comment._id === commentId) {
-
-          const currentLikes =
-            comment.likes?.length || 0;
-
+          const currentLikes = comment.likes?.length || 0;
           return {
             ...comment,
-
-            likes: Array(
-              isLiked
-                ? Math.max(currentLikes - 1, 0)
-                : currentLikes + 1
-            ).fill("liked"),
-
+            likes: Array(isLiked ? Math.max(currentLikes - 1, 0) : currentLikes + 1).fill("liked"),
             isLiked: !isLiked,
           };
-
         }
-
         return comment;
-
       })
     );
 
     try {
-
       const { data } = await API.put(
         `/api/comments/${commentId}/like`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       // sync backend state
-      setComments((prevComments) =>
-        prevComments.map((comment) => {
-
+      setComments((prev) =>
+        prev.map((comment) => {
           if (comment._id === commentId) {
-
             return {
               ...comment,
               likes: Array(data.likes).fill("liked"),
               isLiked: data.liked,
             };
-
           }
-
           return comment;
-
         })
       );
-
     } catch (error) {
-
       console.log(error);
-
       toast.error("Failed to like comment");
-
-      // rollback
-      setComments(oldComments);
-
+      setComments(oldComments); // rollback
     }
-
   };
 
   // LOADING
   if (loading) {
-
     return (
-
       <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8]">
-
         <div className="text-center">
-
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-200 border-t-amber-600 mx-auto" />
-
-          <p className="mt-4 text-stone-500 text-sm">
-            Loading blog post...
-          </p>
-
+          <p className="mt-4 text-stone-500 text-sm">Loading blog post...</p>
         </div>
-
       </div>
-
     );
-
   }
 
   // BLOG NOT FOUND
   if (!blog) {
-
     return (
-
       <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8] px-4">
-
         <div className="text-center">
-
-          <h2 className="text-2xl font-semibold text-stone-700 mb-2">
-            Blog not found
-          </h2>
-
+          <h2 className="text-2xl font-semibold text-stone-700 mb-2">Blog not found</h2>
           <Link
             to="/"
             className="bg-amber-500 hover:bg-amber-400 text-stone-900 font-semibold px-6 py-2.5 rounded-full text-sm transition-colors inline-block"
           >
             Back to home
           </Link>
-
         </div>
-
       </div>
-
     );
-
   }
 
   const placeholderImage = "https://placehold.co/1200x600?text=No+Image";
+  const categoryClass = categoryColors[blog.category] || categoryColors.default;
 
-  const categoryClass =
-    categoryColors[blog.category] ||
-    categoryColors.default;
-
-  const imageUrl = blog.image
-    ? blog.image.startsWith("http")
-      ? blog.image
-      : `${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`
-    : placeholderImage;
+  // ✅ uses helper — handles Cloudinary URLs, legacy local paths, and missing images
+  const imageUrl = getImageUrl(blog.image, placeholderImage);
 
   return (
-
     <div className="min-h-screen bg-[#F5F0E8] py-4 sm:py-8 px-3 sm:px-6 lg:px-8">
-
       <div className="max-w-4xl mx-auto">
 
         {/* back */}
@@ -372,17 +214,15 @@ function BlogDetails() {
 
           {/* image */}
           <div className="relative w-full aspect-video bg-stone-200">
-
             <img
-  src={imageUrl}
-  alt={blog.title}
-  className="w-full h-full object-cover"
-  onError={(e) => {
-    e.target.onerror = null; 
-    e.target.src = placeholderImage;
-  }}
-/>
-
+              src={imageUrl}
+              alt={blog.title}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = placeholderImage;
+              }}
+            />
           </div>
 
           {/* content */}
@@ -390,17 +230,12 @@ function BlogDetails() {
 
             {/* category + views */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
-
-              <span
-                className={`text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full ${categoryClass}`}
-              >
+              <span className={`text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full ${categoryClass}`}>
                 {blog.category || "Uncategorized"}
               </span>
-
               <span className="text-[11px] sm:text-xs text-stone-400">
                 👁 {blog.views || 0} views
               </span>
-
             </div>
 
             {/* title */}
@@ -410,25 +245,17 @@ function BlogDetails() {
 
             {/* author */}
             <div className="flex items-center gap-3 pb-5 border-b border-stone-100 mb-6">
-
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-sm">
-
                 {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
-
               </div>
-
               <div>
-
                 <p className="font-semibold text-sm sm:text-base text-stone-700">
                   {blog.user?.name || "Anonymous"}
                 </p>
-
                 <p className="text-[11px] sm:text-xs text-stone-400">
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </p>
-
               </div>
-
             </div>
 
             {/* description */}
@@ -441,219 +268,83 @@ function BlogDetails() {
 
               {/* header */}
               <div className="mb-5">
-
-                <h2 className="text-lg sm:text-2xl font-semibold text-stone-800">
-                  Comments
-                </h2>
-
-                <p className="text-xs sm:text-sm text-stone-400 mt-1">
-                  {comments.length} responses
-                </p>
-
+                <h2 className="text-lg sm:text-2xl font-semibold text-stone-800">Comments</h2>
+                <p className="text-xs sm:text-sm text-stone-400 mt-1">{comments.length} responses</p>
               </div>
 
               {/* comment input */}
               <div className="flex gap-2 sm:gap-3 mb-8">
-
-                {/* avatar */}
-                <div className="
-                  w-9 h-9 sm:w-10 sm:h-10
-                  rounded-full
-                  bg-amber-500
-                  flex items-center justify-center
-                  text-white
-                  text-sm
-                  font-semibold
-                  flex-shrink-0
-                ">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-amber-500 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
                   U
                 </div>
-
                 <div className="flex-1">
-
                   <textarea
                     value={commentText}
-                    onChange={(e) =>
-                      setCommentText(e.target.value)
-                    }
+                    onChange={(e) => setCommentText(e.target.value)}
                     placeholder="Add a comment..."
                     rows="3"
-                    className="
-                      w-full
-                      border border-stone-200
-                      rounded-2xl
-                      px-4 py-3
-                      text-sm
-                      bg-white
-                      focus:outline-none
-                      focus:ring-2
-                      focus:ring-amber-400
-                      resize-none
-                    "
+                    className="w-full border border-stone-200 rounded-2xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
                   />
-
-                  <div className="
-                    flex justify-end mt-3
-                  ">
-
+                  <div className="flex justify-end mt-3">
                     <button
                       onClick={handleComment}
-                      className="
-                        px-5 py-2
-                        rounded-full
-                        bg-stone-900
-                        hover:bg-stone-800
-                        text-white
-                        text-sm
-                        font-medium
-                        transition-colors
-                      "
+                      className="px-5 py-2 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-sm font-medium transition-colors"
                     >
                       Post
                     </button>
-
                   </div>
-
                 </div>
-
               </div>
 
               {/* comments list */}
               <div className="space-y-7">
-
                 {comments.length === 0 ? (
-
-                  <p className="
-                    text-sm
-                    text-stone-400
-                    text-center
-                    py-6
-                  ">
-                    No comments yet.
-                  </p>
-
+                  <p className="text-sm text-stone-400 text-center py-6">No comments yet.</p>
                 ) : (
-
                   comments.map((comment) => (
-
-                    <div
-                      key={comment._id}
-                      className="flex gap-2 sm:gap-3"
-                    >
-
+                    <div key={comment._id} className="flex gap-2 sm:gap-3">
                       {/* avatar */}
-                      <div className="
-                        w-9 h-9 sm:w-10 sm:h-10
-                        rounded-full
-                        bg-amber-500
-                        flex items-center justify-center
-                        text-white
-                        text-xs sm:text-sm
-                        font-semibold
-                        flex-shrink-0
-                      ">
-
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs sm:text-sm font-semibold flex-shrink-0">
                         {(comment.user?.name?.charAt(0) || "U").toUpperCase()}
-
                       </div>
 
                       {/* content */}
                       <div className="flex-1 min-w-0">
-
-                        {/* top */}
-                        <div className="
-                          flex items-center gap-2 flex-wrap
-                          mb-1
-                        ">
-
-                          <h3 className="
-                            text-sm
-                            font-semibold
-                            text-stone-800
-                            truncate
-                          ">
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          <h3 className="text-sm font-semibold text-stone-800 truncate">
                             {comment.user?.name || "Anonymous"}
                           </h3>
-
-                          <span className="
-                            text-[11px]
-                            text-stone-400
-                          ">
-                            {new Date(
-                              comment.createdAt
-                            ).toLocaleDateString()}
+                          <span className="text-[11px] text-stone-400">
+                            {new Date(comment.createdAt).toLocaleDateString()}
                           </span>
-
                         </div>
-
-                        {/* comment */}
-                        <p className="
-                          text-sm
-                          text-stone-700
-                          leading-6
-                          whitespace-pre-wrap
-                          break-words
-                        ">
+                        <p className="text-sm text-stone-700 leading-6 whitespace-pre-wrap break-words">
                           {comment.text}
                         </p>
-
-                        {/* actions */}
-                        <div className="
-                          flex items-center gap-4
-                          mt-2
-                        ">
-
+                        <div className="flex items-center gap-4 mt-2">
                           <button
-                            onClick={() =>
-                              handleLike(comment._id)
-                            }
-                            className={`
-                              flex items-center gap-1
-                              text-xs transition-colors
-                              active:scale-95
-                              ${
-                                comment.isLiked
-                                  ? "text-rose-500"
-                                  : "text-stone-500 hover:text-rose-500"
-                              }
-                            `}
+                            onClick={() => handleLike(comment._id)}
+                            className={`flex items-center gap-1 text-xs transition-colors active:scale-95 ${
+                              comment.isLiked
+                                ? "text-rose-500"
+                                : "text-stone-500 hover:text-rose-500"
+                            }`}
                           >
-
-                            <span className="text-sm">
-                              {comment.isLiked
-                                ? "❤️"
-                                : "🤍"}
-                            </span>
-
-                            <span>
-                              {comment.likes?.length || 0}
-                            </span>
-
+                            <span className="text-sm">{comment.isLiked ? "❤️" : "🤍"}</span>
+                            <span>{comment.likes?.length || 0}</span>
                           </button>
-
                         </div>
-
                       </div>
-
                     </div>
-
                   ))
                 )}
-
               </div>
-
             </div>
-
           </div>
-
         </article>
-
       </div>
-
     </div>
-
   );
-
 }
 
 export default BlogDetails;

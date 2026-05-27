@@ -3,36 +3,42 @@ import { Link } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
 
+// ✅ helper — works for both Cloudinary (full URL) and old local uploads (relative path)
+function getImageUrl(image) {
+  if (!image) return null;
+  if (image.startsWith("http")) return image;
+  return `${import.meta.env.VITE_API_URL}/${image.replace(/^\/+/, "")}`;
+}
+
 function Dashboard() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
 
-  const fetchMyBlogs = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const { data } = await API.get("/api/blogs/myblogs", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setBlogs(data);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to fetch blogs");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // ✅ async function defined INSIDE useEffect — no cascading render warning
   useEffect(() => {
-    const loadBlogs = async () => {
-      await fetchMyBlogs();
+    const fetchMyBlogs = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const { data } = await API.get("/api/blogs/myblogs", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setBlogs(data);
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to fetch blogs");
+      } finally {
+        setLoading(false);
+      }
     };
-    loadBlogs();
+
+    fetchMyBlogs();
   }, []);
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
     if (!confirmDelete) return;
+
     setDeletingId(id);
     try {
       const token = localStorage.getItem("token");
@@ -65,6 +71,7 @@ function Dashboard() {
   return (
     <div className="min-h-screen bg-[#F5F0E8] py-8 sm:py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
+
         {/* page header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
           <div>
@@ -85,7 +92,7 @@ function Dashboard() {
           </Link>
         </div>
 
-        {/* stat cards - responsive grid */}
+        {/* stat cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 sm:mb-10">
           <div className="bg-[#FFFCF7] rounded-xl border border-stone-200 p-4 flex items-center gap-3">
             <div className="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center flex-shrink-0">
@@ -146,66 +153,67 @@ function Dashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {blogs.map((blog) => (
-              <div
-                key={blog._id}
-                className="bg-[#FFFCF7] rounded-2xl overflow-hidden border border-stone-200 hover:border-amber-300 transition-all duration-300 flex flex-col"
-              >
-                {blog.image && (
-                  <img
-                    src={`${import.meta.env.VITE_API_URL}${blog.image}`}
-                    alt={blog.title}
-                    className="w-full h-40 sm:h-44 object-cover"
-                    onError={(e) => {
-  e.target.onerror = null;
-  e.target.style.display = "none";
-}}
-                  />
-                )}
+            {blogs.map((blog) => {
+              const imgUrl = getImageUrl(blog.image);
+              return (
+                <div
+                  key={blog._id}
+                  className="bg-[#FFFCF7] rounded-2xl overflow-hidden border border-stone-200 hover:border-amber-300 transition-all duration-300 flex flex-col"
+                >
+                  {imgUrl && (
+                    <img
+                      src={imgUrl}
+                      alt={blog.title}
+                      className="w-full h-40 sm:h-44 object-cover"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.style.display = "none";
+                      }}
+                    />
+                  )}
 
-                <div className="p-4 sm:p-5 flex flex-col flex-grow">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-900">
-                      {blog.category || "Uncategorized"}
-                    </span>
-                    <span className="text-xs text-stone-400 ml-auto">
-                      👁 {blog.views || 0}
-                    </span>
-                  </div>
+                  <div className="p-4 sm:p-5 flex flex-col flex-grow">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-900">
+                        {blog.category || "Uncategorized"}
+                      </span>
+                      <span className="text-xs text-stone-400 ml-auto">👁 {blog.views || 0}</span>
+                    </div>
 
-                  <h2 className="text-sm sm:text-base font-semibold text-stone-800 mb-2 line-clamp-2 leading-snug">
-                    {blog.title}
-                  </h2>
+                    <h2 className="text-sm sm:text-base font-semibold text-stone-800 mb-2 line-clamp-2 leading-snug">
+                      {blog.title}
+                    </h2>
 
-                  <p className="text-stone-500 text-xs sm:text-sm mb-4 line-clamp-3 leading-relaxed">
-                    {blog.description}
-                  </p>
+                    <p className="text-stone-500 text-xs sm:text-sm mb-4 line-clamp-3 leading-relaxed">
+                      {blog.description}
+                    </p>
 
-                  <div className="flex gap-2 mt-auto pt-3 border-t border-stone-100">
-                    <Link
-                      to={`/edit-blog/${blog._id}`}
-                      className="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-700 text-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(blog._id)}
-                      disabled={deletingId === blog._id}
-                      className="flex-1 bg-red-50 hover:bg-red-100 text-red-700 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-1"
-                    >
-                      {deletingId === blog._id ? (
-                        <svg className="animate-spin h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                        </svg>
-                      ) : (
-                        "Delete"
-                      )}
-                    </button>
+                    <div className="flex gap-2 mt-auto pt-3 border-t border-stone-100">
+                      <Link
+                        to={`/edit-blog/${blog._id}`}
+                        className="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-700 text-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(blog._id)}
+                        disabled={deletingId === blog._id}
+                        className="flex-1 bg-red-50 hover:bg-red-100 text-red-700 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+                      >
+                        {deletingId === blog._id ? (
+                          <svg className="animate-spin h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                        ) : (
+                          "Delete"
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
