@@ -77,20 +77,26 @@ function BlogCard({ blog }) {
       {/* image */}
       <div className="relative overflow-hidden h-48 sm:h-52">
 
-       <img
+  <img
   src={
     blog.image
-      ? `${import.meta.env.VITE_API_URL}${blog.image}`
+      ? blog.image.startsWith("http")
+        ? blog.image.replace(
+            "http://localhost:3000",
+            "https://blogger-backend-al5q.onrender.com"
+          )
+        : `https://blogger-backend-al5q.onrender.com${blog.image}`
       : placeholderImage
   }
   alt={blog.title}
+  loading="lazy"
+  decoding="async"
   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
   onError={(e) => {
-    e.target.onerror = null;  // ← stops infinite loop
+    e.target.onerror = null;
     e.target.src = placeholderImage;
   }}
 />
-
         <div className="absolute inset-0 bg-stone-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       </div>
@@ -628,7 +634,7 @@ const totalPages = Math.ceil(
     </div>
 
   )
-}
+}''
 
       </div>
 
