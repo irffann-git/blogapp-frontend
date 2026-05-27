@@ -79,10 +79,10 @@ function BlogCard({ blog }) {
 
        <img
   src={
-  blog.image?.data
-    ? `data:${blog.image.contentType};base64,${blog.image.data}`
-    : placeholderImage
-}
+    blog.image
+      ? `${import.meta.env.VITE_API_URL}${blog.image}`
+      : placeholderImage
+  }
   alt={blog.title}
   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
   onError={(e) => {
