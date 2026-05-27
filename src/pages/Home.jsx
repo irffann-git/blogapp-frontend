@@ -77,15 +77,16 @@ function BlogCard({ blog }) {
       {/* image */}
       <div className="relative overflow-hidden h-48 sm:h-52">
 
-<img
+       <img
   src={
-    blog.image ||
-    placeholderImage
+    blog.image
+      ? `${import.meta.env.VITE_API_URL}${blog.image}`
+      : placeholderImage
   }
   alt={blog.title}
   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
   onError={(e) => {
-    e.target.onerror = null;
+    e.target.onerror = null;  // ← stops infinite loop
     e.target.src = placeholderImage;
   }}
 />
