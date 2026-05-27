@@ -347,11 +347,7 @@ function BlogDetails() {
     categoryColors[blog.category] ||
     categoryColors.default;
 
-  const imageUrl = blog.image
-    ? blog.image.startsWith("http")
-      ? blog.image
-      : `${import.meta.env.VITE_API_URL}/${blog.image.replace(/^\/+/, "")}`
-    : placeholderImage;
+
 
   return (
 
@@ -374,13 +370,11 @@ function BlogDetails() {
           <div className="relative w-full aspect-video bg-stone-200">
 
             <img
-  src={imageUrl}
-  alt={blog.title}
-  className="w-full h-full object-cover"
-  onError={(e) => {
-    e.target.onerror = null; 
-    e.target.src = placeholderImage;
-  }}
+src={
+  blog.image?.data
+    ? `data:${blog.image.contentType};base64,${blog.image.data}`
+    : placeholderImage
+}
 />
 
           </div>
