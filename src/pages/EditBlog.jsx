@@ -26,7 +26,19 @@ function EditBlog() {
           category: data.category || "",
           image: null,
         });
-        if (data.image) setPreview(`${import.meta.env.VITE_API_URL}${data.image}`);
+        if (data.image) {
+  if (data.image.startsWith("http")) {
+    setPreview(data.image);
+  } else {
+    const backendUrl =
+      import.meta.env.VITE_BACKEND_URL ||
+      import.meta.env.VITE_API_URL?.replace("/api", "");
+
+    setPreview(
+      `${backendUrl}/${data.image.replace(/^\/+/, "")}`
+    );
+  }
+}
       } catch (error) {
         console.log(error);
         toast.error("Failed to fetch blog");
