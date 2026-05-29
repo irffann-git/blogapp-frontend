@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaUserEdit, FaPenFancy, FaTachometerAlt } from "react-icons/fa";
 import API from "../services/api";
 import toast from "react-hot-toast";
 
@@ -97,7 +96,7 @@ function Profile() {
                 onClick={handleOpenEdit}
                 className="hidden md:flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold px-5 py-2.5 rounded-full text-sm transition-colors self-end mb-1"
               >
-                <FaUserEdit /> Edit profile
+             Edit profile
               </button>
             </div>
           </div>
@@ -143,7 +142,7 @@ function Profile() {
               onClick={handleOpenEdit}
               className="md:hidden flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 text-stone-600 font-semibold px-4 py-2 rounded-full text-xs transition-colors"
             >
-              <FaUserEdit /> Edit
+             Edit
             </button>
           </div>
           <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
@@ -174,7 +173,7 @@ function Profile() {
               to="/create-blog"
               className="bg-amber-500 hover:bg-amber-400 text-stone-900 rounded-2xl p-5 sm:p-6 border border-amber-400 transition-all duration-200 hover:-translate-y-0.5 block"
             >
-              <FaPenFancy className="text-2xl mb-3" />
+              
               <h3 className="font-bold text-base sm:text-lg">Create blog</h3>
               <p className="text-sm mt-1 text-stone-700">Start writing a new article</p>
             </Link>
@@ -182,7 +181,7 @@ function Profile() {
               to="/dashboard"
               className="bg-[#3D2B1F] hover:bg-stone-900 text-stone-100 rounded-2xl p-5 sm:p-6 border border-stone-700 transition-all duration-200 hover:-translate-y-0.5 block"
             >
-              <FaTachometerAlt className="text-2xl mb-3 text-amber-400" />
+             
               <h3 className="font-bold text-base sm:text-lg">Dashboard</h3>
               <p className="text-sm mt-1 text-stone-400">Manage your blogs and activity</p>
             </Link>
@@ -190,7 +189,7 @@ function Profile() {
               onClick={handleOpenEdit}
               className="bg-[#FFFCF7] hover:bg-stone-50 text-stone-800 rounded-2xl p-5 sm:p-6 border border-stone-200 transition-all duration-200 hover:-translate-y-0.5 text-left w-full"
             >
-              <FaUserEdit className="text-2xl mb-3 text-stone-500" />
+              
               <h3 className="font-bold text-base sm:text-lg">Edit profile</h3>
               <p className="text-sm mt-1 text-stone-400">Update your profile information</p>
             </button>
