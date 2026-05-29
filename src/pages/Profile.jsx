@@ -99,7 +99,7 @@ function Profile() {
                 <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full ring-4 ring-[#FFFCF7] bg-gradient-to-br from-amber-400 to-amber-600 text-white flex items-center justify-center text-4xl sm:text-5xl font-bold shadow-xl flex-shrink-0 transition-transform group-hover:scale-105">
                   {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </div>
-                <button
+                {/* <button
                   onClick={handleOpenEdit}
                   className="absolute bottom-1 right-1 bg-white rounded-full p-1.5 shadow-md hover:bg-stone-100 transition-colors"
                   aria-label="Edit profile picture"
@@ -107,7 +107,7 @@ function Profile() {
                   <svg className="w-3.5 h-3.5 text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
-                </button>
+                </button> */}
               </div>
               <div className="flex-1 pb-1">
                 <div className="flex flex-wrap items-center gap-3">
@@ -148,7 +148,13 @@ function Profile() {
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-stone-400 text-xs font-medium mb-2 flex items-center gap-1">
-                  <span className="text-lg">📝</span> Blogs written
+                  <span className="text-lg">
+                     <div className="p-2 rounded-full bg-amber-50 text-amber-500 group-hover:scale-110 transition-transform">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              </div>
+                    </span> Blogs written
                 </p>
                 <h2 className="text-3xl font-bold text-amber-600">
                   {loadingStats ? (
@@ -158,11 +164,7 @@ function Profile() {
                   )}
                 </h2>
               </div>
-              <div className="p-2 rounded-full bg-amber-50 text-amber-500 group-hover:scale-110 transition-transform">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-              </div>
+             
             </div>
           </div>
           <div className="group bg-[#FFFCF7] rounded-2xl p-5 border border-stone-200 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
