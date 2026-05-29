@@ -13,17 +13,17 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-// category colors - premium dark theme palette
+// category colors - premium light theme palette
 const categoryColors = {
-  Technology: "bg-cyan-900/40 text-cyan-300 border-l-2 border-cyan-400",
-  Lifestyle: "bg-emerald-900/40 text-emerald-300 border-l-2 border-emerald-400",
-  Sports: "bg-rose-900/40 text-rose-300 border-l-2 border-rose-400",
-  Programming: "bg-amber-900/40 text-amber-300 border-l-2 border-amber-400",
-  Business: "bg-slate-800/60 text-slate-300 border-l-2 border-slate-400",
-  Travel: "bg-sky-900/40 text-sky-300 border-l-2 border-sky-400",
-  Health: "bg-lime-900/40 text-lime-300 border-l-2 border-lime-400",
-  Productivity: "bg-violet-900/40 text-violet-300 border-l-2 border-violet-400",
-  default: "bg-gray-800/60 text-gray-300 border-l-2 border-gray-500",
+  Technology: "bg-blue-50 text-blue-700 border-l-2 border-blue-500",
+  Lifestyle: "bg-emerald-50 text-emerald-700 border-l-2 border-emerald-500",
+  Sports: "bg-rose-50 text-rose-700 border-l-2 border-rose-500",
+  Programming: "bg-amber-50 text-amber-700 border-l-2 border-amber-500",
+  Business: "bg-slate-50 text-slate-700 border-l-2 border-slate-500",
+  Travel: "bg-sky-50 text-sky-700 border-l-2 border-sky-500",
+  Health: "bg-teal-50 text-teal-700 border-l-2 border-teal-500",
+  Productivity: "bg-violet-50 text-violet-700 border-l-2 border-violet-500",
+  default: "bg-gray-50 text-gray-600 border-l-2 border-gray-400",
 };
 
 // ✅ helper — works for both Cloudinary (full URL) and old local uploads (relative path)
@@ -77,7 +77,7 @@ function AnimatedCounter({ value }) {
   return <span ref={countRef}>{count.toLocaleString()}</span>;
 }
 
-// blog card with advanced animations - premium dark theme
+// blog card with advanced animations - premium light theme
 function BlogCard({ blog, index }) {
   const placeholder = "https://placehold.co/600x400?text=No+Image";
   const categoryClass = categoryColors[blog.category] || categoryColors.default;
@@ -125,17 +125,17 @@ function BlogCard({ blog, index }) {
     >
       <Link
         to={`/blogs/${blog._id}`}
-        className="group block bg-[#1a1d24] rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-800/50 hover:border-cyan-500/30 relative"
+        className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-blue-200 relative"
       >
         {/* animated gradient overlay on hover */}
         <div 
-          className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-teal-500/0 to-cyan-500/0 group-hover:from-cyan-500/10 group-hover:via-teal-500/10 group-hover:to-cyan-500/10 transition-all duration-500 z-10 pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-indigo-500/0 to-blue-500/0 group-hover:from-blue-500/5 group-hover:via-indigo-500/5 group-hover:to-blue-500/5 transition-all duration-500 z-10 pointer-events-none"
           style={{
-            background: isHovered ? `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.15) 0%, transparent 50%)` : 'none'
+            background: isHovered ? `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(59,130,246,0.08) 0%, transparent 50%)` : 'none'
           }}
         />
         
-        <div className="relative overflow-hidden h-52 lg:h-60 bg-[#0f1117]">
+        <div className="relative overflow-hidden h-52 lg:h-60 bg-gray-100">
           <img
             src={getImageUrl(blog.image)}
             alt={blog.title}
@@ -143,53 +143,53 @@ function BlogCard({ blog, index }) {
             loading="lazy"
             onError={(e) => { e.target.onerror = null; e.target.src = placeholder; }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1d24] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           
           {/* category badge */}
-          <div className={`absolute top-4 left-4 z-20 px-3 py-1.5 rounded-r-lg text-xs font-semibold shadow-lg transform -translate-x-2 group-hover:translate-x-0 transition-transform duration-300 backdrop-blur-sm ${categoryClass.split(' ').slice(0, 2).join(' ')}`}>
+          <div className={`absolute top-4 left-4 z-20 px-3 py-1.5 rounded-r-lg text-xs font-semibold shadow-md transform -translate-x-2 group-hover:translate-x-0 transition-transform duration-300 ${categoryClass}`}>
             {blog.category}
           </div>
 
           {/* view count overlay */}
-          <div className="absolute bottom-4 right-4 z-20 bg-black/70 backdrop-blur-md rounded-lg px-3 py-1.5 flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 border border-cyan-500/20">
-            <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="absolute bottom-4 right-4 z-20 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 shadow-md">
+            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            <span className="text-gray-200 text-sm font-medium">{blog.views || 0}</span>
+            <span className="text-gray-700 text-sm font-medium">{blog.views || 0}</span>
           </div>
         </div>
 
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="relative">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-cyan-500/20">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-md">
                 {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
               </div>
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#1a1d24]"></div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-200">{blog.user?.name || "Anonymous"}</p>
+              <p className="text-sm font-semibold text-gray-800">{blog.user?.name || "Anonymous"}</p>
               <p className="text-xs text-gray-500">Writer</p>
             </div>
           </div>
           
-          <h2 className="text-xl font-bold mb-3 line-clamp-2 text-gray-100 group-hover:text-cyan-400 transition-colors duration-300">
+          <h2 className="text-xl font-bold mb-3 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
             {blog.title}
           </h2>
           
-          <p className="text-gray-400 text-sm mb-4 line-clamp-3 leading-relaxed">
+          <p className="text-gray-500 text-sm mb-4 line-clamp-3 leading-relaxed">
             {blog.description?.slice(0, 120)}...
           </p>
           
-          <div className="flex items-center justify-between pt-4 border-t border-gray-800/50">
-            <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2 text-sm text-gray-400">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>5 min read</span>
             </div>
-            <div className="flex items-center gap-2 text-cyan-400 font-medium text-sm group-hover:gap-3 transition-all duration-300">
+            <div className="flex items-center gap-2 text-blue-600 font-medium text-sm group-hover:gap-3 transition-all duration-300">
               <span>Read More</span>
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
@@ -202,7 +202,7 @@ function BlogCard({ blog, index }) {
   );
 }
 
-// home - premium dark theme
+// home - premium light theme
 function Home() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -260,19 +260,19 @@ function Home() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-[#0a0c10] to-[#14181f] flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center z-50">
         <div className="text-center">
           <div className="relative">
-            <div className="w-20 h-20 border-4 border-gray-800 border-t-cyan-500 rounded-full animate-spin mx-auto" />
+            <div className="w-20 h-20 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
+              <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
             </div>
           </div>
-          <p className="mt-6 text-gray-400 font-medium">Loading amazing stories...</p>
+          <p className="mt-6 text-gray-600 font-medium">Loading amazing stories...</p>
           <div className="mt-2 flex gap-1 justify-center">
-            <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-            <div className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-            <div className="w-1.5 h-1.5 bg-cyan-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+            <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+            <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+            <div className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
           </div>
         </div>
       </div>
@@ -294,46 +294,46 @@ function Home() {
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0c10] via-[#11131a] to-[#0a0c10]">
-      {/* hero section with parallax - premium dark theme */}
-      <div className="relative bg-gradient-to-r from-[#0a0c10] via-[#0d1117] to-[#0a0c10] text-white overflow-hidden">
-        <div ref={heroRef} className="absolute inset-0 opacity-40">
-<div
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      {/* hero section with parallax - premium light theme */}
+      <div className="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white overflow-hidden">
+        <div ref={heroRef} className="absolute inset-0 opacity-20">
+
+    <div
   className="absolute inset-0 bg-repeat"
   style={{
     backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
   }}
 />
-
-          <div className="absolute top-0 -left-40 w-80 h-80 bg-cyan-600 rounded-full mix-blend-screen filter blur-3xl animate-pulse opacity-10" />
-          <div className="absolute bottom-0 -right-40 w-80 h-80 bg-teal-600 rounded-full mix-blend-screen filter blur-3xl animate-pulse animation-delay-2000 opacity-10" />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl animate-pulse opacity-5" />
+          <div className="absolute top-0 -left-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-screen filter blur-3xl animate-pulse opacity-30" />
+          <div className="absolute bottom-0 -right-40 w-80 h-80 bg-indigo-400 rounded-full mix-blend-screen filter blur-3xl animate-pulse animation-delay-2000 opacity-30" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-300 rounded-full mix-blend-screen filter blur-3xl animate-pulse opacity-20" />
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 py-28 lg:py-36">
           <div className="max-w-4xl mx-auto text-center animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500/10 to-teal-500/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-cyan-500/20">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-white/20">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              <span className="text-sm font-medium tracking-wide text-cyan-400">Join 10,000+ readers</span>
+              <span className="text-sm font-medium tracking-wide text-white">Join 10,000+ readers</span>
             </div>
             
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-              Where <span className="bg-gradient-to-r from-cyan-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">Knowledge</span> Meets
+              Where <span className="bg-gradient-to-r from-blue-200 via-indigo-200 to-blue-200 bg-clip-text text-transparent">Knowledge</span> Meets
               <br />
               Inspiration
             </h1>
             
-            <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto leading-relaxed">
               Discover thought-provoking articles, expert insights, and stories that matter. Join our community of curious minds.
             </p>
 
             {/* animated search bar */}
             <div className="relative max-w-2xl mx-auto mb-8 group">
               <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-500 group-focus-within:text-cyan-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 text-gray-400 group-focus-within:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -343,12 +343,12 @@ function Home() {
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
                 maxLength={50}
-                className="w-full pl-12 pr-28 py-4 rounded-2xl bg-[#1a1d24] border border-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300 shadow-xl"
+                className="w-full pl-12 pr-28 py-4 rounded-2xl bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 shadow-xl"
               />
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1.5 text-sm font-medium text-gray-400 hover:text-gray-200 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all duration-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200"
                 >
                   Clear
                 </button>
@@ -363,8 +363,8 @@ function Home() {
                   onClick={() => { setSelectedCategory(cat); setCurrentPage(1); }}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
                     selectedCategory === cat
-                      ? "bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-500/30 scale-105"
-                      : "bg-[#1a1d24] text-gray-300 hover:bg-[#22252e] hover:text-cyan-400 backdrop-blur-sm border border-gray-800"
+                      ? "bg-white text-blue-600 shadow-lg shadow-blue-500/30 scale-105"
+                      : "bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
                   }`}
                 >
                   {cat}
@@ -377,35 +377,35 @@ function Home() {
         {/* wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 64L60 69.3C120 75 240 85 360 85.3C480 86 600 75 720 69.3C840 64 960 64 1080 69.3C1200 75 1320 86 1380 90.7L1440 96V120H0V64Z" fill="#11131a" />
+            <path d="M0 64L60 69.3C120 75 240 85 360 85.3C480 86 600 75 720 69.3C840 64 960 64 1080 69.3C1200 75 1320 86 1380 90.7L1440 96V120H0V64Z" fill="#f9fafb" />
           </svg>
         </div>
       </div>
 
-      {/* stats section with animated counters - premium dark theme */}
-      <div className="bg-[#11131a]/80 border-b border-gray-800/50 backdrop-blur-sm">
+      {/* stats section with animated counters - premium light theme */}
+      <div className="bg-white border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center group cursor-pointer">
-              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text group-hover:scale-110 transition-transform duration-300">
+              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text group-hover:scale-110 transition-transform duration-300">
                 <AnimatedCounter value={blogs.length} />
               </div>
               <p className="text-sm text-gray-500 mt-1">Articles</p>
             </div>
             <div className="text-center group cursor-pointer">
-              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text group-hover:scale-110 transition-transform duration-300">
+              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text group-hover:scale-110 transition-transform duration-300">
                 <AnimatedCounter value={totalAuthors} />
               </div>
               <p className="text-sm text-gray-500 mt-1">Authors</p>
             </div>
             <div className="text-center group cursor-pointer">
-              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text group-hover:scale-110 transition-transform duration-300">
+              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text group-hover:scale-110 transition-transform duration-300">
                 <AnimatedCounter value={totalViews} />
               </div>
               <p className="text-sm text-gray-500 mt-1">Total Views</p>
             </div>
             <div className="text-center group cursor-pointer">
-              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text group-hover:scale-110 transition-transform duration-300">
+              <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text group-hover:scale-110 transition-transform duration-300">
                 <AnimatedCounter value={categories.length - 1} />
               </div>
               <p className="text-sm text-gray-500 mt-1">Categories</p>
@@ -421,14 +421,14 @@ function Home() {
           <section className="mb-20">
             <div className="flex items-center justify-between mb-8 animate-fade-in-up">
               <div>
-                <h2 className="text-2xl lg:text-3xl font-bold text-gray-100">
-                  🔥 <span className="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Trending Now</span>
+                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+                  🔥 <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Trending Now</span>
                 </h2>
                 <p className="text-gray-500 mt-1">Most popular articles this week</p>
               </div>
-              <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500/10 to-red-500/10 px-4 py-2 rounded-full border border-orange-500/20">
+              <div className="hidden sm:flex items-center gap-2 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
                 <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-                <span className="text-sm font-medium text-orange-400">Updated daily</span>
+                <span className="text-sm font-medium text-orange-600">Updated daily</span>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -444,17 +444,17 @@ function Home() {
           </section>
         )}
 
-        <div className="border-t border-gray-800/50 my-12" />
+        <div className="border-t border-gray-200 my-12" />
 
         {/* latest blogs section */}
         <section>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div className="animate-fade-in-up">
-              <h2 className="text-2xl lg:text-3xl font-bold text-gray-100">
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
                 {search ? (
-                  <>Search Results for "<span className="text-cyan-400">{search}</span>"</>
+                  <>Search Results for "<span className="text-blue-600">{search}</span>"</>
                 ) : (
-                  <><span className="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Latest Articles</span></>
+                  <><span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Latest Articles</span></>
                 )}
               </h2>
               <p className="text-gray-500 mt-1">
@@ -462,24 +462,24 @@ function Home() {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="bg-[#1a1d24] rounded-full px-4 py-2 border border-gray-800">
-                <span className="text-sm font-medium text-gray-400">{filteredBlogs.length} posts</span>
+              <div className="bg-gray-100 rounded-full px-4 py-2">
+                <span className="text-sm font-medium text-gray-600">{filteredBlogs.length} posts</span>
               </div>
             </div>
           </div>
 
           {filteredBlogs.length === 0 ? (
-            <div className="text-center py-20 bg-[#11131a]/50 rounded-2xl backdrop-blur-sm border border-gray-800 animate-fade-in-up">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-12 h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100 animate-fade-in-up">
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-gray-300 text-lg font-medium mb-1">No articles found</p>
-              <p className="text-gray-500 text-sm">Try adjusting your search or category filter</p>
+              <p className="text-gray-700 text-lg font-medium mb-1">No articles found</p>
+              <p className="text-gray-400 text-sm">Try adjusting your search or category filter</p>
               <button
                 onClick={() => { setSearch(""); setSelectedCategory("All"); }}
-                className="mt-6 px-6 py-2.5 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-xl hover:from-cyan-700 hover:to-teal-700 transition-all duration-300 font-medium shadow-md shadow-cyan-500/20 hover:shadow-lg"
+                className="mt-6 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-md shadow-blue-500/20 hover:shadow-lg"
               >
                 Clear all filters
               </button>
@@ -493,7 +493,7 @@ function Home() {
           )}
         </section>
 
-        {/* pagination with animation - premium dark theme */}
+        {/* pagination with animation - premium light theme */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-3 mt-16 animate-fade-in-up">
             <button
@@ -501,8 +501,8 @@ function Home() {
               disabled={currentPage === 1}
               className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                 currentPage === 1
-                  ? "bg-[#1a1d24] text-gray-600 cursor-not-allowed"
-                  : "bg-[#1a1d24] border border-gray-800 text-gray-300 hover:bg-[#22252e] hover:border-cyan-500/50 hover:text-cyan-400 shadow-sm hover:shadow"
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "bg-white border border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 shadow-sm hover:shadow"
               }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -530,8 +530,8 @@ function Home() {
                     onClick={() => setCurrentPage(pageNum)}
                     className={`w-10 h-10 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
                       currentPage === pageNum
-                        ? "bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md shadow-cyan-500/30"
-                        : "bg-[#1a1d24] border border-gray-800 text-gray-400 hover:bg-[#22252e] hover:text-cyan-400"
+                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/30"
+                        : "bg-white border border-gray-200 text-gray-600 hover:bg-blue-50 hover:text-blue-600"
                     }`}
                   >
                     {pageNum}
@@ -545,8 +545,8 @@ function Home() {
               disabled={currentPage === totalPages}
               className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                 currentPage === totalPages
-                  ? "bg-[#1a1d24] text-gray-600 cursor-not-allowed"
-                  : "bg-[#1a1d24] border border-gray-800 text-gray-300 hover:bg-[#22252e] hover:border-cyan-500/50 hover:text-cyan-400 shadow-sm hover:shadow"
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "bg-white border border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 shadow-sm hover:shadow"
               }`}
             >
               Next
@@ -558,35 +558,35 @@ function Home() {
         )}
       </div>
 
-      {/* footer - premium dark theme */}
-      <footer className="bg-[#0a0c10] border-t border-gray-800/50 mt-20">
+      {/* footer - premium light theme */}
+      <footer className="bg-gray-900 text-white mt-20">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-lg"></div>
-                <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">BlogSphere</span>
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg"></div>
+                <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">BlogSphere</span>
               </div>
-              <p className="text-gray-500 text-sm">Discover thought-provoking articles, expert insights, and stories that matter.</p>
+              <p className="text-gray-400 text-sm">Discover thought-provoking articles, expert insights, and stories that matter.</p>
             </div>
             <div>
               <h3 className="text-gray-300 font-semibold mb-3">Quick Links</h3>
               <ul className="space-y-2 text-sm text-gray-500">
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">About Us</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
               </ul>
             </div>
             <div>
               <h3 className="text-gray-300 font-semibold mb-3">Follow Us</h3>
               <ul className="space-y-2 text-sm text-gray-500">
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Twitter</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">LinkedIn</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">GitHub</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Twitter</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">LinkedIn</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">GitHub</a></li>
               </ul>
             </div>
           </div>
-          <div className="pt-8 border-t border-gray-800/50 text-center">
+          <div className="pt-8 border-t border-gray-800 text-center">
             <p className="text-gray-500 text-sm">© 2024 BlogSphere. All rights reserved.</p>
           </div>
         </div>
