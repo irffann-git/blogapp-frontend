@@ -77,8 +77,8 @@ function AnimatedCounter({ value }) {
   return <span ref={countRef}>{count.toLocaleString()}</span>;
 }
 
-// blog card - Netflix style with dramatic hover (fixed - removed unused isHovered)
-function BlogCard({ blog, index }) {
+// blog card - Netflix style
+function BlogCard({ blog }) {
   const placeholder = "https://placehold.co/600x400?text=No+Image";
   const categoryClass = categoryColors[blog.category] || categoryColors.default;
   const cardRef = useRef(null);
@@ -91,7 +91,7 @@ function BlogCard({ blog, index }) {
           observer.disconnect();
         }
       },
-      { threshold: 0.1, delay: index * 100 }
+      { threshold: 0.1 }
     );
 
     if (cardRef.current) {
@@ -99,7 +99,7 @@ function BlogCard({ blog, index }) {
     }
 
     return () => observer.disconnect();
-  }, [index]);
+  }, []);
 
   return (
     <div
@@ -108,7 +108,6 @@ function BlogCard({ blog, index }) {
     >
       <div className="relative group cursor-pointer">
         <Link to={`/blogs/${blog._id}`}>
-          {/* Netflix-style image container */}
           <div className="relative overflow-hidden rounded-md aspect-[2/3] sm:aspect-video">
             <img
               src={getImageUrl(blog.image)}
@@ -118,17 +117,14 @@ function BlogCard({ blog, index }) {
               onError={(e) => { e.target.onerror = null; e.target.src = placeholder; }}
             />
             
-            {/* gradient overlay on hover */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
-            {/* Netflix-style top badge */}
             <div className="absolute top-0 left-0 z-20">
               <div className={`${categoryClass} px-3 py-1 text-xs font-bold uppercase tracking-wide shadow-lg`}>
                 {blog.category}
               </div>
             </div>
 
-            {/* view count badge */}
             <div className="absolute top-0 right-0 z-20 bg-black/70 backdrop-blur-sm px-2 py-1 m-2 rounded text-xs font-semibold flex items-center gap-1">
               <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -137,7 +133,6 @@ function BlogCard({ blog, index }) {
               <span className="text-white">{blog.views || 0}</span>
             </div>
 
-            {/* Netflix-style hover info panel */}
             <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black via-black/90 to-transparent">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white text-xs font-bold">
@@ -158,7 +153,7 @@ function BlogCard({ blog, index }) {
               
               <div className="flex items-center gap-3 text-xs">
                 <span className="text-green-500 font-bold">92% Match</span>
-                <span className="text-gray-400">5 min</span>
+                <span className="text-gray-400">5 min read</span>
               </div>
             </div>
           </div>
@@ -208,7 +203,7 @@ function HeroSlide({ blog }) {
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
-              Play
+              Read Now
             </Link>
             <button className="bg-gray-600/70 hover:bg-gray-600 text-white px-6 py-2.5 rounded font-semibold transition-all flex items-center gap-2 text-sm sm:text-base backdrop-blur-sm">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -273,7 +268,10 @@ function Home() {
     return () => controller.abort();
   }, [debouncedSearch]);
 
-  // Auto-rotate hero
+  // Calculate trending blogs after blogs are loaded
+  const trendingBlogs = blogs.length > 0 ? [...blogs].sort((a, b) => b.views - a.views).slice(0, 5) : [];
+
+  // Auto-rotate hero - Fixed dependency issue
   useEffect(() => {
     if (trendingBlogs.length === 0) return;
     const interval = setInterval(() => {
@@ -292,7 +290,7 @@ function Home() {
               <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
             </div>
           </div>
-          <p className="mt-6 text-gray-400 font-medium tracking-wide">Loading Netflix-style experience...</p>
+          <p className="mt-6 text-gray-400 font-medium tracking-wide">Loading amazing content...</p>
         </div>
       </div>
     );
@@ -303,7 +301,6 @@ function Home() {
       ? blogs
       : blogs.filter((b) => b.category === selectedCategory);
 
-  const trendingBlogs = [...blogs].sort((a, b) => b.views - a.views).slice(0, 5);
   const totalViews = blogs.reduce((sum, blog) => sum + (blog.views || 0), 0);
   const totalAuthors = new Set(blogs.map(b => b.user?._id).filter(Boolean)).size;
 
@@ -421,9 +418,6 @@ function Home() {
                 <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
                   🔥 Trending Now
                 </h2>
-                <button className="text-sm text-gray-400 hover:text-white transition-colors">
-                  View All →
-                </button>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {trendingBlogs.slice(0, 5).map((blog, index) => (
@@ -553,7 +547,6 @@ function Home() {
         </div>
       </footer>
 
-      {/* custom animations */}
       <style jsx>{`
         @keyframes fadeInUp {
           from {
