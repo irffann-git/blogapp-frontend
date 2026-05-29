@@ -13,17 +13,17 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-// category colors - professional palette
+// category colors - dark theme palette
 const categoryColors = {
-  Technology: "bg-blue-50 text-blue-700 border-l-2 border-blue-500",
-  Lifestyle: "bg-teal-50 text-teal-700 border-l-2 border-teal-500",
-  Sports: "bg-red-50 text-red-700 border-l-2 border-red-500",
-  Programming: "bg-amber-50 text-amber-700 border-l-2 border-amber-500",
-  Business: "bg-slate-50 text-slate-700 border-l-2 border-slate-500",
-  Travel: "bg-cyan-50 text-cyan-700 border-l-2 border-cyan-500",
-  Health: "bg-emerald-50 text-emerald-700 border-l-2 border-emerald-500",
-  Productivity: "bg-violet-50 text-violet-700 border-l-2 border-violet-500",
-  default: "bg-gray-50 text-gray-600 border-l-2 border-gray-400",
+  Technology: "bg-blue-900/50 text-blue-300 border-l-2 border-blue-500",
+  Lifestyle: "bg-teal-900/50 text-teal-300 border-l-2 border-teal-500",
+  Sports: "bg-red-900/50 text-red-300 border-l-2 border-red-500",
+  Programming: "bg-amber-900/50 text-amber-300 border-l-2 border-amber-500",
+  Business: "bg-slate-800/50 text-slate-300 border-l-2 border-slate-500",
+  Travel: "bg-cyan-900/50 text-cyan-300 border-l-2 border-cyan-500",
+  Health: "bg-emerald-900/50 text-emerald-300 border-l-2 border-emerald-500",
+  Productivity: "bg-violet-900/50 text-violet-300 border-l-2 border-violet-500",
+  default: "bg-gray-800/50 text-gray-300 border-l-2 border-gray-500",
 };
 
 // ✅ helper — works for both Cloudinary (full URL) and old local uploads (relative path)
@@ -77,7 +77,7 @@ function AnimatedCounter({ value }) {
   return <span ref={countRef}>{count.toLocaleString()}</span>;
 }
 
-// blog card with advanced animations
+// blog card with advanced animations - dark theme
 function BlogCard({ blog, index }) {
   const placeholder = "https://placehold.co/600x400?text=No+Image";
   const categoryClass = categoryColors[blog.category] || categoryColors.default;
@@ -125,17 +125,17 @@ function BlogCard({ blog, index }) {
     >
       <Link
         to={`/blogs/${blog._id}`}
-        className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 relative"
+        className="group block bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-800 relative"
       >
         {/* animated gradient overlay on hover */}
         <div 
-          className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/0 to-indigo-500/0 group-hover:from-indigo-500/5 group-hover:via-indigo-500/10 group-hover:to-indigo-500/5 transition-all duration-500 z-10 pointer-events-none"
+          className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-purple-500/0 to-indigo-500/0 group-hover:from-indigo-500/10 group-hover:via-purple-500/10 group-hover:to-indigo-500/10 transition-all duration-500 z-10 pointer-events-none"
           style={{
-            background: isHovered ? `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(99,102,241,0.1) 0%, transparent 50%)` : 'none'
+            background: isHovered ? `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(99,102,241,0.15) 0%, transparent 50%)` : 'none'
           }}
         />
         
-        <div className="relative overflow-hidden h-52 lg:h-60 bg-gray-100">
+        <div className="relative overflow-hidden h-52 lg:h-60 bg-gray-800">
           <img
             src={getImageUrl(blog.image)}
             alt={blog.title}
@@ -143,7 +143,7 @@ function BlogCard({ blog, index }) {
             loading="lazy"
             onError={(e) => { e.target.onerror = null; e.target.src = placeholder; }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           
           {/* category badge */}
           <div className={`absolute top-4 left-4 z-20 px-3 py-1.5 rounded-r-lg text-xs font-semibold shadow-lg transform -translate-x-2 group-hover:translate-x-0 transition-transform duration-300 ${categoryClass.split(' ').slice(0, 2).join(' ')}`}>
@@ -151,12 +151,12 @@ function BlogCard({ blog, index }) {
           </div>
 
           {/* view count overlay */}
-          <div className="absolute bottom-4 right-4 z-20 bg-black/60 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="absolute bottom-4 right-4 z-20 bg-black/80 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            <span className="text-white text-sm font-medium">{blog.views || 0}</span>
+            <span className="text-gray-200 text-sm font-medium">{blog.views || 0}</span>
           </div>
         </div>
 
@@ -166,30 +166,30 @@ function BlogCard({ blog, index }) {
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold shadow-lg">
                 {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
               </div>
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-900"></div>
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-800">{blog.user?.name || "Anonymous"}</p>
-              <p className="text-xs text-gray-400">Author</p>
+              <p className="text-sm font-semibold text-gray-200">{blog.user?.name || "Anonymous"}</p>
+              <p className="text-xs text-gray-500">Author</p>
             </div>
           </div>
           
-          <h2 className="text-xl font-bold mb-3 line-clamp-2 text-gray-900 group-hover:text-indigo-600 transition-colors duration-300">
+          <h2 className="text-xl font-bold mb-3 line-clamp-2 text-gray-100 group-hover:text-indigo-400 transition-colors duration-300">
             {blog.title}
           </h2>
           
-          <p className="text-gray-500 text-sm mb-4 line-clamp-3 leading-relaxed">
+          <p className="text-gray-400 text-sm mb-4 line-clamp-3 leading-relaxed">
             {blog.description?.slice(0, 120)}...
           </p>
           
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+          <div className="flex items-center justify-between pt-4 border-t border-gray-800">
+            <div className="flex items-center gap-2 text-sm text-gray-500">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>5 min read</span>
             </div>
-            <div className="flex items-center gap-2 text-indigo-600 font-medium text-sm group-hover:gap-3 transition-all duration-300">
+            <div className="flex items-center gap-2 text-indigo-400 font-medium text-sm group-hover:gap-3 transition-all duration-300">
               <span>Read More</span>
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
@@ -202,7 +202,7 @@ function BlogCard({ blog, index }) {
   );
 }
 
-// home
+// home - dark theme
 function Home() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -260,15 +260,15 @@ function Home() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 to-gray-950 flex items-center justify-center z-50">
         <div className="text-center">
           <div className="relative">
-            <div className="w-20 h-20 border-4 border-gray-200 border-t-indigo-600 rounded-full animate-spin mx-auto" />
+            <div className="w-20 h-20 border-4 border-gray-800 border-t-indigo-500 rounded-full animate-spin mx-auto" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-2 h-2 bg-indigo-600 rounded-full animate-pulse" />
+              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" />
             </div>
           </div>
-          <p className="mt-6 text-gray-600 font-medium">Loading amazing content...</p>
+          <p className="mt-6 text-gray-400 font-medium">Loading amazing content...</p>
           <div className="mt-2 flex gap-1 justify-center">
             <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
             <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
@@ -294,28 +294,28 @@ function Home() {
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      {/* hero section with parallax */}
-      <div className="relative bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white overflow-hidden">
-        <div ref={heroRef} className="absolute inset-0 opacity-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
+      {/* hero section with parallax - dark theme */}
+      <div className="relative bg-gradient-to-r from-gray-950 via-indigo-950 to-gray-950 text-white overflow-hidden">
+        <div ref={heroRef} className="absolute inset-0 opacity-30">
           <div
   className="absolute inset-0 bg-repeat"
   style={{
     backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
   }}
 />
-          <div className="absolute top-0 -left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000" />
+          <div className="absolute top-0 -left-40 w-80 h-80 bg-indigo-600 rounded-full mix-blend-screen filter blur-3xl animate-pulse opacity-20" />
+          <div className="absolute bottom-0 -right-40 w-80 h-80 bg-purple-600 rounded-full mix-blend-screen filter blur-3xl animate-pulse animation-delay-2000 opacity-20" />
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 py-24 lg:py-32">
           <div className="max-w-4xl mx-auto text-center animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-white/20">
+            <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-white/10">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              <span className="text-sm font-medium tracking-wide">Join 10,000+ readers</span>
+              <span className="text-sm font-medium tracking-wide text-gray-300">Join 10,000+ readers</span>
             </div>
             
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
@@ -324,14 +324,14 @@ function Home() {
               Inspiration
             </h1>
             
-            <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
               Discover thought-provoking articles, expert insights, and stories that matter. Join our community of curious minds.
             </p>
 
             {/* animated search bar */}
             <div className="relative max-w-2xl mx-auto mb-8 group">
               <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400 group-focus-within:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 text-gray-500 group-focus-within:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -341,12 +341,12 @@ function Home() {
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
                 maxLength={50}
-                className="w-full pl-12 pr-28 py-4 rounded-2xl bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 shadow-xl"
+                className="w-full pl-12 pr-28 py-4 rounded-2xl bg-gray-900 border border-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 shadow-xl"
               />
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1.5 text-sm font-medium text-gray-400 hover:text-gray-200 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all duration-200"
                 >
                   Clear
                 </button>
@@ -361,8 +361,8 @@ function Home() {
                   onClick={() => { setSelectedCategory(cat); setCurrentPage(1); }}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
                     selectedCategory === cat
-                      ? "bg-white text-indigo-600 shadow-lg scale-105"
-                      : "bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
+                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30 scale-105"
+                      : "bg-white/5 text-gray-300 hover:bg-white/10 backdrop-blur-sm border border-white/10"
                   }`}
                 >
                   {cat}
@@ -375,35 +375,35 @@ function Home() {
         {/* wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 64L60 69.3C120 75 240 85 360 85.3C480 86 600 75 720 69.3C840 64 960 64 1080 69.3C1200 75 1320 86 1380 90.7L1440 96V120H0V64Z" fill="#f9fafb" />
+            <path d="M0 64L60 69.3C120 75 240 85 360 85.3C480 86 600 75 720 69.3C840 64 960 64 1080 69.3C1200 75 1320 86 1380 90.7L1440 96V120H0V64Z" fill="#111827" />
           </svg>
         </div>
       </div>
 
-      {/* stats section with animated counters */}
-      <div className="bg-white border-b border-gray-100">
+      {/* stats section with animated counters - dark theme */}
+      <div className="bg-gray-900/50 border-b border-gray-800 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">
+              <div className="text-3xl font-bold text-gray-100">
                 <AnimatedCounter value={blogs.length} />
               </div>
               <p className="text-sm text-gray-500 mt-1">Articles</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">
+              <div className="text-3xl font-bold text-gray-100">
                 <AnimatedCounter value={totalAuthors} />
               </div>
               <p className="text-sm text-gray-500 mt-1">Authors</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">
+              <div className="text-3xl font-bold text-gray-100">
                 <AnimatedCounter value={totalViews} />
               </div>
               <p className="text-sm text-gray-500 mt-1">Total Views</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">
+              <div className="text-3xl font-bold text-gray-100">
                 <AnimatedCounter value={categories.length - 1} />
               </div>
               <p className="text-sm text-gray-500 mt-1">Categories</p>
@@ -419,12 +419,12 @@ function Home() {
           <section className="mb-20">
             <div className="flex items-center justify-between mb-8 animate-fade-in-up">
               <div>
-                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">🔥 Trending Now</h2>
+                <h2 className="text-2xl lg:text-3xl font-bold text-gray-100">🔥 Trending Now</h2>
                 <p className="text-gray-500 mt-1">Most popular articles this week</p>
               </div>
-              <div className="hidden sm:flex items-center gap-2 bg-orange-50 px-4 py-2 rounded-full">
+              <div className="hidden sm:flex items-center gap-2 bg-orange-900/30 px-4 py-2 rounded-full border border-orange-800/50">
                 <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-                <span className="text-sm font-medium text-orange-600">Updated daily</span>
+                <span className="text-sm font-medium text-orange-400">Updated daily</span>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -440,13 +440,13 @@ function Home() {
           </section>
         )}
 
-        <div className="border-t border-gray-200 my-12" />
+        <div className="border-t border-gray-800 my-12" />
 
         {/* latest blogs section */}
         <section>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div className="animate-fade-in-up">
-              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-100">
                 {search ? `Search Results` : "Latest Articles"}
               </h2>
               <p className="text-gray-500 mt-1">
@@ -454,24 +454,24 @@ function Home() {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="bg-gray-100 rounded-full px-4 py-2">
-                <span className="text-sm font-medium text-gray-600">{filteredBlogs.length} posts</span>
+              <div className="bg-gray-800 rounded-full px-4 py-2">
+                <span className="text-sm font-medium text-gray-400">{filteredBlogs.length} posts</span>
               </div>
             </div>
           </div>
 
           {filteredBlogs.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100 animate-fade-in-up">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-20 bg-gray-900/50 rounded-2xl backdrop-blur-sm border border-gray-800 animate-fade-in-up">
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-12 h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-gray-700 text-lg font-medium mb-1">No articles found</p>
-              <p className="text-gray-400 text-sm">Try adjusting your search or category filter</p>
+              <p className="text-gray-300 text-lg font-medium mb-1">No articles found</p>
+              <p className="text-gray-500 text-sm">Try adjusting your search or category filter</p>
               <button
                 onClick={() => { setSearch(""); setSelectedCategory("All"); }}
-                className="mt-6 px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all duration-300 font-medium shadow-md hover:shadow-lg"
+                className="mt-6 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-md hover:shadow-lg"
               >
                 Clear all filters
               </button>
@@ -485,7 +485,7 @@ function Home() {
           )}
         </section>
 
-        {/* pagination with animation */}
+        {/* pagination with animation - dark theme */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-3 mt-16 animate-fade-in-up">
             <button
@@ -493,8 +493,8 @@ function Home() {
               disabled={currentPage === 1}
               className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                 currentPage === 1
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-white border border-gray-200 text-gray-700 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-600 shadow-sm hover:shadow"
+                  ? "bg-gray-800 text-gray-600 cursor-not-allowed"
+                  : "bg-gray-900 border border-gray-800 text-gray-300 hover:bg-gray-800 hover:border-indigo-500 hover:text-indigo-400 shadow-sm hover:shadow"
               }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -523,7 +523,7 @@ function Home() {
                     className={`w-10 h-10 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
                       currentPage === pageNum
                         ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md"
-                        : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                        : "bg-gray-900 border border-gray-800 text-gray-400 hover:bg-gray-800 hover:text-gray-200"
                     }`}
                   >
                     {pageNum}
@@ -537,8 +537,8 @@ function Home() {
               disabled={currentPage === totalPages}
               className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                 currentPage === totalPages
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-white border border-gray-200 text-gray-700 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-600 shadow-sm hover:shadow"
+                  ? "bg-gray-800 text-gray-600 cursor-not-allowed"
+                  : "bg-gray-900 border border-gray-800 text-gray-300 hover:bg-gray-800 hover:border-indigo-500 hover:text-indigo-400 shadow-sm hover:shadow"
               }`}
             >
               Next
@@ -550,11 +550,11 @@ function Home() {
         )}
       </div>
 
-      {/* footer */}
-      <footer className="bg-gray-900 text-white mt-20">
+      {/* footer - dark theme */}
+      <footer className="bg-gray-950 border-t border-gray-800 mt-20">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="text-center">
-            <p className="text-gray-400 text-sm">© 2024 BlogSphere. All rights reserved.</p>
+            <p className="text-gray-500 text-sm">© 2024 BlogSphere. All rights reserved.</p>
           </div>
         </div>
       </footer>
