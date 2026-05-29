@@ -74,6 +74,21 @@ function Profile() {
   // Get recent blogs (latest 3 by creation date or default order from API)
   const recentBlogs = blogs.slice(0, 3);
 
+
+  const getImageUrl = (image) => {
+  if (!image) return "";
+
+  if (image.startsWith("http")) {
+    return image;
+  }
+
+  const backendUrl =
+    import.meta.env.VITE_API_URL?.replace("/api", "") ||
+    "https://blogapp-backend-jeth.onrender.com";
+
+  return `${backendUrl}/${image.replace(/^\/+/, "")}`;
+};
+
   return (
     <div className="min-h-screen bg-[#F5F0E8] py-8 px-4">
       <div className="max-w-6xl mx-auto">
@@ -299,36 +314,77 @@ function Profile() {
             </div>
             {recentBlogs.length > 0 ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {recentBlogs.map((blog) => (
-                  <Link
-                    key={blog._id}
-                    to={`/edit-blog/${blog._id}`}
-                    className="group bg-[#FFFCF7] rounded-xl border border-stone-200 p-4 hover:shadow-md transition-all duration-300 hover:-translate-y-1 block"
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-bold text-stone-800 group-hover:text-amber-600 transition-colors line-clamp-1">
-                        {blog.title || "Untitled"}
-                      </h3>
-                      <span className="text-xs text-stone-400 flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        {blog.views || 0}
-                      </span>
-                    </div>
-                    <p className="text-xs text-stone-400 line-clamp-2 mb-3">
-                      {blog.content?.substring(0, 100) || "No preview available"}
-                    </p>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-stone-400">
-                        {blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : "Unknown date"}
-                      </span>
-                      <span className="text-amber-500 group-hover:underline">Edit →</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+  {recentBlogs.map((blog) => (
+    <Link
+      key={blog._id}
+      to={`/edit-blog/${blog._id}`}
+      className="group bg-[#FFFCF7] rounded-xl border border-stone-200 overflow-hidden hover:shadow-md transition-all duration-300 hover:-translate-y-1 block"
+    >
+      {blog.image && (
+        <img
+          src={getImageUrl(blog.image)}
+          alt={blog.title}
+          className="w-full h-44 object-cover"
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
+        />
+      )}
+
+  <div className="p-4">
+    <div className="flex items-start justify-between mb-2">
+      <h3 className="font-bold text-stone-800 group-hover:text-amber-600 transition-colors line-clamp-1">
+        {blog.title || "Untitled"}
+      </h3>
+
+      <span className="text-xs text-stone-400 flex items-center gap-1">
+        <svg
+          className="w-3 h-3"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+        {blog.views || 0}
+      </span>
+    </div>
+
+    <p className="text-xs text-stone-400 line-clamp-2 mb-3">
+      {blog.description?.substring(0, 100) ||
+        "No preview available"}
+    </p>
+
+    <div className="flex items-center justify-between text-xs">
+      <span className="text-stone-400">
+        {blog.createdAt
+          ? new Date(blog.createdAt).toLocaleDateString()
+          : "Unknown date"}
+      </span>
+
+      <span className="text-amber-500 group-hover:underline">
+        Edit →
+      </span>
+    </div>
+  </div>
+</Link>
+
+
+))}
+
+</div>
+
             ) : (
               <div className="bg-[#FFFCF7] rounded-xl border border-stone-200 p-8 text-center">
                 <div className="text-4xl mb-3">📝</div>
