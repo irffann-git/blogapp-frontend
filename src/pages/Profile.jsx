@@ -371,7 +371,7 @@ function Profile() {
               </div>
               <p className="text-sm text-stone-300">Manage your blogs and activity</p>
             </Link>
-            <button
+            {/* <button
               onClick={handleOpenEdit}
               className="group bg-[#FFFCF7] hover:bg-stone-50 text-stone-800 rounded-2xl p-5 sm:p-6 border border-stone-200 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-xl text-left w-full"
             >
@@ -384,7 +384,7 @@ function Profile() {
                 <h3 className="font-bold text-base sm:text-lg">Edit profile</h3>
               </div>
               <p className="text-sm text-stone-400">Update your profile information</p>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
