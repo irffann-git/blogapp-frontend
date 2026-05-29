@@ -98,12 +98,6 @@ function Navbar() {
                     Dashboard
                   </Link>
 
-                  <Link
-                    to="/profile"
-                    className="bg-stone-700 hover:bg-stone-600 text-stone-100 px-4 py-2 rounded-full text-sm font-medium transition"
-                  >
-                    Profile
-                  </Link>
 
                   <div className="h-5 w-px bg-stone-600"></div>
 
@@ -208,15 +202,6 @@ function Navbar() {
                   </p>
                 </div>
               </div>
-
-              <Link
-                to="/profile"
-                onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 transition"
-              >
-                <span>Profile</span>
-                <span className="text-amber-500">→</span>
-              </Link>
 
               <Link
                 to="/create-blog"
