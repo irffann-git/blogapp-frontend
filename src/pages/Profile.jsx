@@ -342,7 +342,7 @@ function Profile() {
             </div>
             <h2 className="text-lg sm:text-xl font-bold text-stone-800">Quick actions</h2>
           </div>
-          <div className="grid sm:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
             <Link
               to="/create-blog"
               className="group bg-gradient-to-br from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-stone-900 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-xl"
