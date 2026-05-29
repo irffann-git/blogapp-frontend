@@ -6,6 +6,7 @@ function Navbar() {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
@@ -18,36 +19,49 @@ function Navbar() {
   };
 
   const closeMenu = () => setIsMenuOpen(false);
-  const toggleMenu = () => setIsMenuOpen(prev => !prev);
 
-  // Close on escape key
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === "Escape") closeMenu();
+      if (e.key === "Escape") {
+        closeMenu();
+      }
     };
+
     document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, []);
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
+
     return () => {
       document.body.style.overflow = "unset";
     };
   }, [isMenuOpen]);
 
-  // Close menu on window resize (if screen becomes desktop)
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) closeMenu();
+      if (window.innerWidth >= 768) {
+        closeMenu();
+      }
     };
+
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
@@ -66,34 +80,49 @@ function Navbar() {
               </span>
             </Link>
 
-            {/* Desktop Menu (hidden on mobile) */}
-            <div className="hidden md:flex items-center gap-2 sm:gap-3">
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center gap-3">
               {token ? (
                 <>
                   <Link
                     to="/create-blog"
-                    className="bg-amber-500 hover:bg-amber-400 text-stone-900 px-4 py-1.5 rounded-full text-sm font-semibold transition-colors"
+                    className="bg-amber-500 hover:bg-amber-400 text-stone-900 px-4 py-2 rounded-full text-sm font-semibold transition"
                   >
                     + Write
                   </Link>
+
                   <Link
                     to="/dashboard"
-                    className="bg-stone-700 hover:bg-stone-600 text-stone-100 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+                    className="bg-stone-700 hover:bg-stone-600 text-stone-100 px-4 py-2 rounded-full text-sm font-medium transition"
                   >
                     Dashboard
                   </Link>
-                  <div className="h-5 w-px bg-stone-600" />
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 text-sm font-semibold">
-                      {user?.name?.charAt(0).toUpperCase() || "U"}
+
+                  <Link
+                    to="/profile"
+                    className="bg-stone-700 hover:bg-stone-600 text-stone-100 px-4 py-2 rounded-full text-sm font-medium transition"
+                  >
+                    Profile
+                  </Link>
+
+                  <div className="h-5 w-px bg-stone-600"></div>
+
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-2 hover:opacity-80 transition"
+                  >
+                    <div className="w-9 h-9 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 text-sm font-bold">
+                      {user?.name?.charAt(0)?.toUpperCase() || "U"}
                     </div>
+
                     <span className="hidden lg:inline text-sm text-stone-300">
                       {user?.name?.split(" ")[0] || "User"}
                     </span>
-                  </div>
+                  </Link>
+
                   <button
                     onClick={handleLogout}
-                    className="bg-transparent border border-stone-600 hover:border-stone-400 hover:text-stone-100 text-stone-400 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
+                    className="border border-stone-600 hover:border-stone-400 hover:text-white text-stone-400 px-4 py-2 rounded-full text-sm font-medium transition"
                   >
                     Logout
                   </button>
@@ -102,13 +131,14 @@ function Navbar() {
                 <>
                   <Link
                     to="/login"
-                    className="text-stone-300 hover:text-stone-100 px-3 py-1.5 rounded-md text-sm font-medium transition-colors"
+                    className="text-stone-300 hover:text-white px-3 py-2 text-sm font-medium transition"
                   >
                     Login
                   </Link>
+
                   <Link
                     to="/register"
-                    className="bg-amber-500 hover:bg-amber-400 text-stone-900 px-5 py-1.5 rounded-full text-sm font-semibold transition-colors"
+                    className="bg-amber-500 hover:bg-amber-400 text-stone-900 px-5 py-2 rounded-full text-sm font-semibold transition"
                   >
                     Register
                   </Link>
@@ -116,26 +146,24 @@ function Navbar() {
               )}
             </div>
 
-            {/* Mobile hamburger button */}
+            {/* Mobile Toggle */}
             <button
               onClick={toggleMenu}
-              className="md:hidden relative w-10 h-10 rounded-lg bg-stone-800/50 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors hover:bg-stone-700"
-              aria-label="Toggle menu"
-              aria-expanded={isMenuOpen}
+              className="md:hidden relative w-10 h-10 rounded-lg bg-stone-800/50 hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
             >
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 flex flex-col justify-between items-center">
+              <div className="absolute left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between">
                 <span
-                  className={`w-5 h-0.5 bg-stone-300 rounded-full transition-all duration-300 ${
+                  className={`h-0.5 bg-white rounded transition-all duration-300 ${
                     isMenuOpen ? "rotate-45 translate-y-2" : ""
                   }`}
                 />
                 <span
-                  className={`w-5 h-0.5 bg-stone-300 rounded-full transition-all duration-300 ${
+                  className={`h-0.5 bg-white rounded transition-all duration-300 ${
                     isMenuOpen ? "opacity-0" : ""
                   }`}
                 />
                 <span
-                  className={`w-5 h-0.5 bg-stone-300 rounded-full transition-all duration-300 ${
+                  className={`h-0.5 bg-white rounded transition-all duration-300 ${
                     isMenuOpen ? "-rotate-45 -translate-y-2" : ""
                   }`}
                 />
@@ -145,18 +173,18 @@ function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu Backdrop */}
+      {/* Backdrop */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
           onClick={closeMenu}
         />
       )}
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer */}
       <div
         ref={menuRef}
-        className={`fixed top-16 left-0 right-0 z-40 bg-[#3D2B1F] border-b border-stone-700 shadow-xl transition-all duration-300 ease-out md:hidden ${
+        className={`fixed top-16 left-0 right-0 z-40 bg-[#3D2B1F] border-b border-stone-700 shadow-xl transition-all duration-300 md:hidden ${
           isMenuOpen
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0 pointer-events-none"
@@ -165,22 +193,35 @@ function Navbar() {
         <div className="p-5 space-y-4">
           {token ? (
             <>
-              {/* User info card */}
               <div className="flex items-center gap-3 pb-4 border-b border-stone-700">
-                <div className="w-12 h-12 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 text-lg font-bold">
-                  {user?.name?.charAt(0).toUpperCase() || "U"}
+                <div className="w-12 h-12 rounded-full bg-amber-600 flex items-center justify-center text-lg font-bold">
+                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </div>
+
                 <div>
-                  <p className="font-semibold text-stone-100">{user?.name || "User"}</p>
-                  <p className="text-xs text-stone-400">{user?.email || "user@example.com"}</p>
+                  <p className="font-semibold text-white">
+                    {user?.name || "User"}
+                  </p>
+
+                  <p className="text-xs text-stone-400">
+                    {user?.email || ""}
+                  </p>
                 </div>
               </div>
 
-              {/* Navigation links */}
+              <Link
+                to="/profile"
+                onClick={closeMenu}
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 transition"
+              >
+                <span>Profile</span>
+                <span className="text-amber-500">→</span>
+              </Link>
+
               <Link
                 to="/create-blog"
                 onClick={closeMenu}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 text-stone-200 font-medium transition"
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 transition"
               >
                 <span>Create Blog</span>
                 <span className="text-amber-500">→</span>
@@ -189,7 +230,7 @@ function Navbar() {
               <Link
                 to="/dashboard"
                 onClick={closeMenu}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 text-stone-200 font-medium transition"
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 transition"
               >
                 <span>Dashboard</span>
                 <span className="text-amber-500">→</span>
@@ -197,10 +238,10 @@ function Navbar() {
 
               <button
                 onClick={handleLogout}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 text-stone-200 font-medium transition"
+                className="w-full flex justify-between items-center px-4 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 transition"
               >
                 <span>Logout</span>
-                <span className="text-amber-500">→</span>
+                <span>→</span>
               </button>
             </>
           ) : (
@@ -208,18 +249,19 @@ function Navbar() {
               <Link
                 to="/login"
                 onClick={closeMenu}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 text-stone-200 font-medium transition"
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 transition"
               >
                 <span>Login</span>
                 <span className="text-amber-500">→</span>
               </Link>
+
               <Link
                 to="/register"
                 onClick={closeMenu}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-medium transition"
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 transition"
               >
                 <span>Register</span>
-                <span className="text-amber-500">→</span>
+                <span>→</span>
               </Link>
             </>
           )}
