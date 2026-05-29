@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
 
-// debounce hook (unchanged)
+// debounce hook
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -13,20 +13,20 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-// category colors – preserved, only enhanced with new gradients
+// category colors
 const categoryColors = {
-  Technology: "bg-gradient-to-r from-sky-100 to-blue-100 text-sky-800",
-  Lifestyle: "bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800",
-  Sports: "bg-gradient-to-r from-red-100 to-rose-100 text-red-800",
-  Programming: "bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800",
-  Business: "bg-gradient-to-r from-stone-100 to-neutral-100 text-stone-800",
-  Travel: "bg-gradient-to-r from-violet-100 to-purple-100 text-violet-800",
-  Health: "bg-gradient-to-r from-lime-100 to-green-100 text-lime-800",
-  Productivity: "bg-gradient-to-r from-indigo-100 to-blue-100 text-indigo-800",
-  default: "bg-gray-100 text-gray-700",
+  Technology: "bg-amber-50 text-amber-900",
+  Lifestyle: "bg-orange-50 text-orange-900",
+  Sports: "bg-red-50 text-red-900",
+  Programming: "bg-yellow-50 text-yellow-900",
+  Business: "bg-stone-100 text-stone-800",
+  Travel: "bg-orange-50 text-orange-900",
+  Health: "bg-lime-50 text-lime-900",
+  Productivity: "bg-amber-50 text-amber-900",
+  default: "bg-stone-100 text-stone-700",
 };
 
-// ✅ helper – unchanged
+// ✅ helper — works for both Cloudinary (full URL) and old local uploads (relative path)
 function getImageUrl(image) {
   const placeholder = "https://placehold.co/600x400?text=No+Image";
   if (!image) return placeholder;
@@ -34,7 +34,7 @@ function getImageUrl(image) {
   return `${import.meta.env.VITE_API_URL}/${image.replace(/^\/+/, "")}`;
 }
 
-// BlogCard – redesigned with modern glassmorphic card, better hover, and preserved image/avatar logic
+// blog card
 function BlogCard({ blog }) {
   const placeholder = "https://placehold.co/600x400?text=No+Image";
   const categoryClass = categoryColors[blog.category] || categoryColors.default;
@@ -42,38 +42,34 @@ function BlogCard({ blog }) {
   return (
     <Link
       to={`/blogs/${blog._id}`}
-      className="group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-gray-100"
+      className="group bg-[#FFFCF7] rounded-2xl overflow-hidden border border-stone-200 hover:border-amber-300 hover:-translate-y-1 transition-all duration-300 flex flex-col"
     >
-      <div className="relative overflow-hidden h-52 sm:h-56">
+      <div className="relative overflow-hidden h-48 sm:h-52">
         <img
           src={getImageUrl(blog.image)}
           alt={blog.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           onError={(e) => { e.target.onerror = null; e.target.src = placeholder; }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <span className={`absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm ${categoryClass}`}>
-          {blog.category}
-        </span>
+        <div className="absolute inset-0 bg-stone-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      <div className="p-5 flex flex-col flex-grow">
-        <h2 className="text-lg font-semibold mb-2 line-clamp-2 text-gray-800 group-hover:text-indigo-600 transition-colors">
+      <div className="p-4 sm:p-5 flex flex-col flex-grow">
+        <span className={`self-start text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3 ${categoryClass}`}>
+          {blog.category}
+        </span>
+        <h2 className="text-sm sm:text-base font-semibold mb-2 line-clamp-2 text-stone-800 group-hover:text-amber-700 transition-colors leading-snug">
           {blog.title}
         </h2>
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
-          <span>👁 {blog.views || 0} views</span>
-          <span>•</span>
-          <span>📅 {new Date(blog.createdAt).toLocaleDateString()}</span>
-        </div>
-        <p className="text-gray-500 text-sm mb-4 line-clamp-3 leading-relaxed">
-          {blog.description?.slice(0, 110)}...
+        <p className="text-xs text-stone-400 mb-2">👁 {blog.views || 0} views</p>
+        <p className="text-stone-500 text-xs sm:text-sm mb-4 line-clamp-3 leading-relaxed">
+          {blog.description?.slice(0, 120)}...
         </p>
-        <div className="flex items-center mt-auto pt-3 border-t border-gray-100">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+        <div className="flex items-center mt-auto pt-3 border-t border-stone-100">
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 text-xs font-semibold">
             {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
           </div>
-          <p className="text-xs text-gray-500 ml-2 truncate">
+          <p className="text-xs text-stone-500 ml-2 truncate">
             {blog.user?.name || "Anonymous"}
           </p>
         </div>
@@ -82,7 +78,7 @@ function BlogCard({ blog }) {
   );
 }
 
-// Main Home component – all logic preserved, design fully revamped
+// home
 function Home() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -98,7 +94,7 @@ function Home() {
     "Business", "Travel", "Health", "Productivity",
   ];
 
-  // ✅ fetch logic unchanged
+  // ✅ async function defined INSIDE useEffect — no useCallback needed
   useEffect(() => {
     const controller = new AbortController();
 
@@ -124,16 +120,12 @@ function Home() {
     return () => controller.abort();
   }, [debouncedSearch]);
 
-  // loading state – new animated spinner
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+      <div className="flex justify-center items-center min-h-screen bg-[#F5F0E8]">
         <div className="text-center">
-          <div className="relative w-16 h-16 mx-auto">
-            <div className="absolute inset-0 border-4 border-indigo-200 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-indigo-600 rounded-full animate-spin border-t-transparent"></div>
-          </div>
-          <p className="mt-5 text-gray-500 font-medium">Loading stories...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-200 border-t-amber-600 mx-auto" />
+          <p className="mt-5 text-stone-500 text-sm">Gathering stories...</p>
         </div>
       </div>
     );
@@ -152,24 +144,22 @@ function Home() {
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      {/* Hero Section – fresh gradient, animated underline, better spacing */}
-      <div className="relative bg-gradient-to-r from-indigo-900 via-purple-800 to-indigo-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 text-center">
-          <p className="text-sm font-semibold tracking-widest text-indigo-200 uppercase mb-3">
-            Discover & Learn
+    <div className="min-h-screen bg-[#F5F0E8]">
+      {/* hero */}
+      <div className="bg-[#3D2B1F] text-stone-100 py-12 sm:py-16 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-2 sm:mb-3">
+            Discover stories
           </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight">
-            Explore <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-300 to-yellow-200">Ideas & Insights</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-[#F5F0E8] leading-tight">
+            Explore ideas & insights
           </h1>
-          <p className="text-gray-200 text-base sm:text-lg max-w-2xl mx-auto mb-8">
-            Stories from creative minds around the world – curated for you.
+          <p className="text-stone-400 text-sm sm:text-base md:text-lg mb-6 sm:mb-8">
+            Stories from creative minds around the world
           </p>
 
-          {/* Search bar – modern glass style */}
           <div className="relative max-w-xl mx-auto">
-            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -178,20 +168,19 @@ function Home() {
               value={search}
               onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
               maxLength={50}
-              className="w-full pl-11 pr-4 py-3 sm:py-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all text-sm sm:text-base"
+              className="w-full pl-11 pr-4 py-3 sm:py-4 rounded-full bg-[#F5F0E8] text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm sm:text-base"
             />
           </div>
 
-          {/* Category filters – modern pill design */}
-          <div className="flex flex-wrap justify-center gap-2 mt-8">
+          <div className="flex flex-wrap justify-center gap-2 mt-6 sm:mt-7">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => { setSelectedCategory(cat); setCurrentPage(1); }}
-                className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-3 sm:px-5 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all ${
                   selectedCategory === cat
-                    ? "bg-white text-indigo-900 shadow-lg scale-105"
-                    : "bg-white/10 text-gray-200 hover:bg-white/20 hover:text-white backdrop-blur-sm"
+                    ? "bg-amber-500 text-stone-900 shadow-md"
+                    : "bg-white/10 text-stone-300 hover:bg-amber-500/20 hover:text-amber-200"
                 }`}
               >
                 {cat}
@@ -199,110 +188,98 @@ function Home() {
             ))}
           </div>
         </div>
-        {/* decorative blur */}
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-amber-500/30 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-pink-500/20 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        {/* Trending Section – with decorative badge */}
+      {/* content */}
+      <div className="max-w-7xl mx-auto px-4 py-10 sm:py-12 md:py-16">
+
+        {/* trending */}
         {trendingBlogs.length > 0 && (
-          <section className="mb-16">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">🔥</span>
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Trending Now</h2>
-              </div>
-              <span className="bg-amber-100 text-amber-800 text-xs font-semibold px-4 py-1.5 rounded-full shadow-sm">
-                Most viewed this week
+          <section className="mb-12 sm:mb-16">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-stone-800">Trending blogs</h2>
+              <span className="bg-orange-100 text-orange-800 text-xs font-semibold px-3 sm:px-4 py-1 rounded-full self-start sm:self-auto">
+                Top viewed
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {trendingBlogs.map((blog) => <BlogCard key={blog._id} blog={blog} />)}
             </div>
           </section>
         )}
 
-        <div className="border-t border-gray-200 my-10" />
+        <div className="border-t border-stone-200 mb-10 sm:mb-12" />
 
-        {/* Latest Blogs Section */}
+        {/* latest */}
         <section>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
-              {search ? `🔍 Search: "${search}"` : "📖 Latest Stories"}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-stone-800">
+              {search ? `Search results for "${search}"` : "Latest blogs"}
             </h2>
-            <div className="flex items-center gap-4">
-              <p className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                {filteredBlogs.length} result{filteredBlogs.length !== 1 && "s"}
-              </p>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <p className="text-xs sm:text-sm text-stone-500">{filteredBlogs.length} results</p>
               {search && (
-                <button
-                  onClick={() => setSearch("")}
-                  className="text-sm text-indigo-600 hover:text-indigo-800 font-medium transition"
-                >
-                  Clear search
+                <button onClick={() => setSearch("")} className="text-xs sm:text-sm text-amber-700 hover:text-amber-600">
+                  Clear
                 </button>
               )}
             </div>
           </div>
 
           {filteredBlogs.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100">
-              <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-12 sm:py-16 bg-white/50 rounded-2xl">
+              <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-stone-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p className="text-gray-500 text-lg">No blogs found</p>
-              <p className="text-gray-400 text-sm mt-1">Try adjusting your search or category</p>
+              <p className="text-stone-500 text-base sm:text-lg">No blogs match your search</p>
+              <p className="text-stone-400 text-xs sm:text-sm mt-1">Try another keyword</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {currentBlogs.map((blog) => <BlogCard key={blog._id} blog={blog} />)}
             </div>
           )}
         </section>
 
-        {/* Pagination – redesigned with nicer buttons */}
+        {/* pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-12 flex-wrap">
+          <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
-              className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 currentPage === 1
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-600 shadow-sm"
+                  ? "bg-stone-200 text-stone-400 cursor-not-allowed"
+                  : "bg-amber-500 text-stone-900 hover:bg-amber-400"
               }`}
             >
-              ← Previous
+              Prev
             </button>
 
-            <div className="flex gap-1.5">
-              {[...Array(totalPages)].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`w-10 h-10 rounded-xl text-sm font-semibold transition-all ${
-                    currentPage === i + 1
-                      ? "bg-indigo-600 text-white shadow-md scale-105"
-                      : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
+            {[...Array(totalPages)].map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`w-10 h-10 rounded-lg text-sm font-semibold transition ${
+                  currentPage === i + 1
+                    ? "bg-stone-900 text-white"
+                    : "bg-white border border-stone-200 text-stone-700 hover:bg-stone-100"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
 
             <button
               onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 currentPage === totalPages
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-white border border-gray-300 text-gray-700 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-600 shadow-sm"
+                  ? "bg-stone-200 text-stone-400 cursor-not-allowed"
+                  : "bg-amber-500 text-stone-900 hover:bg-amber-400"
               }`}
             >
-              Next →
+              Next
             </button>
           </div>
         )}
