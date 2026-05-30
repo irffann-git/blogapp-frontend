@@ -194,7 +194,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
 {/* ALTERNATIVE HERO - extra lean, almost no background weight */}
-<div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+<div className="bg-black border-b border-gray-100">
   <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
     <div className="max-w-3xl mx-auto text-center">
       {/* No badge, just clean typography */}
