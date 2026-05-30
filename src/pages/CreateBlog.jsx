@@ -143,7 +143,6 @@ function CreateBlog() {
                 />
               </label>
 
-              {/* preview with glass effect - responsive height */}
               {preview && (
                 <div className="mt-4 relative rounded-xl overflow-hidden border border-gray-700">
                   <img
@@ -156,10 +155,8 @@ function CreateBlog() {
               )}
             </div>
 
-            {/* divider */}
             <div className="border-t border-gray-800" />
 
-            {/* buttons - full width on mobile, side by side on larger */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
@@ -188,7 +185,6 @@ function CreateBlog() {
               </button>
             </div>
 
-            {/* helper text for required fields */}
             <p className="text-[10px] sm:text-xs text-gray-500 text-center">
               All fields marked with * are required
             </p>

@@ -74,7 +74,6 @@ function Dashboard() {
     <div className="min-h-screen bg-black py-6 sm:py-8 md:py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto w-full">
 
-        {/* page header - fully responsive */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
           <div>
             <p className="text-[11px] sm:text-xs font-semibold tracking-widest text-red-400 uppercase mb-1">
@@ -99,7 +98,6 @@ function Dashboard() {
           </Link>
         </div>
 
-        {/* stat cards - responsive grid and touch-friendly */}
         <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-10">
           <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-800 p-3 sm:p-4 flex items-center gap-3 transition-all duration-300 hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/5">
             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-500/10 rounded-full flex items-center justify-center flex-shrink-0">
@@ -141,7 +139,6 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* empty state - responsive */}
         {blogs.length === 0 ? (
           <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 p-8 sm:p-10 md:p-14 text-center">
             <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5">

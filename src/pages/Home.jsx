@@ -99,7 +99,6 @@ function BlogCard({ blog }) {
   );
 }
 
-// Responsive Skeleton loader
 function BlogCardSkeleton() {
   return (
     <div className="bg-[#1a1a1a] rounded-xl overflow-hidden border border-gray-800 animate-pulse">
@@ -188,12 +187,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* NETFLIX-STYLE HERO - FULLY RESPONSIVE */}
       <div className="bg-gradient-to-br from-gray-900 to-black border-b border-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
           <div className="max-w-3xl mx-auto text-center">
             
-            {/* Badge */}
             <div className="mb-3 sm:mb-4">
               <span className="inline-block px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold text-red-500 bg-red-500/10 rounded-full border border-red-500/30">
                 BLOG INSIGHTS
