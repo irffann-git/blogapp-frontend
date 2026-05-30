@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import API from "../services/api";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
@@ -25,6 +25,13 @@ function Register() {
       setLoading(false);
     }
   };
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    navigate("/", { replace: true });
+  }
+}, [navigate]);
 
 
   const inputClass =

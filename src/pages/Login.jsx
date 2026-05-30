@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect  } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../services/api";
 import toast from "react-hot-toast";
@@ -27,6 +27,14 @@ function Login() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    navigate("/", { replace: true });
+  }
+}, [navigate]);
 
   const inputClass =
     "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
