@@ -9,6 +9,8 @@ function EditBlog() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [preview, setPreview] = useState("");
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategoryValue, setCustomCategoryValue] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -16,28 +18,44 @@ function EditBlog() {
     image: null,
   });
 
-  // Predefined category options (8 options)
-  const categoryOptions = [
+  // Fixed category options (7 options)
+  const fixedCategoryOptions = [
     "Technology",
     "Lifestyle",
     "Sports",
     "Programming",
     "Business",
     "Travel",
-    "Health",
-    "Productivity"
+    "Health"
   ];
+
+  // Full dropdown options including "Custom"
+  const dropdownOptions = [...fixedCategoryOptions, "Custom"];
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
         const { data } = await API.get(`/api/blogs/${id}`);
+        const originalCategory = data.category || "";
+        
+        // Check if the existing category is in our fixed list
+        const isFixed = fixedCategoryOptions.includes(originalCategory);
+        
         setFormData({
           title: data.title || "",
           description: data.description || "",
-          category: data.category || "",
+          category: isFixed ? originalCategory : "Custom",
           image: null,
         });
+        
+        if (!isFixed && originalCategory) {
+          setIsCustomCategory(true);
+          setCustomCategoryValue(originalCategory);
+        } else {
+          setIsCustomCategory(false);
+          setCustomCategoryValue("");
+        }
+        
         if (data.image) setPreview(`${import.meta.env.VITE_API_URL}${data.image}`);
       } catch (error) {
         console.log(error);
@@ -55,9 +73,20 @@ function EditBlog() {
       const file = e.target.files[0];
       setFormData({ ...formData, image: file });
       if (file) setPreview(URL.createObjectURL(file));
+    } else if (e.target.name === "category") {
+      const selected = e.target.value;
+      setFormData({ ...formData, category: selected });
+      setIsCustomCategory(selected === "Custom");
+      if (selected !== "Custom") {
+        setCustomCategoryValue("");
+      }
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
+  };
+
+  const handleCustomCategoryChange = (e) => {
+    setCustomCategoryValue(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -68,7 +97,19 @@ function EditBlog() {
       const blogData = new FormData();
       blogData.append("title", formData.title);
       blogData.append("description", formData.description);
-      blogData.append("category", formData.category);
+      
+      // Determine final category value
+      let finalCategory = formData.category;
+      if (formData.category === "Custom") {
+        finalCategory = customCategoryValue.trim() ? "Others" : "";
+      }
+      if (!finalCategory) {
+        toast.error("Please select or enter a valid category");
+        setSubmitting(false);
+        return;
+      }
+      blogData.append("category", finalCategory);
+      
       if (formData.image) blogData.append("image", formData.image);
 
       const { data } = await API.put(`/api/blogs/${id}`, blogData, {
@@ -103,7 +144,7 @@ function EditBlog() {
     );
   }
 
-  // Responsive input classes (shared)
+  // Responsive input classes
   const inputClass =
     "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
 
@@ -152,7 +193,7 @@ function EditBlog() {
               <textarea
                 name="description"
                 placeholder="Write your blog content here..."
-                rows="6 sm:rows=7"
+                rows="6"
                 className={`${inputClass} resize-none`}
                 onChange={handleChange}
                 value={formData.description}
@@ -160,7 +201,7 @@ function EditBlog() {
               />
             </div>
 
-            {/* Category - Dropdown Select with 8 options */}
+            {/* Category - Dropdown with fixed options + Custom */}
             <div>
               <label className={labelClass}>Category</label>
               <div className="relative">
@@ -172,19 +213,34 @@ function EditBlog() {
                   required
                 >
                   <option value="" disabled>Select a category</option>
-                  {categoryOptions.map((cat) => (
+                  {dropdownOptions.map((cat) => (
                     <option key={cat} value={cat}>
                       {cat}
                     </option>
                   ))}
                 </select>
-                {/* Custom dropdown arrow */}
                 <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
                   <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </div>
+
+              {/* Custom category input field (shown when "Custom" is selected) */}
+              {isCustomCategory && (
+                <div className="mt-3">
+                  <input
+                    type="text"
+                    placeholder="Enter your custom category"
+                    value={customCategoryValue}
+                    onChange={handleCustomCategoryChange}
+                    className={inputClass}
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1">
+                    Custom category will be saved as "Others"
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Image Upload */}
