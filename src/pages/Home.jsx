@@ -200,18 +200,15 @@ export default function Home() {
               </span>
             </div>
             
-            {/* Heading */}
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4 leading-tight">
               Thought leadership for <br className="hidden sm:block" />
               <span className="text-red-500">modern readers</span>
             </h1>
             
-            {/* Subheading */}
             <p className="text-gray-400 text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto mb-6 sm:mb-8 px-2">
               In-depth articles on technology, business, and culture — curated by industry experts.
             </p>
             
-            {/* Search Bar */}
             <div className="max-w-md mx-auto mb-6 sm:mb-8 px-2 sm:px-0">
               <div className="relative">
                 <input
@@ -237,7 +234,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Category Buttons - responsive wrap */}
             <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 px-2">
               {categories.map((cat) => (
                 <button
@@ -257,9 +253,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Trending Section */}
         {!search && trendingBlogs.length > 0 && !loading && (
           <section className="mb-12 sm:mb-16">
             <div className="flex items-center gap-2 mb-4 sm:mb-6">
@@ -276,7 +270,6 @@ export default function Home() {
           </section>
         )}
 
-        {/* Latest Blogs Section */}
         <section>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-bold text-white">
@@ -330,7 +323,6 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Pagination - fully responsive */}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-1.5 sm:gap-2 mt-10 sm:mt-12">
                   <button
@@ -384,7 +376,6 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="bg-black border-t border-gray-800 mt-12 sm:mt-16 py-6 sm:py-8">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center text-xs sm:text-sm text-gray-500">

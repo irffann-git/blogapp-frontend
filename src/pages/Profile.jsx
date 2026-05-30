@@ -86,9 +86,9 @@ function Profile() {
     <div className="min-h-screen bg-black py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto w-full">
         
-        {/* Profile Hero Section - Fully Responsive */}
+
         <div className="relative overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl bg-gray-900/50 backdrop-blur-sm shadow-2xl border border-gray-800 transition-all duration-300 hover:shadow-red-900/20">
-          {/* Decorative pattern overlay */}
+      
           <div className="absolute inset-0 opacity-5 pointer-events-none">
             <svg className="absolute -top-24 -right-24 w-48 sm:w-64 h-48 sm:h-64 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -98,12 +98,12 @@ function Profile() {
             </svg>
           </div>
 
-          {/* Cover area with red gradient */}
+       
           <div className="h-28 sm:h-32 md:h-40 lg:h-48 bg-gradient-to-r from-red-900/50 via-red-800/30 to-black" />
           
           <div className="px-4 sm:px-6 pb-6 sm:pb-8 relative">
             <div className="-mt-10 sm:-mt-12 flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-5">
-              {/* Avatar with responsive size */}
+     
               <div className="relative group">
                 <div className="absolute inset-0 rounded-full bg-red-500/50 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full ring-4 ring-gray-800 bg-gradient-to-br from-red-500 to-red-600 text-white flex items-center justify-center text-3xl sm:text-4xl md:text-5xl font-bold shadow-xl flex-shrink-0 transition-transform group-hover:scale-105">
@@ -143,7 +143,6 @@ function Profile() {
           </div>
         </div>
 
-        {/* Stats Grid - Responsive cards */}
         <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-5 sm:mt-6">
           <div className="group bg-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 border border-gray-800 shadow-lg hover:shadow-red-900/20 transition-all duration-300 hover:-translate-y-1">
             <div className="flex items-center gap-2 sm:gap-3">
@@ -215,7 +214,7 @@ function Profile() {
           </div>
         </div>
 
-        {/* Account Information Section */}
+        
         <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-gray-800 shadow-lg p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
           <div className="flex items-center justify-between mb-4 sm:mb-5">
             <div className="flex items-center gap-2">
@@ -262,7 +261,7 @@ function Profile() {
           </div>
         </div>
 
-        {/* Recent Blogs Section */}
+        
         {!loadingStats && (
           <div className="mt-5 sm:mt-6">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
@@ -343,7 +342,7 @@ function Profile() {
           </div>
         )}
 
-        {/* Quick Actions */}
+       
         <div className="mt-6 sm:mt-8">
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
             <div className="p-1.5 bg-red-500/10 rounded-lg sm:rounded-xl">
@@ -386,7 +385,6 @@ function Profile() {
         </div>
       </div>
 
-      {/* Edit Profile Modal - Responsive */}
       {showEditModal && (
         <div
           className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 px-4 animate-in fade-in duration-200"

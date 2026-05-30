@@ -26,7 +26,7 @@ function Register() {
     }
   };
 
-  // Responsive input classes
+
   const inputClass =
     "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
 
@@ -37,10 +37,9 @@ function Register() {
     <div className="min-h-screen flex items-center justify-center bg-black px-4 py-8 sm:py-12">
       <div className="w-full max-w-md mx-auto">
         
-        {/* glass card */}
         <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
 
-          {/* header - Netflix gradient with responsive padding */}
+
           <div className="bg-gradient-to-r from-red-600 to-red-500 px-5 sm:px-8 py-6 sm:py-8 text-center">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 border border-white/20">
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +50,6 @@ function Register() {
             <p className="text-white/70 text-xs sm:text-sm mt-1">Join the Blogger community</p>
           </div>
 
-          {/* form - responsive spacing */}
           <form onSubmit={handleSubmit} className="p-5 sm:p-6 md:p-8 space-y-4 sm:space-y-5">
 
             <div>
