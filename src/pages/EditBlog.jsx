@@ -16,6 +16,18 @@ function EditBlog() {
     image: null,
   });
 
+  // Predefined category options (8 options)
+  const categoryOptions = [
+    "Technology",
+    "Lifestyle",
+    "Sports",
+    "Programming",
+    "Business",
+    "Travel",
+    "Health",
+    "Productivity"
+  ];
+
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -91,10 +103,14 @@ function EditBlog() {
     );
   }
 
+  // Responsive input classes (shared)
   const inputClass =
-    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
+    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
 
-  const labelClass = "block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5";
+  const selectClass =
+    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all appearance-none cursor-pointer";
+
+  const labelClass = "block text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5";
 
   return (
     <div className="min-h-screen bg-black py-6 sm:py-8 md:py-12 px-4 flex items-center justify-center">
@@ -116,6 +132,7 @@ function EditBlog() {
 
           <form onSubmit={handleSubmit} className="p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
 
+            {/* Title */}
             <div>
               <label className={labelClass}>Title</label>
               <input
@@ -129,12 +146,13 @@ function EditBlog() {
               />
             </div>
 
+            {/* Description */}
             <div>
               <label className={labelClass}>Description</label>
               <textarea
                 name="description"
                 placeholder="Write your blog content here..."
-                rows="6 sm:rows-7"
+                rows="6 sm:rows=7"
                 className={`${inputClass} resize-none`}
                 onChange={handleChange}
                 value={formData.description}
@@ -142,19 +160,34 @@ function EditBlog() {
               />
             </div>
 
+            {/* Category - Dropdown Select with 8 options */}
             <div>
               <label className={labelClass}>Category</label>
-              <input
-                type="text"
-                name="category"
-                placeholder="e.g. Technology, Travel, Health..."
-                className={inputClass}
-                onChange={handleChange}
-                value={formData.category}
-                required
-              />
+              <div className="relative">
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className={selectClass}
+                  required
+                >
+                  <option value="" disabled>Select a category</option>
+                  {categoryOptions.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+                {/* Custom dropdown arrow */}
+                <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
+            {/* Image Upload */}
             <div>
               <label className={labelClass}>Replace cover image</label>
               <label className="flex items-center gap-3 cursor-pointer w-full bg-gray-800/50 border-2 border-dashed border-gray-600 hover:border-red-500 rounded-xl px-4 py-3 sm:py-4 transition-all duration-200 group min-h-[52px]">
@@ -187,6 +220,7 @@ function EditBlog() {
 
             <div className="border-t border-gray-800" />
 
+            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
