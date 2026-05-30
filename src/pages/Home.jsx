@@ -194,68 +194,69 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Modern Professional Hero Section */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 py-12 md:py-20">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-6">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-              </span>
-              Latest insights
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-4">
-              Ideas that <span className="text-blue-600">shape tomorrow</span>
-            </h1>
-            <p className="text-gray-600 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-              Curated stories on technology, lifestyle, and business from voices around the world.
-            </p>
-            
-            {/* Search Bar with clear button */}
-            <div className="max-w-md mx-auto mb-8">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search articles..."
-                  value={search}
-                  onChange={(e) => handleSearchChange(e.target.value)}
-                  className="w-full px-5 py-3 pl-12 pr-10 text-gray-900 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                />
-                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                {search && (
-                  <button
-                    onClick={() => handleSearchChange("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    aria-label="Clear search"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Category Filters */}
-            <div className="flex flex-wrap justify-center gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => handleCategoryChange(cat)}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200
-                    ${selectedCategory === cat 
-                      ? 'bg-gray-900 text-white shadow-sm' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
+    {/* LEANER HERO SECTION - lighter background, less visual weight */}
+<div className="bg-gray-50 border-b border-gray-100">
+  <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
+    <div className="max-w-3xl mx-auto text-center">
+      <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-6">
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+        </span>
+        Latest insights
+      </div>
+      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-4">
+        Ideas that <span className="text-blue-600">shape tomorrow</span>
+      </h1>
+      <p className="text-gray-600 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+        Curated stories on technology, lifestyle, and business from voices around the world.
+      </p>
+      
+      {/* Search Bar */}
+      <div className="max-w-md mx-auto mb-8">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={search}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className="w-full px-5 py-3 pl-12 pr-10 text-gray-900 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
+          />
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          {search && (
+            <button
+              onClick={() => handleSearchChange("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              aria-label="Clear search"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Category Filters */}
+      <div className="flex flex-wrap justify-center gap-2">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => handleCategoryChange(cat)}
+            className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200
+              ${selectedCategory === cat 
+                ? 'bg-gray-900 text-white shadow-sm' 
+                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-12">
