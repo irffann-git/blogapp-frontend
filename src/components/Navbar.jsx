@@ -143,7 +143,7 @@ function Navbar() {
               )}
             </div>
 
-            {/* Mobile Toggle - enhanced animation */}
+            {/* Mobile Toggle Button */}
             <button
               onClick={toggleMenu}
               className="md:hidden relative w-10 h-10 rounded-lg bg-white/5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200"
@@ -168,9 +168,6 @@ function Navbar() {
             </button>
           </div>
         </div>
-
-        {/* Animated gradient bottom border on scroll - subtle */}
-        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </nav>
 
       {/* Backdrop with blur */}
@@ -181,7 +178,7 @@ function Navbar() {
         />
       )}
 
-      {/* Mobile Drawer - enhanced with smooth animation */}
+      {/* Mobile Drawer - Fixed text colors */}
       <div
         ref={menuRef}
         className={`fixed top-16 left-0 right-0 z-40 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-2xl transition-all duration-400 md:hidden ${
@@ -193,6 +190,7 @@ function Navbar() {
         <div className="p-5 space-y-3">
           {token ? (
             <>
+              {/* User info */}
               <div className="flex items-center gap-3 pb-4 border-b border-white/10 mb-2">
                 <div className="relative">
                   <div className="absolute inset-0 rounded-full bg-red-500/50 blur-md" />
@@ -210,24 +208,37 @@ function Navbar() {
                 </div>
               </div>
 
+              {/* Create Blog link */}
               <Link
                 to="/create-blog"
                 onClick={closeMenu}
                 className="group flex justify-between items-center px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10 hover:border-red-500/30"
               >
-                <span className="font-medium">Create Blog</span>
+                <span className="font-medium text-white">Create Blog</span>
                 <span className="text-red-500 transform group-hover:translate-x-1 transition-transform">→</span>
               </Link>
 
+              {/* Dashboard link */}
               <Link
                 to="/dashboard"
                 onClick={closeMenu}
                 className="group flex justify-between items-center px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10 hover:border-red-500/30"
               >
-                <span className="font-medium">Dashboard</span>
+                <span className="font-medium text-white">Dashboard</span>
                 <span className="text-red-500 transform group-hover:translate-x-1 transition-transform">→</span>
               </Link>
 
+              {/* Profile link (added for convenience) */}
+              <Link
+                to="/profile"
+                onClick={closeMenu}
+                className="group flex justify-between items-center px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10 hover:border-red-500/30"
+              >
+                <span className="font-medium text-white">Profile</span>
+                <span className="text-red-500 transform group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+
+              {/* Logout button */}
               <button
                 onClick={handleLogout}
                 className="group w-full flex justify-between items-center px-4 py-3 rounded-xl bg-red-500/5 hover:bg-red-500/10 transition-all duration-200 border border-red-500/20 text-red-400 hover:text-red-300"
@@ -238,15 +249,17 @@ function Navbar() {
             </>
           ) : (
             <>
+              {/* Login link */}
               <Link
                 to="/login"
                 onClick={closeMenu}
                 className="group flex justify-between items-center px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10 hover:border-red-500/30"
               >
-                <span className="font-medium">Login</span>
+                <span className="font-medium text-white">Login</span>
                 <span className="text-red-500 transform group-hover:translate-x-1 transition-transform">→</span>
               </Link>
 
+              {/* Register link */}
               <Link
                 to="/register"
                 onClick={closeMenu}
@@ -260,7 +273,6 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Add these styles if you want fade-in animation for backdrop */}
       <style jsx>{`
         @keyframes fade-in {
           from {
