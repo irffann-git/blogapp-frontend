@@ -30,12 +30,8 @@ function Navbar() {
         closeMenu();
       }
     };
-
     document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
+    return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
   useEffect(() => {
@@ -44,7 +40,6 @@ function Navbar() {
     } else {
       document.body.style.overflow = "unset";
     }
-
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -56,107 +51,116 @@ function Navbar() {
         closeMenu();
       }
     };
-
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <>
-      <nav className="bg-black text-white sticky top-0 z-50 border-b border-gray-800">
+      <nav className="bg-black/95 backdrop-blur-md text-white sticky top-0 z-50 border-b border-white/10 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
+            {/* Logo with subtle glow */}
             <Link
               to="/"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 group"
               onClick={closeMenu}
             >
-              <span className="text-xl font-bold tracking-tight text-white">
+              <div className="w-8 h-8 bg-gradient-to-br from-red-600 to-red-500 rounded-lg flex items-center justify-center shadow-md shadow-red-500/20 group-hover:shadow-red-500/40 transition-all duration-300">
+                <span className="text-white font-bold text-sm">B</span>
+              </div>
+              <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent group-hover:to-white transition-all duration-300">
                 BlogApp
               </span>
             </Link>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2">
               {token ? (
                 <>
                   <Link
                     to="/create-blog"
-                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition shadow-md"
+                    className="relative overflow-hidden bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 shadow-md shadow-red-500/20 hover:shadow-red-500/40 transform hover:scale-105"
                   >
-                    + Write
+                    <span className="relative z-10 flex items-center gap-1">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                      Write
+                    </span>
                   </Link>
 
                   <Link
                     to="/dashboard"
-                    className="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-full text-sm font-medium transition"
+                    className="relative group px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:text-white transition-colors duration-200"
                   >
-                    Dashboard
+                    <span className="relative z-10">Dashboard</span>
+                    <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/5 transition-colors duration-200" />
                   </Link>
 
-                  <div className="h-5 w-px bg-gray-700"></div>
+                  <div className="h-6 w-px bg-white/10 mx-1" />
 
                   <Link
                     to="/profile"
-                    className="flex items-center gap-2 hover:opacity-80 transition"
+                    className="flex items-center gap-2 group/profile"
                   >
-                    <div className="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center text-white text-sm font-bold">
-                      {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                    <div className="relative">
+                      <div className="absolute inset-0 rounded-full bg-red-500/50 blur-md opacity-0 group-hover/profile:opacity-100 transition-opacity duration-300" />
+                      <div className="relative w-9 h-9 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white text-sm font-bold shadow-md transition-transform group-hover/profile:scale-105">
+                        {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                      </div>
                     </div>
-
-                    <span className="hidden lg:inline text-sm text-gray-300">
+                    <span className="hidden lg:inline text-sm text-gray-300 group-hover/profile:text-white transition-colors">
                       {user?.name?.split(" ")[0] || "User"}
                     </span>
                   </Link>
 
                   <button
                     onClick={handleLogout}
-                    className="border border-gray-700 hover:border-red-600 hover:text-white text-gray-400 px-4 py-2 rounded-full text-sm font-medium transition"
+                    className="relative group px-4 py-2 rounded-full text-sm font-medium border border-white/20 text-gray-300 hover:text-white hover:border-red-500/50 transition-all duration-200"
                   >
-                    Logout
+                    <span className="relative z-10">Logout</span>
+                    <span className="absolute inset-0 rounded-full bg-red-500/0 group-hover:bg-red-500/10 transition-colors duration-200" />
                   </button>
                 </>
               ) : (
                 <>
                   <Link
                     to="/login"
-                    className="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition"
+                    className="relative group px-4 py-2 rounded-full text-sm font-medium text-gray-300 hover:text-white transition-colors duration-200"
                   >
-                    Login
+                    <span className="relative z-10">Login</span>
+                    <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/5 transition-colors duration-200" />
                   </Link>
 
                   <Link
                     to="/register"
-                    className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-semibold transition shadow-md"
+                    className="relative overflow-hidden bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 shadow-md shadow-red-500/20 hover:shadow-red-500/40 transform hover:scale-105"
                   >
-                    Register
+                    <span className="relative z-10">Register</span>
                   </Link>
                 </>
               )}
             </div>
 
-            {/* Mobile Toggle */}
+            {/* Mobile Toggle - enhanced animation */}
             <button
               onClick={toggleMenu}
-              className="md:hidden relative w-10 h-10 rounded-lg bg-gray-800/50 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="md:hidden relative w-10 h-10 rounded-lg bg-white/5 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200"
             >
               <div className="absolute left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between">
                 <span
-                  className={`h-0.5 bg-white rounded transition-all duration-300 ${
+                  className={`h-0.5 bg-white rounded-full transition-all duration-300 ${
                     isMenuOpen ? "rotate-45 translate-y-2" : ""
                   }`}
                 />
                 <span
-                  className={`h-0.5 bg-white rounded transition-all duration-300 ${
-                    isMenuOpen ? "opacity-0" : ""
+                  className={`h-0.5 bg-white rounded-full transition-all duration-300 ${
+                    isMenuOpen ? "opacity-0 scale-x-0" : ""
                   }`}
                 />
                 <span
-                  className={`h-0.5 bg-white rounded transition-all duration-300 ${
+                  className={`h-0.5 bg-white rounded-full transition-all duration-300 ${
                     isMenuOpen ? "-rotate-45 -translate-y-2" : ""
                   }`}
                 />
@@ -164,39 +168,43 @@ function Navbar() {
             </button>
           </div>
         </div>
+
+        {/* Animated gradient bottom border on scroll - subtle */}
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </nav>
 
-      {/* Backdrop */}
+      {/* Backdrop with blur */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-300"
           onClick={closeMenu}
         />
       )}
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer - enhanced with smooth animation */}
       <div
         ref={menuRef}
-        className={`fixed top-16 left-0 right-0 z-40 bg-black border-b border-gray-800 shadow-xl transition-all duration-300 md:hidden ${
+        className={`fixed top-16 left-0 right-0 z-40 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-2xl transition-all duration-400 md:hidden ${
           isMenuOpen
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0 pointer-events-none"
         }`}
       >
-        <div className="p-5 space-y-4">
+        <div className="p-5 space-y-3">
           {token ? (
             <>
-              <div className="flex items-center gap-3 pb-4 border-b border-gray-800">
-                <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-lg font-bold text-white">
-                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
+              <div className="flex items-center gap-3 pb-4 border-b border-white/10 mb-2">
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-red-500/50 blur-md" />
+                  <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-lg font-bold text-white shadow-lg">
+                    {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                  </div>
                 </div>
-
                 <div>
-                  <p className="font-semibold text-white">
+                  <p className="font-semibold text-white text-base">
                     {user?.name || "User"}
                   </p>
-
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-400 truncate max-w-[200px]">
                     {user?.email || ""}
                   </p>
                 </div>
@@ -205,27 +213,27 @@ function Navbar() {
               <Link
                 to="/create-blog"
                 onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-gray-800/50 hover:bg-gray-700 transition"
+                className="group flex justify-between items-center px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10 hover:border-red-500/30"
               >
-                <span>Create Blog</span>
-                <span className="text-red-500">→</span>
+                <span className="font-medium">Create Blog</span>
+                <span className="text-red-500 transform group-hover:translate-x-1 transition-transform">→</span>
               </Link>
 
               <Link
                 to="/dashboard"
                 onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-gray-800/50 hover:bg-gray-700 transition"
+                className="group flex justify-between items-center px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10 hover:border-red-500/30"
               >
-                <span>Dashboard</span>
-                <span className="text-red-500">→</span>
+                <span className="font-medium">Dashboard</span>
+                <span className="text-red-500 transform group-hover:translate-x-1 transition-transform">→</span>
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="w-full flex justify-between items-center px-4 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 transition"
+                className="group w-full flex justify-between items-center px-4 py-3 rounded-xl bg-red-500/5 hover:bg-red-500/10 transition-all duration-200 border border-red-500/20 text-red-400 hover:text-red-300"
               >
-                <span>Logout</span>
-                <span>→</span>
+                <span className="font-medium">Logout</span>
+                <span className="transform group-hover:translate-x-1 transition-transform">→</span>
               </button>
             </>
           ) : (
@@ -233,24 +241,39 @@ function Navbar() {
               <Link
                 to="/login"
                 onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-gray-800/50 hover:bg-gray-700 transition"
+                className="group flex justify-between items-center px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10 hover:border-red-500/30"
               >
-                <span>Login</span>
-                <span className="text-red-500">→</span>
+                <span className="font-medium">Login</span>
+                <span className="text-red-500 transform group-hover:translate-x-1 transition-transform">→</span>
               </Link>
 
               <Link
                 to="/register"
                 onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 transition"
+                className="group flex justify-between items-center px-4 py-3 rounded-xl bg-red-500/5 hover:bg-red-500/10 transition-all duration-200 border border-red-500/20 text-red-400 hover:text-red-300"
               >
-                <span>Register</span>
-                <span>→</span>
+                <span className="font-medium">Register</span>
+                <span className="transform group-hover:translate-x-1 transition-transform">→</span>
               </Link>
             </>
           )}
         </div>
       </div>
+
+      {/* Add these styles if you want fade-in animation for backdrop */}
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        .animate-in {
+          animation: fade-in 0.2s ease-out;
+        }
+      `}</style>
     </>
   );
 }
