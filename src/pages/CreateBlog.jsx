@@ -7,6 +7,8 @@ function CreateBlog() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState("");
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategoryValue, setCustomCategoryValue] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -14,37 +16,64 @@ function CreateBlog() {
     image: null,
   });
 
-  // Predefined category options (8 options)
-  const categoryOptions = [
+  // Fixed category options (7 options)
+  const fixedCategoryOptions = [
     "Technology",
     "Lifestyle",
     "Sports",
     "Programming",
     "Business",
     "Travel",
-    "Health",
-    "Productivity"
+    "Health"
   ];
+
+  // Full dropdown options including "Custom"
+  const dropdownOptions = [...fixedCategoryOptions, "Custom"];
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
       const file = e.target.files[0];
       setFormData({ ...formData, image: file });
       if (file) setPreview(URL.createObjectURL(file));
+    } else if (e.target.name === "category") {
+      const selected = e.target.value;
+      setFormData({ ...formData, category: selected });
+      setIsCustomCategory(selected === "Custom");
+      if (selected !== "Custom") {
+        setCustomCategoryValue("");
+      }
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
   };
 
+  const handleCustomCategoryChange = (e) => {
+    setCustomCategoryValue(e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    let finalCategory = formData.category;
+    if (formData.category === "Custom") {
+      finalCategory = customCategoryValue.trim();
+      if (!finalCategory) {
+        toast.error("Please enter a custom category");
+        return;
+      }
+    }
+    if (!finalCategory) {
+      toast.error("Please select a category");
+      return;
+    }
+
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const blogData = new FormData();
       blogData.append("title", formData.title);
       blogData.append("description", formData.description);
-      blogData.append("category", formData.category);
+      blogData.append("category", finalCategory);
       blogData.append("image", formData.image);
 
       const { data } = await API.post("/api/blogs", blogData, {
@@ -116,7 +145,7 @@ function CreateBlog() {
               <textarea
                 name="description"
                 placeholder="Write your blog content here..."
-                rows="6 sm:rows-7"
+                rows="6"
                 className={`${inputClass} resize-none`}
                 onChange={handleChange}
                 value={formData.description}
@@ -124,7 +153,7 @@ function CreateBlog() {
               />
             </div>
 
-            {/* category - dropdown select with 8 options */}
+            {/* category - dropdown with fixed options + Custom */}
             <div>
               <label className={labelClass}>Category *</label>
               <div className="relative">
@@ -136,19 +165,35 @@ function CreateBlog() {
                   required
                 >
                   <option value="" disabled>Select a category</option>
-                  {categoryOptions.map((cat) => (
+                  {dropdownOptions.map((cat) => (
                     <option key={cat} value={cat}>
                       {cat}
                     </option>
                   ))}
                 </select>
-                {/* Custom dropdown arrow */}
                 <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
                   <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </div>
+
+              {/* Custom category input field (shown when "Custom" is selected) */}
+              {isCustomCategory && (
+                <div className="mt-3">
+                  <input
+                    type="text"
+                    placeholder="Enter your custom category"
+                    value={customCategoryValue}
+                    onChange={handleCustomCategoryChange}
+                    className={inputClass}
+                    required
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1">
+                    Your custom category will be saved exactly as typed
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* image upload */}
