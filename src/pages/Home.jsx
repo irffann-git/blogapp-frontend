@@ -43,7 +43,7 @@ function BlogCard({ blog }) {
     <Link to={`/blogs/${blog._id}`} className="block group">
       <div
         ref={cardRef}
-        className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 opacity-0 translate-y-4 border border-gray-100 hover:border-gray-200"
+        className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 opacity-0 translate-y-4 border border-gray-100 hover:border-primary-200"
         style={{ transition: "opacity 0.4s ease, transform 0.4s ease" }}
       >
         <div className="relative h-48 overflow-hidden bg-gray-100">
@@ -73,7 +73,7 @@ function BlogCard({ blog }) {
               })}
             </time>
           </div>
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-base group-hover:text-blue-600 transition-colors">
+          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-base group-hover:text-primary-600 transition-colors">
             {blog.title}
           </h3>
           <p className="text-gray-600 text-sm line-clamp-2 mb-4">
@@ -87,7 +87,7 @@ function BlogCard({ blog }) {
               </svg>
               {(blog.views || 0).toLocaleString()}
             </span>
-            <span className="text-blue-600 font-medium group-hover:text-blue-700 transition-colors">
+            <span className="text-primary-600 font-medium group-hover:text-primary-700 transition-colors">
               Read more →
             </span>
           </div>
@@ -193,81 +193,81 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* PROFESSIONAL HERO - SIMPLE, RELIABLE CLASSES */}
-<div className="bg-yellow-100 border-b border-gray-200">
-  <div className="max-w-6xl mx-auto px-4 py-16 md:py-20">
-    <div className="max-w-3xl mx-auto text-center">
-      
-      {/* Badge - simple */}
-      <div className="mb-4">
-        <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-700 bg-blue-50 rounded-full">
-          BLOG INSIGHTS
-        </span>
-      </div>
-      
-      {/* Heading */}
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
-        Thought leadership for <br className="hidden sm:block" />
-        <span className="text-blue-600">modern readers</span>
-      </h1>
-      
-      {/* Subheading */}
-      <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto mb-8">
-        In-depth articles on technology, business, and culture — curated by industry experts.
-      </p>
-      
-      {/* Search Bar */}
-      <div className="max-w-md mx-auto mb-8">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search articles..."
-            value={search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full px-5 py-3 pl-12 pr-10 text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          />
-          <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          {search && (
-            <button
-              onClick={() => handleSearchChange("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
+      {/* HERO SECTION with standardized neutral/primary theme */}
+      <div className="bg-gradient-to-br from-gray-100 to-white border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 py-16 md:py-20">
+          <div className="max-w-3xl mx-auto text-center">
+            
+            {/* Badge - using primary palette */}
+            <div className="mb-4">
+              <span className="inline-block px-3 py-1 text-xs font-semibold text-primary-700 bg-primary-50 rounded-full">
+                BLOG INSIGHTS
+              </span>
+            </div>
+            
+            {/* Heading */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+              Thought leadership for <br className="hidden sm:block" />
+              <span className="text-primary-600">modern readers</span>
+            </h1>
+            
+            {/* Subheading */}
+            <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto mb-8">
+              In-depth articles on technology, business, and culture — curated by industry experts.
+            </p>
+            
+            {/* Search Bar */}
+            <div className="max-w-md mx-auto mb-8">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={search}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  className="w-full px-5 py-3 pl-12 pr-10 text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                />
+                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                {search && (
+                  <button
+                    onClick={() => handleSearchChange("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Category Buttons - standardized active state with primary color */}
+            <div className="flex flex-wrap justify-center gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => handleCategoryChange(cat)}
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors
+                    ${selectedCategory === cat 
+                      ? 'bg-primary-600 text-white shadow-sm' 
+                      : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'}`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Category Buttons */}
-      <div className="flex flex-wrap justify-center gap-2">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => handleCategoryChange(cat)}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors
-              ${selectedCategory === cat 
-                ? 'bg-gray-800 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
-
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-12">
-        {/* Trending Section - only show when no search and blogs exist */}
+        {/* Trending Section - using primary color for icon */}
         {!search && trendingBlogs.length > 0 && !loading && (
           <section className="mb-16">
             <div className="flex items-center gap-2 mb-6">
-              <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
               <h2 className="text-xl font-bold text-gray-900">Trending now</h2>
@@ -285,7 +285,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <h2 className="text-xl font-bold text-gray-900">
               {search ? (
-                <>Search results for "<span className="text-blue-600">{search}</span>"</>
+                <>Search results for "<span className="text-primary-600">{search}</span>"</>
               ) : selectedCategory !== "All" ? (
                 <>Latest in {selectedCategory}</>
               ) : (
@@ -297,7 +297,7 @@ export default function Home() {
               {(search || selectedCategory !== "All") && (
                 <button
                   onClick={clearFilters}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
                 >
                   Clear filters
                 </button>
@@ -322,7 +322,7 @@ export default function Home() {
               <p className="text-gray-500 mb-4">No articles found matching your criteria.</p>
               <button
                 onClick={clearFilters}
-                className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-800 transition-colors"
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-700 transition-colors"
               >
                 Browse all articles
               </button>
@@ -335,7 +335,7 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Pagination */}
+              {/* Pagination - standardized active page with primary color */}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-12">
                   <button
@@ -366,7 +366,7 @@ export default function Home() {
                           onClick={() => setCurrentPage(page)}
                           className={`w-10 h-10 text-sm font-medium rounded-lg transition-colors
                             ${currentPage === page
-                              ? 'bg-gray-900 text-white'
+                              ? 'bg-primary-600 text-white shadow-sm'
                               : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'}`}
                         >
                           {page}
