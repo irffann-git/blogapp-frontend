@@ -66,7 +66,7 @@ function Navbar() {
 
   return (
     <>
-      <nav className="bg-[#3D2B1F] text-stone-100 sticky top-0 z-50 border-b border-stone-700">
+      <nav className="bg-black text-white sticky top-0 z-50 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -75,7 +75,7 @@ function Navbar() {
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
               onClick={closeMenu}
             >
-              <span className="text-xl font-bold tracking-tight text-[#F5F0E8]">
+              <span className="text-xl font-bold tracking-tight text-white">
                 BlogApp
               </span>
             </Link>
@@ -86,37 +86,36 @@ function Navbar() {
                 <>
                   <Link
                     to="/create-blog"
-                    className="bg-amber-500 hover:bg-amber-400 text-stone-900 px-4 py-2 rounded-full text-sm font-semibold transition"
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition shadow-md"
                   >
                     + Write
                   </Link>
 
                   <Link
                     to="/dashboard"
-                    className="bg-stone-700 hover:bg-stone-600 text-stone-100 px-4 py-2 rounded-full text-sm font-medium transition"
+                    className="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-full text-sm font-medium transition"
                   >
                     Dashboard
                   </Link>
 
-
-                  <div className="h-5 w-px bg-stone-600"></div>
+                  <div className="h-5 w-px bg-gray-700"></div>
 
                   <Link
                     to="/profile"
                     className="flex items-center gap-2 hover:opacity-80 transition"
                   >
-                    <div className="w-9 h-9 rounded-full bg-amber-600 flex items-center justify-center text-amber-50 text-sm font-bold">
+                    <div className="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center text-white text-sm font-bold">
                       {user?.name?.charAt(0)?.toUpperCase() || "U"}
                     </div>
 
-                    <span className="hidden lg:inline text-sm text-stone-300">
+                    <span className="hidden lg:inline text-sm text-gray-300">
                       {user?.name?.split(" ")[0] || "User"}
                     </span>
                   </Link>
 
                   <button
                     onClick={handleLogout}
-                    className="border border-stone-600 hover:border-stone-400 hover:text-white text-stone-400 px-4 py-2 rounded-full text-sm font-medium transition"
+                    className="border border-gray-700 hover:border-red-600 hover:text-white text-gray-400 px-4 py-2 rounded-full text-sm font-medium transition"
                   >
                     Logout
                   </button>
@@ -125,14 +124,14 @@ function Navbar() {
                 <>
                   <Link
                     to="/login"
-                    className="text-stone-300 hover:text-white px-3 py-2 text-sm font-medium transition"
+                    className="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition"
                   >
                     Login
                   </Link>
 
                   <Link
                     to="/register"
-                    className="bg-amber-500 hover:bg-amber-400 text-stone-900 px-5 py-2 rounded-full text-sm font-semibold transition"
+                    className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-semibold transition shadow-md"
                   >
                     Register
                   </Link>
@@ -143,7 +142,7 @@ function Navbar() {
             {/* Mobile Toggle */}
             <button
               onClick={toggleMenu}
-              className="md:hidden relative w-10 h-10 rounded-lg bg-stone-800/50 hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="md:hidden relative w-10 h-10 rounded-lg bg-gray-800/50 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               <div className="absolute left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-between">
                 <span
@@ -170,7 +169,7 @@ function Navbar() {
       {/* Backdrop */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
           onClick={closeMenu}
         />
       )}
@@ -178,7 +177,7 @@ function Navbar() {
       {/* Mobile Drawer */}
       <div
         ref={menuRef}
-        className={`fixed top-16 left-0 right-0 z-40 bg-[#3D2B1F] border-b border-stone-700 shadow-xl transition-all duration-300 md:hidden ${
+        className={`fixed top-16 left-0 right-0 z-40 bg-black border-b border-gray-800 shadow-xl transition-all duration-300 md:hidden ${
           isMenuOpen
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0 pointer-events-none"
@@ -187,8 +186,8 @@ function Navbar() {
         <div className="p-5 space-y-4">
           {token ? (
             <>
-              <div className="flex items-center gap-3 pb-4 border-b border-stone-700">
-                <div className="w-12 h-12 rounded-full bg-amber-600 flex items-center justify-center text-lg font-bold">
+              <div className="flex items-center gap-3 pb-4 border-b border-gray-800">
+                <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-lg font-bold text-white">
                   {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </div>
 
@@ -197,7 +196,7 @@ function Navbar() {
                     {user?.name || "User"}
                   </p>
 
-                  <p className="text-xs text-stone-400">
+                  <p className="text-xs text-gray-400">
                     {user?.email || ""}
                   </p>
                 </div>
@@ -206,19 +205,19 @@ function Navbar() {
               <Link
                 to="/create-blog"
                 onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 transition"
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-gray-800/50 hover:bg-gray-700 transition"
               >
                 <span>Create Blog</span>
-                <span className="text-amber-500">→</span>
+                <span className="text-red-500">→</span>
               </Link>
 
               <Link
                 to="/dashboard"
                 onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 transition"
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-gray-800/50 hover:bg-gray-700 transition"
               >
                 <span>Dashboard</span>
-                <span className="text-amber-500">→</span>
+                <span className="text-red-500">→</span>
               </Link>
 
               <button
@@ -234,16 +233,16 @@ function Navbar() {
               <Link
                 to="/login"
                 onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-stone-800/50 hover:bg-stone-700 transition"
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-gray-800/50 hover:bg-gray-700 transition"
               >
                 <span>Login</span>
-                <span className="text-amber-500">→</span>
+                <span className="text-red-500">→</span>
               </Link>
 
               <Link
                 to="/register"
                 onClick={closeMenu}
-                className="flex justify-between items-center px-4 py-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 transition"
+                className="flex justify-between items-center px-4 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 transition"
               >
                 <span>Register</span>
                 <span>→</span>
