@@ -19,7 +19,7 @@ function getImageUrl(image) {
   return `${import.meta.env.VITE_API_URL}/${image.replace(/^\/+/, "")}`;
 }
 
-// Professional Blog Card Component with refined hover effects
+// Netflix-style Blog Card Component (dark theme, red hover)
 function BlogCard({ blog }) {
   const cardRef = useRef(null);
   const placeholder = "https://placehold.co/600x400?text=No+Image";
@@ -43,10 +43,10 @@ function BlogCard({ blog }) {
     <Link to={`/blogs/${blog._id}`} className="block group">
       <div
         ref={cardRef}
-        className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 opacity-0 translate-y-4 border border-gray-100 hover:border-primary-200"
+        className="bg-[#1a1a1a] rounded-xl overflow-hidden shadow-lg hover:shadow-red-900/20 transition-all duration-300 opacity-0 translate-y-4 border border-gray-800 hover:border-red-600"
         style={{ transition: "opacity 0.4s ease, transform 0.4s ease" }}
       >
-        <div className="relative h-48 overflow-hidden bg-gray-100">
+        <div className="relative h-48 overflow-hidden bg-gray-900">
           <img
             src={getImageUrl(blog.image)}
             alt={blog.title}
@@ -57,13 +57,13 @@ function BlogCard({ blog }) {
               e.target.src = placeholder;
             }}
           />
-          <span className="absolute top-3 left-3 px-2.5 py-1 text-xs font-medium text-white bg-gray-900/90 backdrop-blur-sm rounded-md">
+          <span className="absolute top-3 left-3 px-2.5 py-1 text-xs font-medium text-white bg-red-600 rounded-md shadow-md">
             {blog.category}
           </span>
         </div>
         <div className="p-5">
-          <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-            <span className="font-medium">{blog.user?.name || "Anonymous"}</span>
+          <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+            <span className="font-medium text-gray-300">{blog.user?.name || "Anonymous"}</span>
             <span>•</span>
             <time dateTime={blog.createdAt}>
               {new Date(blog.createdAt).toLocaleDateString("en-US", {
@@ -73,21 +73,21 @@ function BlogCard({ blog }) {
               })}
             </time>
           </div>
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-base group-hover:text-primary-600 transition-colors">
+          <h3 className="font-semibold text-white mb-2 line-clamp-2 text-base group-hover:text-red-500 transition-colors">
             {blog.title}
           </h3>
-          <p className="text-gray-600 text-sm line-clamp-2 mb-4">
+          <p className="text-gray-400 text-sm line-clamp-2 mb-4">
             {blog.description?.slice(0, 100)}…
           </p>
           <div className="flex items-center justify-between text-xs">
-            <span className="flex items-center gap-1 text-gray-400">
+            <span className="flex items-center gap-1 text-gray-500">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path fillRule="evenodd" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" clipRule="evenodd" />
               </svg>
               {(blog.views || 0).toLocaleString()}
             </span>
-            <span className="text-primary-600 font-medium group-hover:text-primary-700 transition-colors">
+            <span className="text-red-500 font-medium group-hover:text-red-400 transition-colors">
               Read more →
             </span>
           </div>
@@ -97,22 +97,22 @@ function BlogCard({ blog }) {
   );
 }
 
-// Skeleton loader for professional feel
+// Skeleton loader (dark version)
 function BlogCardSkeleton() {
   return (
-    <div className="bg-white rounded-xl overflow-hidden border border-gray-100 animate-pulse">
-      <div className="h-48 bg-gray-200" />
+    <div className="bg-[#1a1a1a] rounded-xl overflow-hidden border border-gray-800 animate-pulse">
+      <div className="h-48 bg-gray-800" />
       <div className="p-5 space-y-3">
         <div className="flex items-center gap-2">
-          <div className="h-3 w-20 bg-gray-200 rounded" />
-          <div className="h-3 w-3 bg-gray-200 rounded-full" />
-          <div className="h-3 w-24 bg-gray-200 rounded" />
+          <div className="h-3 w-20 bg-gray-700 rounded" />
+          <div className="h-3 w-3 bg-gray-700 rounded-full" />
+          <div className="h-3 w-24 bg-gray-700 rounded" />
         </div>
-        <div className="h-5 w-full bg-gray-200 rounded" />
-        <div className="h-4 w-3/4 bg-gray-200 rounded" />
+        <div className="h-5 w-full bg-gray-700 rounded" />
+        <div className="h-4 w-3/4 bg-gray-700 rounded" />
         <div className="flex justify-between items-center pt-2">
-          <div className="h-3 w-12 bg-gray-200 rounded" />
-          <div className="h-4 w-20 bg-gray-200 rounded" />
+          <div className="h-3 w-12 bg-gray-700 rounded" />
+          <div className="h-4 w-20 bg-gray-700 rounded" />
         </div>
       </div>
     </div>
@@ -131,7 +131,6 @@ export default function Home() {
   
   const categories = ["All", "Technology", "Lifestyle", "Sports", "Programming", "Business", "Travel", "Health"];
 
-  // Fetch blogs with debounced search
   useEffect(() => {
     const controller = new AbortController();
     const fetchBlogs = async () => {
@@ -153,21 +152,17 @@ export default function Home() {
     return () => controller.abort();
   }, [debouncedSearch]);
 
-  // Filter by category
   const filteredBlogs = selectedCategory === "All" 
     ? blogs 
     : blogs.filter(b => b.category === selectedCategory);
 
-  // Trending (top 4 by views)
   const trendingBlogs = [...filteredBlogs]
     .sort((a, b) => (b.views || 0) - (a.views || 0))
     .slice(0, 4);
 
-  // Latest blogs sorted by date
   const latestBlogs = [...filteredBlogs]
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  // Pagination logic
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = latestBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
@@ -190,31 +185,31 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* PROFESSIONAL HERO - SIMPLE, RELIABLE CLASSES */}
-      <div className="bg-gradient-to-br from-gray-50 to-white border-b border-gray-200">
+    <div className="min-h-screen bg-black">
+      {/* NETFLIX-STYLE HERO - DARK THEME */}
+      <div className="bg-gradient-to-br from-gray-900 to-black border-b border-gray-800">
         <div className="max-w-6xl mx-auto px-4 py-16 md:py-20">
           <div className="max-w-3xl mx-auto text-center">
             
-            {/* Badge - simple */}
+            {/* Badge - red accent */}
             <div className="mb-4">
-              <span className="inline-block px-3 py-1 text-xs font-semibold text-primary-700 bg-primary-50 rounded-full">
+              <span className="inline-block px-3 py-1 text-xs font-semibold text-red-500 bg-red-500/10 rounded-full border border-red-500/30">
                 BLOG INSIGHTS
               </span>
             </div>
             
             {/* Heading */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
               Thought leadership for <br className="hidden sm:block" />
-              <span className="text-primary-600">modern readers</span>
+              <span className="text-red-500">modern readers</span>
             </h1>
             
             {/* Subheading */}
-            <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto mb-8">
+            <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-8">
               In-depth articles on technology, business, and culture — curated by industry experts.
             </p>
             
-            {/* Search Bar */}
+            {/* Search Bar - dark theme */}
             <div className="max-w-md mx-auto mb-8">
               <div className="relative">
                 <input
@@ -222,15 +217,15 @@ export default function Home() {
                   placeholder="Search articles..."
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  className="w-full px-5 py-3 pl-12 pr-10 text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                  className="w-full px-5 py-3 pl-12 pr-10 text-white bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
                 />
-                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 {search && (
                   <button
                     onClick={() => handleSearchChange("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -240,7 +235,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Category Buttons */}
+            {/* Category Buttons - Netflix style */}
             <div className="flex flex-wrap justify-center gap-2">
               {categories.map((cat) => (
                 <button
@@ -248,8 +243,8 @@ export default function Home() {
                   onClick={() => handleCategoryChange(cat)}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-colors
                     ${selectedCategory === cat 
-                      ? 'bg-gray-800 text-white' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                      ? 'bg-red-600 text-white shadow-lg' 
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
                 >
                   {cat}
                 </button>
@@ -261,14 +256,14 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-12">
-        {/* Trending Section - only show when no search and blogs exist */}
+        {/* Trending Section */}
         {!search && trendingBlogs.length > 0 && !loading && (
           <section className="mb-16">
             <div className="flex items-center gap-2 mb-6">
-              <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
-              <h2 className="text-xl font-bold text-gray-900">Trending now</h2>
+              <h2 className="text-xl font-bold text-white">Trending now</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {trendingBlogs.map((blog) => (
@@ -281,9 +276,9 @@ export default function Home() {
         {/* Latest Blogs Section */}
         <section>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-white">
               {search ? (
-                <>Search results for "<span className="text-primary-600">{search}</span>"</>
+                <>Search results for "<span className="text-red-500">{search}</span>"</>
               ) : selectedCategory !== "All" ? (
                 <>Latest in {selectedCategory}</>
               ) : (
@@ -291,11 +286,11 @@ export default function Home() {
               )}
             </h2>
             <div className="flex items-center gap-3">
-              <p className="text-sm text-gray-500">{latestBlogs.length} {latestBlogs.length === 1 ? 'post' : 'posts'}</p>
+              <p className="text-sm text-gray-400">{latestBlogs.length} {latestBlogs.length === 1 ? 'post' : 'posts'}</p>
               {(search || selectedCategory !== "All") && (
                 <button
                   onClick={clearFilters}
-                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  className="text-sm text-red-500 hover:text-red-400 font-medium"
                 >
                   Clear filters
                 </button>
@@ -310,16 +305,16 @@ export default function Home() {
               ))}
             </div>
           ) : currentBlogs.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-xl border border-gray-100">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-16 bg-[#1a1a1a] rounded-xl border border-gray-800">
+              <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-gray-500 mb-4">No articles found matching your criteria.</p>
+              <p className="text-gray-400 mb-4">No articles found matching your criteria.</p>
               <button
                 onClick={clearFilters}
-                className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-800 transition-colors"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors"
               >
                 Browse all articles
               </button>
@@ -332,13 +327,13 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Pagination */}
+              {/* Pagination - Netflix style */}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-12">
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     Previous
                   </button>
@@ -363,8 +358,8 @@ export default function Home() {
                           onClick={() => setCurrentPage(page)}
                           className={`w-10 h-10 text-sm font-medium rounded-lg transition-colors
                             ${currentPage === page
-                              ? 'bg-gray-900 text-white'
-                              : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'}`}
+                              ? 'bg-red-600 text-white'
+                              : 'bg-gray-800 text-gray-400 hover:bg-gray-700 border border-gray-700'}`}
                         >
                           {page}
                         </button>
@@ -375,7 +370,7 @@ export default function Home() {
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     Next
                   </button>
@@ -386,8 +381,8 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-100 mt-16 py-8">
+      {/* Footer - dark theme */}
+      <footer className="bg-black border-t border-gray-800 mt-16 py-8">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center text-sm text-gray-500">
             <p>© {new Date().getFullYear()} Blog. All rights reserved.</p>
