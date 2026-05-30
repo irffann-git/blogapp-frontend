@@ -128,21 +128,17 @@ export default function Home() {
     return () => controller.abort();
   }, [debouncedSearch]);
 
-  // Filter blogs by category
   const filteredBlogs = selectedCategory === "All" 
     ? blogs 
     : blogs.filter(b => b.category === selectedCategory);
 
-  // Trending blogs (most viewed)
   const trendingBlogs = [...filteredBlogs]
     .sort((a, b) => (b.views || 0) - (a.views || 0))
     .slice(0, 4);
 
-  // Latest blogs (newest first)
   const latestBlogs = [...filteredBlogs]
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  // Pagination for latest blogs
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = latestBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
@@ -153,35 +149,98 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       
-      {/* Hero Section - Lean background with heading and search */}
-      <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog</h1>
-          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Stories, ideas, and insights from our community
+      {/* ATTRACTIVE HERO SECTION - REDESIGNED */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400">
+        {/* Animated background shapes */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-10 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-500" />
+        </div>
+        
+        {/* Grid pattern overlay */}
+<div
+  className="absolute inset-0 bg-repeat"
+  style={{
+    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+  }}
+/>
+
+        <div className="relative max-w-6xl mx-auto px-4 py-20 md:py-28 text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-6 animate-bounce">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <span className="text-white text-sm font-medium">Welcome to our blog</span>
+          </div>
+          
+          {/* Main Heading */}
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            Discover Amazing
+            <span className="block bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
+              Stories & Ideas
+            </span>
+          </h1>
+          
+          {/* Subheading */}
+          <p className="text-white/90 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+            Join thousands of readers exploring thoughtful content on technology, lifestyle, and everything in between.
           </p>
           
-          {/* Search Bar */}
-          <div className="max-w-md mx-auto">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search articles..."
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="w-full px-5 py-3 pr-10 text-gray-900 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+          {/* Search Bar with animation */}
+          <div className="max-w-lg mx-auto transform hover:scale-105 transition-transform duration-300">
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 to-pink-400 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-200"></div>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="w-full px-6 py-4 pr-14 text-gray-900 rounded-full focus:outline-none shadow-lg text-base"
+                />
+                <svg className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
             </div>
           </div>
 
-          {/* Category Tags */}
-          <div className="flex flex-wrap justify-center gap-2 mt-8">
+          {/* Popular Tags */}
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            <span className="text-white/70 text-sm mr-2">Popular:</span>
+            {["Technology", "Lifestyle", "Programming", "Design"].map(tag => (
+              <button
+                key={tag}
+                onClick={() => {
+                  setSelectedCategory(tag);
+                  setCurrentPage(1);
+                }}
+                className="px-3 py-1 text-sm text-white/80 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all hover:scale-105"
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Category Tags Bar */}
+      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 py-3 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2">
             {categories.map(cat => (
               <button
                 key={cat}
@@ -189,10 +248,10 @@ export default function Home() {
                   setSelectedCategory(cat);
                   setCurrentPage(1);
                 }}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all
+                className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all
                   ${selectedCategory === cat 
-                    ? 'bg-white text-gray-900' 
-                    : 'bg-gray-700 text-gray-200 hover:bg-gray-600'}`}
+                    ? 'bg-gray-900 text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
               >
                 {cat}
               </button>
@@ -208,7 +267,10 @@ export default function Home() {
         {trendingBlogs.length > 0 && !search && (
           <section className="mb-12">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">🔥 Trending</h2>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🔥</span>
+                <h2 className="text-2xl font-bold text-gray-900">Trending Now</h2>
+              </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {trendingBlogs.map((blog) => (
@@ -218,12 +280,15 @@ export default function Home() {
           </section>
         )}
 
-        {/* Latest Blogs Section - 3 Column Grid */}
+        {/* Latest Blogs Section */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">
-              {search ? `Search: "${search}"` : selectedCategory !== "All" ? selectedCategory : "Latest Posts"}
-            </h2>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">📝</span>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {search ? `Search: "${search}"` : selectedCategory !== "All" ? selectedCategory : "Latest Posts"}
+              </h2>
+            </div>
             <p className="text-sm text-gray-500">{latestBlogs.length} articles</p>
           </div>
 
@@ -243,14 +308,12 @@ export default function Home() {
             </div>
           ) : (
             <>
-              {/* 3 Column Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentBlogs.map((blog) => (
                   <BlogCard key={blog._id} blog={blog} />
                 ))}
               </div>
 
-              {/* Pagination */}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-10">
                   <button
@@ -317,6 +380,17 @@ export default function Home() {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
         }
       `}</style>
     </div>
