@@ -28,31 +28,33 @@ function Login() {
     }
   };
 
+  // Responsive input classes
   const inputClass =
-    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
+    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
 
   const labelClass =
-    "block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5";
+    "block text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4 py-8 sm:py-12">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md mx-auto">
+        
         {/* glass card */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
 
-          {/* header - Netflix gradient */}
-          <div className="bg-gradient-to-r from-red-600 to-red-500 px-5 sm:px-8 py-8 text-center">
-            <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 border border-white/20">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {/* header - Netflix gradient with responsive padding */}
+          <div className="bg-gradient-to-r from-red-600 to-red-500 px-5 sm:px-8 py-6 sm:py-8 text-center">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 border border-white/20">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">Welcome back</h1>
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">Welcome back</h1>
             <p className="text-white/70 text-xs sm:text-sm mt-1">Sign in to continue</p>
           </div>
 
-          {/* form */}
-          <form onSubmit={handleSubmit} className="p-5 sm:p-6 md:p-8 space-y-5">
+          {/* form - responsive spacing */}
+          <form onSubmit={handleSubmit} className="p-5 sm:p-6 md:p-8 space-y-4 sm:space-y-5">
 
             <div>
               <label className={labelClass}>Email address</label>
@@ -84,7 +86,7 @@ function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl text-sm transition-all duration-300 shadow-md shadow-red-500/20 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 sm:py-3 rounded-xl text-sm transition-all duration-300 shadow-md shadow-red-500/20 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -100,7 +102,7 @@ function Login() {
               </button>
             </div>
 
-            <p className="text-center text-sm text-gray-400">
+            <p className="text-center text-xs sm:text-sm text-gray-400">
               Don't have an account?{" "}
               <Link
                 to="/register"
@@ -113,7 +115,7 @@ function Login() {
           </form>
         </div>
 
-        <p className="text-center text-xs text-gray-500 mt-5 px-2">
+        <p className="text-center text-[10px] sm:text-xs text-gray-500 mt-5 px-2">
           Demo: use any registered email and password
         </p>
       </div>
