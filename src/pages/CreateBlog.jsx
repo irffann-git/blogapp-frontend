@@ -52,32 +52,33 @@ function CreateBlog() {
     }
   };
 
+  // Responsive input classes
   const inputClass =
     "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
 
   const labelClass = "block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5";
 
   return (
-    <div className="min-h-screen bg-black py-8 sm:py-12 px-4 flex items-center justify-center">
-      <div className="w-full max-w-2xl">
+    <div className="min-h-screen bg-black py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="w-full max-w-2xl mx-auto">
 
-        {/* glass card */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
+        {/* glass card - fully responsive */}
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl md:rounded-3xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
 
-          {/* header - Netflix gradient */}
-          <div className="bg-gradient-to-r from-red-600 to-red-500 px-5 sm:px-8 py-6 sm:py-7">
-            <p className="text-xs font-semibold tracking-widest text-white/80 uppercase mb-2">
+          {/* header - Netflix gradient, responsive padding */}
+          <div className="bg-gradient-to-r from-red-600 to-red-500 px-5 sm:px-6 md:px-8 py-5 sm:py-6 md:py-7">
+            <p className="text-[11px] sm:text-xs font-semibold tracking-widest text-white/80 uppercase mb-1.5 sm:mb-2">
               New post
             </p>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
               Write a new blog
             </h1>
-            <p className="text-white/60 text-xs sm:text-sm mt-1">
+            <p className="text-white/60 text-[11px] sm:text-xs md:text-sm mt-1">
               Share your thoughts with the world
             </p>
           </div>
 
-          {/* form */}
+          {/* form - responsive spacing */}
           <form onSubmit={handleSubmit} className="p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
 
             {/* title */}
@@ -100,7 +101,7 @@ function CreateBlog() {
               <textarea
                 name="description"
                 placeholder="Write your blog content here..."
-                rows="7"
+                rows="6 sm:rows-7"
                 className={`${inputClass} resize-none`}
                 onChange={handleChange}
                 value={formData.description}
@@ -122,15 +123,15 @@ function CreateBlog() {
               />
             </div>
 
-            {/* image upload - Netflix style */}
+            {/* image upload - responsive touch target */}
             <div>
               <label className={labelClass}>Cover image *</label>
-              <label className="flex items-center gap-3 cursor-pointer w-full bg-gray-800/50 border border-dashed border-gray-600 hover:border-red-500 rounded-xl px-4 py-3 sm:py-4 transition-all duration-200 group">
+              <label className="flex items-center gap-3 cursor-pointer w-full bg-gray-800/50 border-2 border-dashed border-gray-600 hover:border-red-500 rounded-xl px-4 py-3 sm:py-4 transition-all duration-200 group min-h-[52px]">
                 <svg className="w-5 h-5 text-gray-400 group-hover:text-red-400 flex-shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span className="text-xs sm:text-sm text-gray-400 truncate group-hover:text-gray-300 transition-colors">
-                  {formData.image ? formData.image.name : "Click to upload an image"}
+                <span className="text-xs sm:text-sm text-gray-400 truncate group-hover:text-gray-300 transition-colors flex-1">
+                  {formData.image ? formData.image.name : "Click to upload an image (JPG, PNG, WebP)"}
                 </span>
                 <input
                   type="file"
@@ -142,13 +143,13 @@ function CreateBlog() {
                 />
               </label>
 
-              {/* preview with glass effect */}
+              {/* preview with glass effect - responsive height */}
               {preview && (
                 <div className="mt-4 relative rounded-xl overflow-hidden border border-gray-700">
                   <img
                     src={preview}
                     alt="Preview"
-                    className="w-full h-48 sm:h-56 object-cover"
+                    className="w-full h-40 sm:h-48 md:h-56 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
@@ -158,12 +159,12 @@ function CreateBlog() {
             {/* divider */}
             <div className="border-t border-gray-800" />
 
-            {/* buttons */}
+            {/* buttons - full width on mobile, side by side on larger */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
                 onClick={() => navigate("/")}
-                className="sm:flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold py-3 rounded-xl text-sm transition-all duration-200"
+                className="w-full sm:flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold py-3 rounded-xl text-sm transition-all duration-200 active:scale-[0.98]"
               >
                 Cancel
               </button>
@@ -171,7 +172,7 @@ function CreateBlog() {
               <button
                 type="submit"
                 disabled={loading}
-                className="sm:flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl text-sm transition-all duration-300 shadow-md shadow-red-500/20 transform hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full sm:flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl text-sm transition-all duration-300 shadow-md shadow-red-500/20 transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -186,6 +187,11 @@ function CreateBlog() {
                 )}
               </button>
             </div>
+
+            {/* helper text for required fields */}
+            <p className="text-[10px] sm:text-xs text-gray-500 text-center">
+              All fields marked with * are required
+            </p>
 
           </form>
         </div>

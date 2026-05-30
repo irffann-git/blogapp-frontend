@@ -189,25 +189,25 @@ function BlogDetails() {
   const imageUrl = getImageUrl(blog.image, placeholderImage);
 
   return (
-    <div className="min-h-screen bg-black py-4 sm:py-8 px-3 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-black py-4 sm:py-6 md:py-8 px-3 sm:px-4 md:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto w-full">
 
-        {/* back button - Netflix style */}
+        {/* back button - responsive spacing */}
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-gray-400 hover:text-red-500 text-sm font-medium mb-5 transition-colors group"
+          className="inline-flex items-center gap-1.5 text-gray-400 hover:text-red-500 text-xs sm:text-sm font-medium mb-4 sm:mb-5 transition-colors group"
         >
-          <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
           Back to home
         </Link>
 
-        {/* blog card - dark glass */}
-        <article className="bg-gray-900/50 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
+        {/* blog card - fully responsive glass card */}
+        <article className="bg-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl md:rounded-3xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
 
-          {/* image */}
-          <div className="relative w-full aspect-video bg-gray-900 overflow-hidden">
+          {/* image - responsive aspect ratio */}
+          <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] md:aspect-[16/9] bg-gray-900 overflow-hidden">
             <img
               src={imageUrl}
               alt={blog.title}
@@ -217,19 +217,19 @@ function BlogDetails() {
                 e.target.src = placeholderImage;
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
           </div>
 
-          {/* content */}
-          <div className="p-4 sm:p-8 md:p-10">
+          {/* content - responsive padding */}
+          <div className="p-4 sm:p-6 md:p-8 lg:p-10">
 
-            {/* category + views */}
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className={`text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full ${categoryClass}`}>
+            {/* category + views - responsive layout */}
+            <div className="flex flex-wrap items-center gap-2 mb-3 sm:mb-4">
+              <span className={`text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full ${categoryClass}`}>
                 {blog.category || "Uncategorized"}
               </span>
-              <span className="text-[11px] sm:text-xs text-gray-500 flex items-center gap-1">
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <span className="text-[10px] sm:text-xs text-gray-500 flex items-center gap-1">
+                <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path fillRule="evenodd" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" clipRule="evenodd" />
                 </svg>
@@ -237,16 +237,16 @@ function BlogDetails() {
               </span>
             </div>
 
-            {/* title */}
-            <h1 className="text-2xl sm:text-4xl font-bold text-white leading-tight mb-5">
+            {/* title - responsive font sizes */}
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight mb-4 sm:mb-5">
               {blog.title}
             </h1>
 
-            {/* author */}
-            <div className="flex items-center gap-3 pb-5 border-b border-gray-800 mb-6">
+            {/* author - responsive layout */}
+            <div className="flex items-center gap-3 pb-4 sm:pb-5 border-b border-gray-800 mb-5 sm:mb-6">
               <div className="relative">
                 <div className="absolute inset-0 rounded-full bg-red-500/50 blur-md opacity-50" />
-                <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg">
                   {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
                 </div>
               </div>
@@ -254,8 +254,8 @@ function BlogDetails() {
                 <p className="font-semibold text-sm sm:text-base text-white">
                   {blog.user?.name || "Anonymous"}
                 </p>
-                <p className="text-[11px] sm:text-xs text-gray-400 flex items-center gap-1">
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <p className="text-[10px] sm:text-xs text-gray-400 flex items-center gap-1">
+                  <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   {new Date(blog.createdAt).toLocaleDateString()}
@@ -263,17 +263,17 @@ function BlogDetails() {
               </div>
             </div>
 
-            {/* description */}
-            <div className="text-sm sm:text-[15px] text-gray-300 leading-7 whitespace-pre-wrap">
+            {/* description - responsive text size and line height */}
+            <div className="text-sm sm:text-[15px] md:text-base text-gray-300 leading-6 sm:leading-7 md:leading-7 whitespace-pre-wrap break-words">
               {blog.description}
             </div>
 
             {/* COMMENTS SECTION */}
-            <div className="mt-10 sm:mt-12 border-t border-gray-800 pt-6 sm:pt-8">
+            <div className="mt-8 sm:mt-10 md:mt-12 border-t border-gray-800 pt-6 sm:pt-8">
 
               {/* header */}
               <div className="mb-5">
-                <h2 className="text-lg sm:text-2xl font-semibold text-white flex items-center gap-2">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-white flex items-center gap-2">
                   Comments
                   <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">
                     {comments.length}
@@ -282,26 +282,26 @@ function BlogDetails() {
                 <p className="text-xs sm:text-sm text-gray-400 mt-1">Join the conversation</p>
               </div>
 
-              {/* comment input - glass style */}
-              <div className="flex gap-2 sm:gap-3 mb-8">
-                <div className="relative">
+              {/* comment input - stack on mobile, row on tablet+ */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 mb-8">
+                <div className="relative self-start">
                   <div className="absolute inset-0 rounded-full bg-red-500/30 blur-sm" />
                   <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white text-sm font-semibold shadow-md">
                     U
                   </div>
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                   <textarea
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
                     placeholder="Add a comment..."
                     rows="3"
-                    className="w-full bg-gray-800/50 border border-gray-700 rounded-2xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none transition-all"
+                    className="w-full bg-gray-800/50 border border-gray-700 rounded-xl sm:rounded-2xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none transition-all"
                   />
                   <div className="flex justify-end mt-3">
                     <button
                       onClick={handleComment}
-                      className="px-5 py-2 rounded-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white text-sm font-medium transition-all duration-300 shadow-md shadow-red-500/20 transform hover:scale-105"
+                      className="px-4 sm:px-5 py-2 rounded-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white text-xs sm:text-sm font-medium transition-all duration-300 shadow-md shadow-red-500/20 transform hover:scale-105 active:scale-95"
                     >
                       Post Comment
                     </button>
@@ -310,39 +310,39 @@ function BlogDetails() {
               </div>
 
               {/* comments list */}
-              <div className="space-y-7">
+              <div className="space-y-5 sm:space-y-6 md:space-y-7">
                 {comments.length === 0 ? (
-                  <div className="text-center py-10 bg-gray-800/30 rounded-xl border border-gray-800">
-                    <svg className="w-12 h-12 mx-auto text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="text-center py-8 sm:py-10 bg-gray-800/30 rounded-xl border border-gray-800">
+                    <svg className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
-                    <p className="text-sm text-gray-400">No comments yet. Be the first to share your thoughts!</p>
+                    <p className="text-xs sm:text-sm text-gray-400">No comments yet. Be the first to share your thoughts!</p>
                   </div>
                 ) : (
                   comments.map((comment) => (
                     <div key={comment._id} className="flex gap-2 sm:gap-3 group animate-fade-in">
                       {/* avatar */}
-                      <div className="relative">
+                      <div className="relative flex-shrink-0">
                         <div className="absolute inset-0 rounded-full bg-red-500/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-white text-xs sm:text-sm font-semibold shadow-md">
+                        <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-white text-xs sm:text-sm font-semibold shadow-md">
                           {(comment.user?.name?.charAt(0) || "U").toUpperCase()}
                         </div>
                       </div>
 
                       {/* content */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap mb-1">
-                          <h3 className="text-sm font-semibold text-white truncate">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
+                          <h3 className="text-sm font-semibold text-white truncate max-w-[150px] sm:max-w-[200px]">
                             {comment.user?.name || "Anonymous"}
                           </h3>
-                          <span className="text-[11px] text-gray-500">
+                          <span className="text-[10px] sm:text-xs text-gray-500">
                             {new Date(comment.createdAt).toLocaleDateString()}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-300 leading-6 whitespace-pre-wrap break-words">
+                        <p className="text-xs sm:text-sm text-gray-300 leading-5 sm:leading-6 whitespace-pre-wrap break-words">
                           {comment.text}
                         </p>
-                        <div className="flex items-center gap-4 mt-2">
+                        <div className="flex items-center gap-3 mt-2">
                           <button
                             onClick={() => handleLike(comment._id)}
                             className={`flex items-center gap-1 text-xs transition-all active:scale-95 ${
@@ -351,10 +351,10 @@ function BlogDetails() {
                                 : "text-gray-500 hover:text-red-400"
                             }`}
                           >
-                            <span className="text-sm">
+                            <span className="text-sm sm:text-base">
                               {comment.isLiked ? "❤️" : "🤍"}
                             </span>
-                            <span>{comment.likes?.length || 0}</span>
+                            <span className="text-xs sm:text-sm">{comment.likes?.length || 0}</span>
                           </button>
                         </div>
                       </div>
