@@ -14,6 +14,18 @@ function CreateBlog() {
     image: null,
   });
 
+  // Predefined category options (8 options)
+  const categoryOptions = [
+    "Technology",
+    "Lifestyle",
+    "Sports",
+    "Programming",
+    "Business",
+    "Travel",
+    "Health",
+    "Productivity"
+  ];
+
   const handleChange = (e) => {
     if (e.target.name === "image") {
       const file = e.target.files[0];
@@ -54,18 +66,21 @@ function CreateBlog() {
 
   // Responsive input classes
   const inputClass =
-    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
+    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
 
-  const labelClass = "block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5";
+  const selectClass =
+    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all appearance-none cursor-pointer";
+
+  const labelClass = "block text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5";
 
   return (
-    <div className="min-h-screen bg-black py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="min-h-screen bg-black py-6 sm:py-8 md:py-12 px-4 flex items-center justify-center">
       <div className="w-full max-w-2xl mx-auto">
 
-        {/* glass card - fully responsive */}
+        {/* glass card */}
         <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl md:rounded-3xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
 
-          {/* header - Netflix gradient, responsive padding */}
+          {/* header - Netflix gradient */}
           <div className="bg-gradient-to-r from-red-600 to-red-500 px-5 sm:px-6 md:px-8 py-5 sm:py-6 md:py-7">
             <p className="text-[11px] sm:text-xs font-semibold tracking-widest text-white/80 uppercase mb-1.5 sm:mb-2">
               New post
@@ -78,7 +93,7 @@ function CreateBlog() {
             </p>
           </div>
 
-          {/* form - responsive spacing */}
+          {/* form */}
           <form onSubmit={handleSubmit} className="p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
 
             {/* title */}
@@ -109,21 +124,34 @@ function CreateBlog() {
               />
             </div>
 
-            {/* category */}
+            {/* category - dropdown select with 8 options */}
             <div>
               <label className={labelClass}>Category *</label>
-              <input
-                type="text"
-                name="category"
-                placeholder="e.g. Technology, Travel, Health..."
-                className={inputClass}
-                onChange={handleChange}
-                value={formData.category}
-                required
-              />
+              <div className="relative">
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className={selectClass}
+                  required
+                >
+                  <option value="" disabled>Select a category</option>
+                  {categoryOptions.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+                {/* Custom dropdown arrow */}
+                <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
-            {/* image upload - responsive touch target */}
+            {/* image upload */}
             <div>
               <label className={labelClass}>Cover image *</label>
               <label className="flex items-center gap-3 cursor-pointer w-full bg-gray-800/50 border-2 border-dashed border-gray-600 hover:border-red-500 rounded-xl px-4 py-3 sm:py-4 transition-all duration-200 group min-h-[52px]">
@@ -157,6 +185,7 @@ function CreateBlog() {
 
             <div className="border-t border-gray-800" />
 
+            {/* buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
