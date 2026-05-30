@@ -101,7 +101,8 @@ function EditBlog() {
       // Determine final category value
       let finalCategory = formData.category;
       if (formData.category === "Custom") {
-        finalCategory = customCategoryValue.trim() ? "Others" : "";
+        // Save exactly what the user typed (custom category)
+        finalCategory = customCategoryValue.trim();
       }
       if (!finalCategory) {
         toast.error("Please select or enter a valid category");
@@ -235,9 +236,10 @@ function EditBlog() {
                     value={customCategoryValue}
                     onChange={handleCustomCategoryChange}
                     className={inputClass}
+                    required
                   />
                   <p className="text-[10px] text-gray-500 mt-1">
-                    Custom category will be saved as "Others"
+                    Your custom category will be saved exactly as typed
                   </p>
                 </div>
               )}
