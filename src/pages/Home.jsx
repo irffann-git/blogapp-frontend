@@ -13,567 +13,461 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-// category colors - Netflix theme
+// Spotify-style category colors (vibrant album-art palette)
 const categoryColors = {
-  Technology: "bg-red-600/90 text-white",
-  Lifestyle: "bg-rose-600/90 text-white",
-  Sports: "bg-orange-600/90 text-white",
-  Programming: "bg-purple-600/90 text-white",
-  Business: "bg-gray-700/90 text-white",
-  Travel: "bg-sky-600/90 text-white",
-  Health: "bg-emerald-600/90 text-white",
-  Productivity: "bg-indigo-600/90 text-white",
-  default: "bg-gray-700/90 text-white",
+  Technology:   { bg: "#1DB954", text: "#000" },
+  Lifestyle:    { bg: "#E91E8C", text: "#fff" },
+  Sports:       { bg: "#FF6437", text: "#fff" },
+  Programming:  { bg: "#509BF5", text: "#fff" },
+  Business:     { bg: "#7358FF", text: "#fff" },
+  Travel:       { bg: "#27CDCE", text: "#000" },
+  Health:       { bg: "#8EBA42", text: "#000" },
+  Productivity: { bg: "#F59B23", text: "#000" },
+  default:      { bg: "#535353", text: "#fff" },
 };
 
-// ✅ helper — works for both Cloudinary (full URL) and old local uploads (relative path)
 function getImageUrl(image) {
-  const placeholder = "https://placehold.co/600x400?text=No+Image";
+  const placeholder = "https://placehold.co/400x400?text=No+Image";
   if (!image) return placeholder;
   if (image.startsWith("http")) return image;
   return `${import.meta.env.VITE_API_URL}/${image.replace(/^\/+/, "")}`;
 }
 
-// animated counter component
+// Animated counter
 function AnimatedCounter({ value }) {
   const [count, setCount] = useState(0);
-  const countRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (countRef.current) {
-      observer.observe(countRef.current);
-    }
-
-    return () => observer.disconnect();
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
   }, []);
 
   useEffect(() => {
-    if (!isVisible) return;
-    
+    if (!visible) return;
     let start = 0;
-    const duration = 2000;
-    const step = (timestamp) => {
-      if (!start) start = timestamp;
-      const progress = Math.min((timestamp - start) / duration, 1);
-      setCount(Math.floor(progress * value));
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
+    const step = (ts) => {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / 1800, 1);
+      setCount(Math.floor(p * value));
+      if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
-  }, [value, isVisible]);
+  }, [value, visible]);
 
-  return <span ref={countRef}>{count.toLocaleString()}</span>;
+  return <span ref={ref}>{count.toLocaleString()}</span>;
 }
 
-// blog card - Netflix style
-function BlogCard({ blog }) {
-  const placeholder = "https://placehold.co/600x400?text=No+Image";
-  const categoryClass = categoryColors[blog.category] || categoryColors.default;
-  const cardRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-fade-in-up');
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+// Spotify-style square card (album art feel)
+function BlogCard({ blog, rank }) {
+  const placeholder = "https://placehold.co/400x400?text=No+Image";
+  const color = categoryColors[blog.category] || categoryColors.default;
 
   return (
-    <div
-      ref={cardRef}
-      className="opacity-0"
-    >
-      <div className="relative group cursor-pointer">
-        <Link to={`/blogs/${blog._id}`}>
-          <div className="relative overflow-hidden rounded-md aspect-[2/3] sm:aspect-video">
-            <img
-              src={getImageUrl(blog.image)}
-              alt={blog.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              loading="lazy"
-              onError={(e) => { e.target.onerror = null; e.target.src = placeholder; }}
-            />
-            
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            <div className="absolute top-0 left-0 z-20">
-              <div className={`${categoryClass} px-3 py-1 text-xs font-bold uppercase tracking-wide shadow-lg`}>
-                {blog.category}
-              </div>
-            </div>
+    <Link to={`/blogs/${blog._id}`} className="group block">
+      <div className="bg-[#181818] hover:bg-[#282828] rounded-lg p-4 transition-all duration-300 cursor-pointer">
+        {/* Square image */}
+        <div className="relative aspect-square rounded-md overflow-hidden mb-4 shadow-xl">
+          <img
+            src={getImageUrl(blog.image)}
+            alt={blog.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+            onError={(e) => { e.target.onerror = null; e.target.src = placeholder; }}
+          />
 
-            <div className="absolute top-0 right-0 z-20 bg-black/70 backdrop-blur-sm px-2 py-1 m-2 rounded text-xs font-semibold flex items-center gap-1">
-              <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-              </svg>
-              <span className="text-white">{blog.views || 0}</span>
-            </div>
-
-            <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black via-black/90 to-transparent">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white text-xs font-bold">
-                  {(blog.user?.name?.charAt(0) || "A").toUpperCase()}
-                </div>
-                <p className="text-xs text-gray-300 truncate">
-                  {blog.user?.name || "Anonymous"}
-                </p>
-              </div>
-              
-              <h3 className="text-sm font-bold text-white mb-1 line-clamp-2">
-                {blog.title}
-              </h3>
-              
-              <p className="text-xs text-gray-400 line-clamp-2 mb-2">
-                {blog.description?.slice(0, 80)}...
-              </p>
-              
-              <div className="flex items-center gap-3 text-xs">
-                <span className="text-green-500 font-bold">92% Match</span>
-                <span className="text-gray-400">5 min read</span>
-              </div>
-            </div>
+          {/* Play button overlay */}
+          <div className="absolute bottom-2 right-2 w-10 h-10 bg-[#1DB954] rounded-full flex items-center justify-center shadow-xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
+            <svg className="w-5 h-5 text-black ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
           </div>
-        </Link>
+
+          {/* Rank badge */}
+          {rank != null && (
+            <div className="absolute top-2 left-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-black" style={{ background: color.bg }}>
+              {rank}
+            </div>
+          )}
+        </div>
+
+        {/* Text */}
+        <h3 className="text-[#fff] font-bold text-sm leading-tight line-clamp-2 mb-1">{blog.title}</h3>
+        <p className="text-[#b3b3b3] text-xs line-clamp-2 mb-2">{blog.description?.slice(0, 70)}…</p>
+
+        <div className="flex items-center justify-between">
+          <span
+            className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full"
+            style={{ background: color.bg + "26", color: color.bg }}
+          >
+            {blog.category}
+          </span>
+          <span className="text-[#535353] text-xs flex items-center gap-1">
+            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+            </svg>
+            {(blog.views || 0).toLocaleString()}
+          </span>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
-// Netflix-style hero carousel item
-function HeroSlide({ blog }) {
-  const placeholder = "https://placehold.co/1920x800?text=Featured";
-  
+// Featured hero — Spotify "Now Playing" style wide card
+function FeaturedHero({ blog, onPrev, onNext, total, current }) {
+  const placeholder = "https://placehold.co/1200x600?text=Featured";
+  if (!blog) return null;
+  const color = categoryColors[blog.category]?.bg || "#1DB954";
+
   return (
-    <div className="relative h-[70vh] min-h-[500px] w-full">
-      <img
-        src={getImageUrl(blog.image)}
-        alt={blog.title}
-        className="absolute inset-0 w-full h-full object-cover"
-        onError={(e) => { e.target.onerror = null; e.target.src = placeholder; }}
+    <div
+      className="relative overflow-hidden rounded-2xl"
+      style={{
+        background: `linear-gradient(135deg, ${color}22 0%, #121212 60%)`,
+      }}
+    >
+      {/* Blurred bg image */}
+      <div
+        className="absolute inset-0 opacity-20 blur-2xl scale-110"
+        style={{
+          backgroundImage: `url(${getImageUrl(blog.image)})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent" />
-      
-      <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center">
-        <div className="max-w-2xl animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <span className="bg-red-600 px-2 py-0.5 text-xs font-bold uppercase tracking-wider rounded">
-              Trending Now
+
+      <div className="relative flex flex-col md:flex-row items-center gap-8 p-8 md:p-12">
+        {/* Album art */}
+        <div className="shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-xl overflow-hidden shadow-2xl">
+          <img
+            src={getImageUrl(blog.image)}
+            alt={blog.title}
+            className="w-full h-full object-cover"
+            onError={(e) => { e.target.onerror = null; e.target.src = placeholder; }}
+          />
+        </div>
+
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-3">
+            <span
+              className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
+              style={{ background: color, color: color === "#1DB954" || color === "#27CDCE" || color === "#8EBA42" || color === "#F59B23" ? "#000" : "#fff" }}
+            >
+              {blog.category}
             </span>
-            <span className="text-green-500 text-sm font-bold">#1 in Blogs Today</span>
+            <span className="text-[#b3b3b3] text-xs">Featured Article</span>
           </div>
-          
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+
+          <h1 className="text-3xl md:text-5xl font-black text-white leading-tight mb-4 line-clamp-3 tracking-tight">
             {blog.title}
           </h1>
-          
-          <p className="text-gray-300 text-base sm:text-lg mb-6 max-w-xl line-clamp-3">
+
+          <p className="text-[#b3b3b3] text-sm md:text-base mb-6 line-clamp-3 max-w-xl">
             {blog.description}
           </p>
-          
+
           <div className="flex items-center gap-4">
             <Link
               to={`/blogs/${blog._id}`}
-              className="bg-white text-black px-6 py-2.5 rounded font-semibold hover:bg-gray-200 transition-all flex items-center gap-2 text-sm sm:text-base"
+              className="flex items-center gap-2 px-7 py-3 rounded-full font-bold text-sm text-black transition-all duration-200 hover:scale-105 active:scale-95"
+              style={{ background: color }}
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               Read Now
             </Link>
-            <button className="bg-gray-600/70 hover:bg-gray-600 text-white px-6 py-2.5 rounded font-semibold transition-all flex items-center gap-2 text-sm sm:text-base backdrop-blur-sm">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 13c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z" />
+            <div className="flex items-center gap-1 text-[#b3b3b3] text-sm">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
               </svg>
-              More Info
-            </button>
+              {(blog.views || 0).toLocaleString()} views
+            </div>
           </div>
-          
-          <div className="flex items-center gap-4 mt-6 text-sm text-gray-400">
-            <span>{blog.views || 0} views</span>
-            <span>•</span>
-            <span>{blog.category}</span>
-          </div>
+        </div>
+
+        {/* Carousel controls */}
+        <div className="absolute bottom-4 right-4 flex items-center gap-3">
+          <button
+            onClick={onPrev}
+            className="w-8 h-8 rounded-full bg-[#282828] hover:bg-[#3e3e3e] flex items-center justify-center text-white transition-colors"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
+          </button>
+          <span className="text-[#b3b3b3] text-xs font-semibold">{current + 1} / {total}</span>
+          <button
+            onClick={onNext}
+            className="w-8 h-8 rounded-full bg-[#282828] hover:bg-[#3e3e3e] flex items-center justify-center text-white transition-colors"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-// home - Netflix theme
-function Home() {
+// Section row header
+function SectionHeader({ title, count }) {
+  return (
+    <div className="flex items-baseline justify-between mb-5">
+      <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">{title}</h2>
+      {count != null && <span className="text-[#b3b3b3] text-sm font-semibold hover:text-white cursor-pointer transition-colors">Show all</span>}
+    </div>
+  );
+}
+
+export default function Home() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [heroIndex, setHeroIndex] = useState(0);
-  const statsRef = useRef(null);
+  const [searchFocused, setSearchFocused] = useState(false);
 
   const blogsPerPage = 12;
-  const debouncedSearch = useDebounce(search, 500);
+  const debouncedSearch = useDebounce(search, 400);
 
-  const categories = [
-    "All", "Technology", "Lifestyle", "Sports", "Programming",
-    "Business", "Travel", "Health", "Productivity",
-  ];
+  const categories = ["All", "Technology", "Lifestyle", "Sports", "Programming", "Business", "Travel", "Health", "Productivity"];
 
-  // ✅ async function defined INSIDE useEffect — no useCallback needed
   useEffect(() => {
     const controller = new AbortController();
-
     const fetchBlogs = async () => {
       setLoading(true);
       try {
-        const { data } = await API.get(
-          `/api/blogs?search=${encodeURIComponent(debouncedSearch)}`,
-          { signal: controller.signal }
-        );
+        const { data } = await API.get(`/api/blogs?search=${encodeURIComponent(debouncedSearch)}`, { signal: controller.signal });
         setBlogs(data);
       } catch (error) {
         if (error.name === "AbortError" || error.name === "CanceledError") return;
-        console.log(error);
         toast.error("Failed to fetch blogs");
         setBlogs([]);
       } finally {
         setLoading(false);
       }
     };
-
     fetchBlogs();
     return () => controller.abort();
   }, [debouncedSearch]);
 
-  // Calculate trending blogs after blogs are loaded
   const trendingBlogs = blogs.length > 0 ? [...blogs].sort((a, b) => b.views - a.views).slice(0, 5) : [];
-
-  // Auto-rotate hero - Fixed dependency issue
   useEffect(() => {
     if (trendingBlogs.length === 0) return;
-    const interval = setInterval(() => {
-      setHeroIndex((prev) => (prev + 1) % trendingBlogs.length);
-    }, 5000);
+    const interval = setInterval(() => setHeroIndex(p => (p + 1) % trendingBlogs.length), 5000);
     return () => clearInterval(interval);
   }, [trendingBlogs.length]);
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
-        <div className="text-center">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
-            </div>
-          </div>
-          <p className="mt-6 text-gray-400 font-medium tracking-wide">Loading amazing content...</p>
+      <div className="fixed inset-0 bg-[#121212] flex flex-col items-center justify-center z-50 gap-6">
+        <div className="w-14 h-14 relative">
+          <div className="absolute inset-0 rounded-full border-4 border-[#1DB954]/20" />
+          <div className="absolute inset-0 rounded-full border-4 border-t-[#1DB954] animate-spin" />
         </div>
+        <p className="text-[#b3b3b3] text-sm font-semibold tracking-widest uppercase">Loading…</p>
       </div>
     );
   }
 
-  const filteredBlogs =
-    selectedCategory === "All"
-      ? blogs
-      : blogs.filter((b) => b.category === selectedCategory);
-
-  const totalViews = blogs.reduce((sum, blog) => sum + (blog.views || 0), 0);
+  const filteredBlogs = selectedCategory === "All" ? blogs : blogs.filter(b => b.category === selectedCategory);
+  const totalViews = blogs.reduce((s, b) => s + (b.views || 0), 0);
   const totalAuthors = new Set(blogs.map(b => b.user?._id).filter(Boolean)).size;
-
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Netflix-style hero carousel */}
-      {trendingBlogs.length > 0 && (
-        <div className="relative">
-          <HeroSlide blog={trendingBlogs[heroIndex]} />
-          
-          {/* hero indicators */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
-            {trendingBlogs.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setHeroIndex(idx)}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  heroIndex === idx ? "w-8 bg-red-600" : "w-4 bg-gray-600 hover:bg-gray-400"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+    <div className="min-h-screen bg-[#121212] text-white" style={{ fontFamily: "'Circular', 'DM Sans', 'Helvetica Neue', sans-serif" }}>
 
-      {/* Main content */}
-      <div className="relative z-10 -mt-20">
-        {/* Categories row - Netflix style */}
-        <div className="max-w-7xl mx-auto px-4 mb-8">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => { setSelectedCategory(cat); setCurrentPage(1); }}
-                className={`px-4 py-1.5 rounded text-sm font-medium whitespace-nowrap transition-all duration-300 ${
-                  selectedCategory === cat
-                    ? "bg-red-600 text-white"
-                    : "bg-gray-800/80 text-gray-300 hover:bg-gray-700"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+      {/* Sidebar-like top bar */}
+      <div className="sticky top-0 z-50 bg-[#121212]/95 backdrop-blur-md border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+          {/* Logo */}
+          <div className="flex items-center gap-2 shrink-0">
+            <svg className="w-8 h-8 text-[#1DB954]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.93V6.07c.33-.05.66-.07 1-.07 3.31 0 6 2.69 6 6s-2.69 6-6 6c-.34 0-.67-.02-1-.07zM5 12c0-2.97 2.16-5.43 5-5.91v11.82C7.16 17.43 5 14.97 5 12z"/>
+            </svg>
+            <span className="text-lg font-black tracking-tight text-white">BLOGIFY</span>
           </div>
-        </div>
 
-        {/* Stats bar - Netflix style */}
-        <div className="bg-gradient-to-r from-red-600/10 via-black to-red-600/10 border-y border-gray-800 mb-8">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div ref={statsRef} className="flex justify-around items-center">
-              <div className="text-center">
-                <div className="text-xl sm:text-2xl font-bold text-white">
-                  <AnimatedCounter value={blogs.length} />
-                </div>
-                <p className="text-xs text-gray-400">ARTICLES</p>
-              </div>
-              <div className="text-center">
-                <div className="text-xl sm:text-2xl font-bold text-white">
-                  <AnimatedCounter value={totalAuthors} />
-                </div>
-                <p className="text-xs text-gray-400">AUTHORS</p>
-              </div>
-              <div className="text-center">
-                <div className="text-xl sm:text-2xl font-bold text-white">
-                  <AnimatedCounter value={totalViews} />
-                </div>
-                <p className="text-xs text-gray-400">VIEWS</p>
-              </div>
-              <div className="text-center">
-                <div className="text-xl sm:text-2xl font-bold text-white">
-                  <AnimatedCounter value={categories.length - 1} />
-                </div>
-                <p className="text-xs text-gray-400">CATEGORIES</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Search bar - Netflix style */}
-        <div className="max-w-7xl mx-auto px-4 mb-8">
-          <div className="relative max-w-md">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          {/* Search */}
+          <div className={`flex-1 max-w-md mx-auto relative transition-all duration-200 ${searchFocused ? "scale-[1.02]" : ""}`}>
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6a6a6a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="text"
-              placeholder="Search titles, categories..."
+              placeholder="What do you want to read?"
               value={search}
               onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
               maxLength={50}
-              className="w-full pl-10 pr-10 py-2 bg-gray-900 border border-gray-800 rounded text-white placeholder-gray-500 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all text-sm"
+              className="w-full pl-10 pr-10 py-2.5 bg-[#2a2a2a] rounded-full text-white placeholder-[#6a6a6a] text-sm outline-none focus:ring-2 focus:ring-white/30 transition-all"
             />
             {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
-              >
-                ✕
-              </button>
+              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6a6a6a] hover:text-white transition-colors text-xs">✕</button>
             )}
           </div>
         </div>
 
-        {/* Content rows - Netflix style rows */}
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          {/* Trending row */}
-          {trendingBlogs.length > 0 && (
-            <div className="mb-12">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                  🔥 Trending Now
-                </h2>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {trendingBlogs.slice(0, 5).map((blog, index) => (
-                  <div key={blog._id} className="relative">
-                    <div className="absolute -top-2 -left-2 z-10 w-8 h-8 bg-red-600 rounded flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                      {index + 1}
-                    </div>
-                    <BlogCard blog={blog} index={index} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Latest row */}
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                {search ? `Search Results: "${search}"` : "Latest Releases"}
-              </h2>
-              <div className="text-sm text-gray-400">
-                {filteredBlogs.length} titles
-              </div>
-            </div>
-
-            {filteredBlogs.length === 0 ? (
-              <div className="text-center py-20">
-                <div className="w-24 h-24 mx-auto bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                  <svg className="w-12 h-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <p className="text-gray-400 text-lg font-medium mb-1">No results found</p>
-                <p className="text-gray-500 text-sm">Try a different search term</p>
+        {/* Category pills */}
+        <div className="max-w-7xl mx-auto px-4 pb-3">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            {categories.map((cat) => {
+              const color = categoryColors[cat]?.bg;
+              const isActive = selectedCategory === cat;
+              return (
                 <button
-                  onClick={() => { setSearch(""); setSelectedCategory("All"); }}
-                  className="mt-6 px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors font-medium"
+                  key={cat}
+                  onClick={() => { setSelectedCategory(cat); setCurrentPage(1); }}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 ${
+                    isActive ? "text-black scale-105" : "bg-[#2a2a2a] text-[#b3b3b3] hover:bg-[#3a3a3a] hover:text-white"
+                  }`}
+                  style={isActive ? { background: color || "#1DB954" } : {}}
                 >
-                  Clear Filters
+                  {cat}
                 </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {currentBlogs.map((blog, index) => (
-                  <BlogCard key={blog._id} blog={blog} index={index} />
-                ))}
-              </div>
-            )}
+              );
+            })}
           </div>
-
-          {/* Pagination - Netflix style */}
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-8 pb-8">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
-                  currentPage === 1
-                    ? "bg-gray-800 text-gray-600 cursor-not-allowed"
-                    : "bg-gray-800 text-gray-300 hover:bg-red-600 hover:text-white"
-                }`}
-              >
-                Previous
-              </button>
-
-              <div className="flex gap-1">
-                {[...Array(Math.min(totalPages, 5))].map((_, i) => {
-                  let pageNum;
-                  if (totalPages <= 5) {
-                    pageNum = i + 1;
-                  } else if (currentPage <= 3) {
-                    pageNum = i + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 4 + i;
-                  } else {
-                    pageNum = currentPage - 2 + i;
-                  }
-                  
-                  return (
-                    <button
-                      key={pageNum}
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`w-8 h-8 rounded text-sm font-semibold transition-all ${
-                        currentPage === pageNum
-                          ? "bg-red-600 text-white"
-                          : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <button
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
-                  currentPage === totalPages
-                    ? "bg-gray-800 text-gray-600 cursor-not-allowed"
-                    : "bg-gray-800 text-gray-300 hover:bg-red-600 hover:text-white"
-                }`}
-              >
-                Next
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Netflix-style footer */}
-      <footer className="bg-black border-t border-gray-800 mt-12 py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-red-600 rounded"></div>
-              <span className="text-xl font-bold text-white tracking-tight">BLOGFLIX</span>
+      <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
+
+        {/* Hero */}
+        {trendingBlogs.length > 0 && (
+          <FeaturedHero
+            blog={trendingBlogs[heroIndex]}
+            current={heroIndex}
+            total={trendingBlogs.length}
+            onPrev={() => setHeroIndex(p => (p - 1 + trendingBlogs.length) % trendingBlogs.length)}
+            onNext={() => setHeroIndex(p => (p + 1) % trendingBlogs.length)}
+          />
+        )}
+
+        {/* Stats strip */}
+        <div className="grid grid-cols-4 gap-3">
+          {[
+            { label: "Articles", value: blogs.length },
+            { label: "Authors", value: totalAuthors },
+            { label: "Total Views", value: totalViews },
+            { label: "Categories", value: categories.length - 1 },
+          ].map(({ label, value }) => (
+            <div key={label} className="bg-[#181818] hover:bg-[#282828] transition-colors rounded-xl p-4 text-center">
+              <div className="text-2xl font-black text-[#1DB954]"><AnimatedCounter value={value} /></div>
+              <div className="text-[#b3b3b3] text-xs font-semibold mt-1 uppercase tracking-widest">{label}</div>
             </div>
-            <div className="flex gap-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-white transition-colors">About</a>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
+          ))}
+        </div>
+
+        {/* Trending row */}
+        {trendingBlogs.length > 0 && (
+          <section>
+            <SectionHeader title="🔥 Trending Now" count={trendingBlogs.length} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {trendingBlogs.map((blog, i) => (
+                <BlogCard key={blog._id} blog={blog} rank={i + 1} />
+              ))}
             </div>
-            <p className="text-xs text-gray-500">© 2024 BlogFlix. All rights reserved.</p>
+          </section>
+        )}
+
+        {/* Latest / search results */}
+        <section>
+          <SectionHeader
+            title={search ? `Results for "${search}"` : selectedCategory !== "All" ? selectedCategory : "Latest Articles"}
+            count={filteredBlogs.length}
+          />
+
+          {filteredBlogs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 gap-4">
+              <div className="w-20 h-20 rounded-full bg-[#282828] flex items-center justify-center">
+                <svg className="w-10 h-10 text-[#535353]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-white font-bold text-lg">No results found</p>
+              <p className="text-[#b3b3b3] text-sm">Try a different search or category</p>
+              <button
+                onClick={() => { setSearch(""); setSelectedCategory("All"); }}
+                className="mt-2 px-6 py-2.5 rounded-full bg-white text-black text-sm font-bold hover:bg-[#e0e0e0] transition-colors"
+              >
+                Clear Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {currentBlogs.map((blog) => (
+                <BlogCard key={blog._id} blog={blog} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 pb-4">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="w-9 h-9 rounded-full bg-[#282828] disabled:opacity-30 hover:bg-[#3a3a3a] flex items-center justify-center transition-colors"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
+            </button>
+
+            {[...Array(Math.min(totalPages, 5))].map((_, i) => {
+              let pageNum = totalPages <= 5 ? i + 1 : currentPage <= 3 ? i + 1 : currentPage >= totalPages - 2 ? totalPages - 4 + i : currentPage - 2 + i;
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`w-9 h-9 rounded-full text-sm font-bold transition-all ${currentPage === pageNum ? "bg-white text-black scale-110" : "bg-[#282828] text-[#b3b3b3] hover:bg-[#3a3a3a] hover:text-white"}`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+
+            <button
+              onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="w-9 h-9 rounded-full bg-[#282828] disabled:opacity-30 hover:bg-[#3a3a3a] flex items-center justify-center transition-colors"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
+            </button>
           </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-white/5 mt-8 py-10">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-2">
+            <svg className="w-7 h-7 text-[#1DB954]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.93V6.07c.33-.05.66-.07 1-.07 3.31 0 6 2.69 6 6s-2.69 6-6 6c-.34 0-.67-.02-1-.07zM5 12c0-2.97 2.16-5.43 5-5.91v11.82C7.16 17.43 5 14.97 5 12z"/>
+            </svg>
+            <span className="font-black text-white tracking-tight">BLOGIFY</span>
+          </div>
+          <div className="flex gap-6 text-sm text-[#b3b3b3]">
+            {["About", "Contact", "Terms", "Privacy"].map(l => (
+              <a key={l} href="#" className="hover:text-white transition-colors">{l}</a>
+            ))}
+          </div>
+          <p className="text-xs text-[#535353]">© 2024 Blogify. All rights reserved.</p>
         </div>
       </footer>
 
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fade-in-up {
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-        
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </div>
   );
 }
-
-export default Home;
