@@ -193,19 +193,25 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-{/* ALTERNATIVE HERO - extra lean, almost no background weight */}
-<div className="bg-gradient-to-black from-gray-50 to-white border-black border-gray-100">
-  <div className="max-w-6xl mx-auto px-4 py-10 md:py-14">
+      {/* PROFESSIONAL HERO - solid background, crisp & authoritative */}
+<div className="bg-white border-b border-gray-100 shadow-sm">
+  <div className="max-w-6xl mx-auto px-4 py-16 md:py-20">
     <div className="max-w-3xl mx-auto text-center">
-      {/* No badge, just clean typography */}
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-4">
-        Explore <span className="text-blue-500">ideas</span> that matter
+      <div className="mb-4">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide text-blue-700 bg-blue-50 border border-blue-100">
+          <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+          BLOG INSIGHTS
+        </span>
+      </div>
+      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-5">
+        Thought leadership for <br className="hidden sm:block" />
+        <span className="text-blue-600">modern readers</span>
       </h1>
-      <p className="text-gray-500 text-lg md:text-xl mb-8 max-w-2xl mx-auto font-normal">
-        Stories from the world's brightest minds on tech, business & lifestyle.
+      <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
+        In-depth articles on technology, business, and culture — curated by industry experts.
       </p>
       
-      {/* Minimal search bar - no shadow, thin border */}
+      {/* Search with subtle shadow */}
       <div className="max-w-md mx-auto mb-8">
         <div className="relative">
           <input
@@ -213,7 +219,7 @@ export default function Home() {
             placeholder="Search articles..."
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full px-5 py-3 pl-12 pr-10 text-gray-900 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all"
+            className="w-full px-5 py-3 pl-12 pr-10 text-gray-900 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
           />
           <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -222,6 +228,7 @@ export default function Home() {
             <button
               onClick={() => handleSearchChange("")}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              aria-label="Clear search"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -231,16 +238,16 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Light category pills - transparent bg */}
-      <div className="flex flex-wrap justify-center gap-2">
+      {/* Category tags - solid style */}
+      <div className="flex flex-wrap justify-center gap-2.5">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => handleCategoryChange(cat)}
-            className={`px-3.5 py-1.5 text-sm font-medium rounded-full transition-all duration-200
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200
               ${selectedCategory === cat 
-                ? 'bg-gray-800 text-white' 
-                : 'bg-white/80 text-gray-600 border border-gray-200 hover:bg-gray-100'}`}
+                ? 'bg-gray-900 text-white shadow-md' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
           >
             {cat}
           </button>
