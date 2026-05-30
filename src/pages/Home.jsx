@@ -127,7 +127,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const blogsPerPage = 6;
+  const blogsPerPage = 12;
   const debouncedSearch = useDebounce(search, 400);
   
   const categories = ["All", "Technology", "Lifestyle", "Sports", "Programming", "Business", "Travel", "Health"];
