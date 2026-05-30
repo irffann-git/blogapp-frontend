@@ -29,25 +29,26 @@ function Login() {
   };
 
   const inputClass =
-    "w-full bg-[#F5F0E8] border border-stone-200 rounded-xl px-4 py-3 text-stone-800 placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition";
+    "w-full bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all";
 
   const labelClass =
-    "block text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1.5";
+    "block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F5F0E8] px-4 py-8 sm:py-12">
+    <div className="min-h-screen flex items-center justify-center bg-black px-4 py-8 sm:py-12">
       <div className="w-full max-w-md">
-        <div className="bg-[#FFFCF7] rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+        {/* glass card */}
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-red-900/20">
 
-          {/* header */}
-          <div className="bg-[#3D2B1F] px-5 sm:px-8 py-8 text-center">
-            <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-stone-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {/* header - Netflix gradient */}
+          <div className="bg-gradient-to-r from-red-600 to-red-500 px-5 sm:px-8 py-8 text-center">
+            <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 border border-white/20">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#F5F0E8]">Welcome back</h1>
-            <p className="text-stone-400 text-xs sm:text-sm mt-1">Sign in to continue</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">Welcome back</h1>
+            <p className="text-white/70 text-xs sm:text-sm mt-1">Sign in to continue</p>
           </div>
 
           {/* form */}
@@ -83,11 +84,11 @@ function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-amber-500 hover:bg-amber-400 disabled:opacity-60 disabled:cursor-not-allowed text-stone-900 font-semibold py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl text-sm transition-all duration-300 shadow-md shadow-red-500/20 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
-                    <svg className="animate-spin h-4 w-4 text-stone-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
@@ -99,11 +100,11 @@ function Login() {
               </button>
             </div>
 
-            <p className="text-center text-sm text-stone-500">
+            <p className="text-center text-sm text-gray-400">
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="text-amber-700 hover:text-amber-600 font-medium transition-colors"
+                className="text-red-500 hover:text-red-400 font-medium transition-colors"
               >
                 Create account
               </Link>
@@ -112,7 +113,7 @@ function Login() {
           </form>
         </div>
 
-        <p className="text-center text-xs text-stone-400 mt-5 px-2">
+        <p className="text-center text-xs text-gray-500 mt-5 px-2">
           Demo: use any registered email and password
         </p>
       </div>
